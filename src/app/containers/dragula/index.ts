@@ -1,0 +1,1 @@
+export {DragulaSample} from './dragula.component';

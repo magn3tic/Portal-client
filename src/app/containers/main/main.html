@@ -1,0 +1,74 @@
+<div class="wrapper">
+    <div class="sidebar" data-background-color="white" data-active-color="danger">
+
+        <!--
+		Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+		Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+	-->
+
+        <div class="sidebar-wrapper">
+            <div class="logo">
+                <a routerLink="/" class="simple-text">
+                    Magnetic Creative
+                    <figure>
+                        <img
+                    width="40%" 
+                    class="brand img-rounded" 
+                    src="http://www.magneticcreative.com/wp-content/themes/mag2015/assets/img/ico/touch-icon-ipad-retina.png" alt="magnetic creative logo">
+                    </figure>
+                </a>
+            </div>
+
+            <ul class="nav">
+                <li><a routerLink="/home">Home</a></li>
+                <li><a routerLink="/profile">Profile</a></li>
+                <li><a routerLink="/scope">Scope Builder</a></li>
+                <li *ngIf="super || admin"><a routerLink="/admin" routerLinkActive="active">Admin</a></li>
+                <li *ngIf="super || admin"><a routerLink="/clients" routerLinkActive="active">Clients</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-panel">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar bar1"></span>
+                        <span class="icon-bar bar2"></span>
+                        <span class="icon-bar bar3"></span>
+                    </button>
+                    <a class="navbar-brand">{{user_email}}</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a (click)="logout()">
+                                <i class="ti-arrow-up"></i>
+                                <p>Logout</p>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </div>
+
+
+        <footer class="footer">
+            <div class="container-fluid">
+            </div>
+        </footer>
+
+    </div>
+</div>

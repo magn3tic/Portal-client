@@ -1,0 +1,11 @@
+{
+  "production": {
+    "API_URL": "this is prod"
+  },
+  "development": {
+    "API_URL": "http://25b1ac60.ngrok.io:3030/",
+    "endpoints": {
+     "clientsAPI": "/clients"
+    }
+  }
+}

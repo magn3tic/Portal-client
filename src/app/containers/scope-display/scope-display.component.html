@@ -1,0 +1,60 @@
+<div class="container-fluid">
+  <h1 class="text-center">Client: {{client.name}}</h1>
+  <div id="result-container" class="col-md-6">
+    <h1 class="text-center">Result Scope</h1>
+    <div *ngFor="let phase of scope">
+      <div class="list-group no-bullet">
+        <div class="list-group-item no-bullet">
+          <h2 *ngIf="phase.active" class="pointer" (click)="toggleShow($event)">{{phase.name}}</h2>
+          <div>
+            <div class="list-group" *ngFor="let bundle of phase.bundles">
+              <h3 *ngIf="bundle.active" class="pointer" (click)="toggleShow($event)">{{bundle.name}}</h3>
+              <div *ngIf="bundle.active">
+                <h5>{{bundle.name}} Description:</h5>
+                <p>{{bundle.description}}</p>
+              </div>
+              <div *ngFor="let bundleItem of bundle.items" class="no-bullet scope-detail">
+                <h4 *ngIf="bundleItem.active" class="pointer panel-title" (click)="toggleShow($event)">{{bundleItem.name}}</h4>
+                <div class="pointer">
+                  <div *ngFor="let subItem of bundleItem.subitems">
+                    <p *ngIf="subItem.active" [innerHtml]="subItem.description | quantityParse | clientParse" ngDefaultControl>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button (click)="saveScope()" class="btn btn-success">Save</button>
+    <button (click)="getScope()" class="btn btn-default">Reset</button>
+  </div>
+  <div class="col-md-6">
+    <h1 class="text-center">Scope Legend</h1>
+    <div *ngFor="let phase of scope">
+      <div class="list-group no-bullet">
+        <div class="list-group-item no-bullet">
+          <h2 class="pointer" (click)="toggleShow($event, phase.name)" (dblclick)="toggleActive(phase)">Phase: {{phase.name}}</h2>
+          <div class="hide">
+            <div class="list-group" *ngFor="let bundle of phase.bundles">
+              <h3 class="pointer" (click)="toggleShow($event, bundle.name)" (dblclick)="toggleActive(bundle, [phase])">Bundle: {{bundle.name}}</h3>
+              <div class="hide">
+                <h5>{{bundle.name}}</h5>
+                <p>Description: {{bundle.description}}</p>
+              </div>
+              <div *ngFor="let bundleItem of bundle.items" class="no-bullet scope-detail">
+                <h4 class="pointer panel-title" (click)="toggleShow($event, bundleItem.name)" (dblclick)="toggleActive(bundleItem, [bundle, phase])">BundleItem: {{bundleItem.name}}</h4>
+                <div class="hide pointer">
+                  <div *ngFor="let subItem of bundleItem.subitems">
+                    <p (dblclick)="toggleActive(subItem, [bundleItem, bundle, phase])" [@itemState]="subItem.active">SubItem description: {{subItem.description}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

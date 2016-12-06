@@ -1,0 +1,9 @@
+<button class="btn btn-primary" (click)="goBack()">Back</button>
+<h2>{{client.name}} Details</h2>
+<div>
+  <h3>Name: {{client['name']}}</h3>
+  <h5>Manager: {{client.manager.email}}</h5>
+  <h5>ID: {{client._id}}</h5>
+  <h5>Scopes: </h5>
+  <a class="btn btn-success" [routerLink]="['/scope', client]">Create Scope</a>
+</div>

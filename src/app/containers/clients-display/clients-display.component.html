@@ -1,0 +1,9 @@
+<h1>Client Search</h1>
+<input type="text" [(ngModel)]="input"/>
+<div *ngFor="let client of clients | searchFilterPipe:input">
+  <h5><a [routerLink]="[clients, client._id]">Client Name: {{ client.name }}</a></h5>
+</div>
+<!--<div *ngFor="let client of clients">
+  <h1>Client Name: {{client.data.name}}</h1>
+  <h2>Manager: {{client.manager.email}}</h2>
+</div>-->

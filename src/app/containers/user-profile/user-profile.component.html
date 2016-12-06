@@ -1,0 +1,31 @@
+<div class="col-md-6">
+    <div class="card card-user">
+        <div class="image">
+            <img src="assets/img/background.jpg" alt="...">
+        </div>
+        <div class="content">
+            <div class="author">
+                <img class="avatar border-white" src="assets/img/faces/face-2.jpg" alt="...">
+                <h4 class="title">{{me.email}}<br>
+                    <a href="#"><small>{{me.email}}</small></a>
+                </h4>
+            </div>
+            <p class="description text-center">
+                <!--<pre>
+                    {{me}}
+                </pre>-->
+            </p>
+        </div>
+        <hr>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="card">
+        <div class="content">
+            <h4>My Clients</h4>
+            <div *ngFor="let client of clients">
+                <h5><a [routerLink]="['/clients', client._id]">{{client.name}}</a></h5>
+            </div>
+        </div>
+    </div>
+</div>

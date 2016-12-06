@@ -11,7 +11,7 @@ webpackJsonp([1],[
 	exports.providers = [
 	    store_1.Store
 	].concat(mapValuesToArray(services));
-	console.log('CONFIG: ', ({"API_URL":"http://localhost:3030","endpoints":{"clientsAPI":"/clients"}}));
+	console.log('CONFIG: ', ({"API_URL":"http://a8063602.ngrok.io","endpoints":{"clientsAPI":"/clients"}}));
 	platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(app_module_1.AppModule)
 	    .catch(function (err) { return console.error(err); });
 	
@@ -18891,7 +18891,7 @@ webpackJsonp([1],[
 	        this.apiService = apiService;
 	        this.storeHelper = storeHelper;
 	        this.store = store;
-	        this.clientsAPI = ({"API_URL":"http://localhost:3030","endpoints":{"clientsAPI":"/clients"}}).endpoints.clientsAPI;
+	        this.clientsAPI = ({"API_URL":"http://a8063602.ngrok.io","endpoints":{"clientsAPI":"/clients"}}).endpoints.clientsAPI;
 	    }
 	    RetrieveClients.prototype.fetchClients = function () {
 	        return this.apiService.get(this.clientsAPI);
@@ -26381,7 +26381,7 @@ webpackJsonp([1],[
 	        this.storeHelper = storeHelper;
 	        this.authService = authService;
 	        this.store = store;
-	        this.clientsAPI = ({"API_URL":"http://localhost:3030","endpoints":{"clientsAPI":"/clients"}}).endpoints.clientsAPI;
+	        this.clientsAPI = ({"API_URL":"http://a8063602.ngrok.io","endpoints":{"clientsAPI":"/clients"}}).endpoints.clientsAPI;
 	    }
 	    ClientsDisplay.prototype.ngOnInit = function () {
 	        this.getClients();
@@ -26502,7 +26502,7 @@ webpackJsonp([1],[
 	        this.scopeService = scopeService;
 	        this.store = store;
 	        this.router = router;
-	        this.api_url = ({"API_URL":"http://localhost:3030","endpoints":{"clientsAPI":"/clients"}}).API_URL;
+	        this.api_url = ({"API_URL":"http://a8063602.ngrok.io","endpoints":{"clientsAPI":"/clients"}}).API_URL;
 	        this.host = this.api_url;
 	        this.scope = [
 	            {
@@ -26739,7 +26739,7 @@ webpackJsonp([1],[
 	        this.store = store;
 	        this.router = router;
 	        this.sanitizer = sanitizer;
-	        this.api_url = ({"API_URL":"http://localhost:3030","endpoints":{"clientsAPI":"/clients"}}).API_URL;
+	        this.api_url = ({"API_URL":"http://a8063602.ngrok.io","endpoints":{"clientsAPI":"/clients"}}).API_URL;
 	        this.host = this.api_url;
 	        this.scopeResult = [];
 	    }
@@ -26982,7 +26982,7 @@ webpackJsonp([1],[
 	            Accept: 'application/json',
 	            Authorization: window.localStorage['magnetic_token']
 	        });
-	        this.api_url = ({"API_URL":"http://localhost:3030","endpoints":{"clientsAPI":"/clients"}}).API_URL;
+	        this.api_url = ({"API_URL":"http://a8063602.ngrok.io","endpoints":{"clientsAPI":"/clients"}}).API_URL;
 	    }
 	    ApiService.prototype.getJson = function (response) {
 	        return response.json();

@@ -3,7 +3,7 @@
     "API_URL": "this is prod"
   },
   "development": {
-    "API_URL": "http://localhost:3030",
+    "API_URL": "http://a8063602.ngrok.io",
     "endpoints": {
      "clientsAPI": "/clients"
     }

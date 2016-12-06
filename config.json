@@ -6,7 +6,7 @@
     "API_URL": "https://a8063602.ngrok.io",
     "endpoints": {
      "clientsAPI": "/clients",
-     "test": "bar"
+     "test": "bar baz"
     }
   }
 }

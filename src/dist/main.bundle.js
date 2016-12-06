@@ -27267,7 +27267,7 @@ webpackJsonp([1],[
 	            // 'Content-Type': 'application/json',
 	            Accept: 'application/json'
 	        });
-	        this.magAPI_URL = 'http://dev.magne.tc/scope-api/v1/';
+	        this.magAPI_URL = 'https://dev.magne.tc/scope-api/v1/';
 	    }
 	    ScopeService.prototype.getJson = function (response) {
 	        return response.json();

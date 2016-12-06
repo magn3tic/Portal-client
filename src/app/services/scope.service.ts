@@ -15,7 +15,7 @@ export class ScopeService {
         // 'Content-Type': 'application/json',
         Accept: 'application/json'
     });
-    magAPI_URL: string = 'http://dev.magne.tc/scope-api/v1/';
+    magAPI_URL: string = 'https://dev.magne.tc/scope-api/v1/';
     constructor(
         private router: Router,
         private apiService: ApiService,

@@ -26679,9 +26679,8 @@ webpackJsonp([1],[
 	        this.retrieveClients.fetchClients()
 	            .subscribe(function (res) { return _this.storeHelper.update('clients', res.data); });
 	        // get scope object on initial load
-	        this.scopeService.getScope();
-	        // changed for https requirement of gh-pages... our api is http.
-	        // .subscribe(res=> this.storeHelper.update('scope', res));
+	        this.scopeService.getScope()
+	            .subscribe(function (res) { return _this.storeHelper.update('scope', res); });
 	    };
 	    Main.prototype.logout = function () {
 	        this.authService.signout();
@@ -26768,17 +26767,17 @@ webpackJsonp([1],[
 	        console.log('ngAfterViewChecked ran!');
 	    };
 	    ScopeDisplay.prototype.getScope = function () {
+	        var _this = this;
 	        var self = this;
-	        return this.scopeService.getScope();
-	        // changed for https requirement of gh-pages... our api is http.
-	        // .subscribe((res) => {
-	        //     this.scopeService.cleanScope(res, function (res) {
-	        //         console.log('ngOnInit cleanScope callback: ', res);
-	        //         self.storeHelper.add('scope', res);
-	        //         self.scope = self.store.getState().scope[0];
-	        //         console.log('self.scope: ', self.scope);
-	        //     })
-	        // });
+	        return this.scopeService.getScope()
+	            .subscribe(function (res) {
+	            _this.scopeService.cleanScope(res, function (res) {
+	                console.log('ngOnInit cleanScope callback: ', res);
+	                self.storeHelper.add('scope', res);
+	                self.scope = self.store.getState().scope[0];
+	                console.log('self.scope: ', self.scope);
+	            });
+	        });
 	    };
 	    ScopeDisplay.prototype.saveScope = function () {
 	        var _this = this;

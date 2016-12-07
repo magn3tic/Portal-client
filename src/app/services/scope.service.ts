@@ -17,7 +17,7 @@ export class ScopeService {
         Accept: 'application/json'
     });
     magAPI_URL: string = 'https://dev.magne.tc/scope-api/v1/';
-    scope: Array<any> = CONFIG.scope;
+    scope = CONFIG.scope;
 
     constructor(
         private router: Router,
@@ -56,7 +56,7 @@ export class ScopeService {
             .subscribe(res => console.log('server response: ', res))
     }
 
-    getScope() {
+    getScope() : Observable<any> {
         // changed for https requirement of gh-pages... our api is http.
         // return this.http.get(this.magAPI_URL + '?o', {headers: this.headers})
         //     .map(this.checkForError)

@@ -26818,7 +26818,8 @@ webpackJsonp([1],[
 	        elementToToggle.classList.toggle('hide');
 	    };
 	    ScopeDisplay.prototype.resetScope = function () {
-	        this.getScope();
+	        var self = this;
+	        self.scope = this.getScope();
 	    };
 	    ScopeDisplay.prototype.toggleActive = function (item, parents) {
 	        _.map(parents, function (item) { return item.active = true; });

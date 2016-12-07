@@ -80,7 +80,7 @@ export class ScopeDisplay {
     private setScope() {
         var self = this;
         self.storeHelper.add('scope', this.scopeService.getScope());
-        self.scope = self.store.getState().scope[0];
+        self.scope = self.store.getState()['scopeModel'][0];
         return self.scope;
             // changed for https requirement of gh-pages... our api is http.
             // .subscribe((res) => {

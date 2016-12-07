@@ -26770,7 +26770,7 @@ webpackJsonp([1],[
 	    ScopeDisplay.prototype.setScope = function () {
 	        var self = this;
 	        self.storeHelper.add('scope', this.scopeService.getScope());
-	        self.scope = self.store.getState().scope[0];
+	        self.scope = self.store.getState()['scopeModel'][0];
 	        return self.scope;
 	        // changed for https requirement of gh-pages... our api is http.
 	        // .subscribe((res) => {
@@ -27306,6 +27306,7 @@ webpackJsonp([1],[
 	        //     .map(this.getJson)
 	        console.log('get scope ran, scope: ', this.scope);
 	        var scopeData = _.clone(this.scope);
+	        this.storeHelper.add('scopeModel', scopeData);
 	        return scopeData;
 	    };
 	    ScopeService.prototype.cleanScope = function (rawScope, next) {

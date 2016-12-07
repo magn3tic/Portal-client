@@ -63,6 +63,7 @@ export class ScopeService {
         //     .catch(err => Observable.throw(err))
         //     .map(this.getJson)
         console.log('get scope ran, scope: ', this.scope);
+        this.storeHelper.add('scope', this.scope);
         return this.scope;
     }
 

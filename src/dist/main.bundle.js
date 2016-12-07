@@ -27305,7 +27305,8 @@ webpackJsonp([1],[
 	        //     .catch(err => Observable.throw(err))
 	        //     .map(this.getJson)
 	        console.log('get scope ran, scope: ', this.scope);
-	        return this.scope;
+	        var scopeData = _.clone(this.scope);
+	        return scopeData;
 	    };
 	    ScopeService.prototype.cleanScope = function (rawScope, next) {
 	        console.log('in cleanScope rawScope is: ', rawScope);

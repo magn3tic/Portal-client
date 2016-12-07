@@ -63,9 +63,7 @@ export class ScopeService {
         //     .catch(err => Observable.throw(err))
         //     .map(this.getJson)
         console.log('get scope ran, scope: ', this.scope);
-        let scopeData = _.clone(this.scope); 
-        this.storeHelper.add('scopeModel', scopeData);
-        return scopeData;
+        return this.scope;
     }
 
     cleanScope(rawScope, next) {

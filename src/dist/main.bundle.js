@@ -27302,8 +27302,8 @@ webpackJsonp([1],[
 	        //     .map(this.checkForError)
 	        //     .catch(err => Observable.throw(err))
 	        //     .map(this.getJson)
-	        console.log('get scope ran, scope: ', this.scope);
 	        var useScope = _.clone(this.scope);
+	        console.log('get scope ran, scope: ', this.scope, ' this.scope === useScope: ', this.scope === useScope);
 	        return useScope;
 	    };
 	    ScopeService.prototype.cleanScope = function (rawScope, next) {

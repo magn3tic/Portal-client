@@ -79,7 +79,7 @@ export class ScopeDisplay {
 
     private getScope() {
         var self = this;
-        return this.scopeService.getScope();
+        return self.scope = this.scopeService.getScope();
             // changed for https requirement of gh-pages... our api is http.
             // .subscribe((res) => {
             //     this.scopeService.cleanScope(res, function (res) {

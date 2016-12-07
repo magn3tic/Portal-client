@@ -3,7 +3,7 @@
     "API_URL": "this is prod"
   },
   "development": {
-    "API_URL": "http://a95b42c1.ngrok.io",
+    "API_URL": "https://a95b42c1.ngrok.io",
     "endpoints": {
       "clientsAPI": "/clients",
       "test": "bar baz"

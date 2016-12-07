@@ -79,15 +79,16 @@ export class ScopeDisplay {
 
     private getScope() {
         var self = this;
-        this.scopeService.getScope()
-            .subscribe((res) => {
-                this.scopeService.cleanScope(res, function (res) {
-                    console.log('ngOnInit cleanScope callback: ', res);
-                    self.storeHelper.add('scope', res);
-                    self.scope = self.store.getState().scope[0];
-                    console.log('self.scope: ', self.scope);
-                })
-            });
+        return this.scopeService.getScope()
+            // changed for https requirement of gh-pages... our api is http.
+            // .subscribe((res) => {
+            //     this.scopeService.cleanScope(res, function (res) {
+            //         console.log('ngOnInit cleanScope callback: ', res);
+            //         self.storeHelper.add('scope', res);
+            //         self.scope = self.store.getState().scope[0];
+            //         console.log('self.scope: ', self.scope);
+            //     })
+            // });
     }
 
     public saveScope() {

@@ -6,16 +6,19 @@ import { Observable } from 'rxjs';
 import { Store } from '../store';
 import 'rxjs/Rx';
 
+declare var CONFIG: any;
 var _ = require('lodash');
 _.mixin(require("lodash-deep"));
 
 @Injectable()
 export class ScopeService {
     headers: Headers = new Headers({
-        // 'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
         Accept: 'application/json'
     });
     magAPI_URL: string = 'https://dev.magne.tc/scope-api/v1/';
+    scope: Array<any> = CONFIG.scope;
+
     constructor(
         private router: Router,
         private apiService: ApiService,
@@ -53,11 +56,13 @@ export class ScopeService {
             .subscribe(res => console.log('server response: ', res))
     }
 
-    getScope(): Observable<any> {
-        return this.http.get(this.magAPI_URL + '?o', {headers: this.headers})
-            .map(this.checkForError)
-            .catch(err => Observable.throw(err))
-            .map(this.getJson)
+    getScope() {
+        // changed for https requirement of gh-pages... our api is http.
+        // return this.http.get(this.magAPI_URL + '?o', {headers: this.headers})
+        //     .map(this.checkForError)
+        //     .catch(err => Observable.throw(err))
+        //     .map(this.getJson)
+        return this.scope;
     }
 
     cleanScope(rawScope, next) {

@@ -26746,7 +26746,7 @@ webpackJsonp([1],[
 	    }
 	    ScopeDisplay.prototype.ngOnInit = function () {
 	        var _this = this;
-	        this.getScope();
+	        this.setScope();
 	        this.clients = this.store.getState().clients;
 	        return this.route.params.subscribe(function (params) {
 	            _this.id = params['_id']; // (+) converts string 'id' to a number
@@ -26767,7 +26767,7 @@ webpackJsonp([1],[
 	    ScopeDisplay.prototype.ngAfterViewChecked = function () {
 	        console.log('ngAfterViewChecked ran!');
 	    };
-	    ScopeDisplay.prototype.getScope = function () {
+	    ScopeDisplay.prototype.setScope = function () {
 	        var self = this;
 	        self.storeHelper.add('scope', this.scopeService.getScope());
 	        self.scope = self.store.getState().scope[0];
@@ -26821,7 +26821,7 @@ webpackJsonp([1],[
 	    };
 	    ScopeDisplay.prototype.resetScope = function () {
 	        var self = this;
-	        self.scope = this.getScope();
+	        self.scope = this.setScope();
 	    };
 	    ScopeDisplay.prototype.toggleActive = function (item, parents) {
 	        _.map(parents, function (item) { return item.active = true; });

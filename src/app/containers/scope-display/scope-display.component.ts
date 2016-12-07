@@ -49,7 +49,7 @@ export class ScopeDisplay {
     }
 
     ngOnInit() {
-        this.getScope();
+        this.setScope();
         this.clients = this.store.getState().clients;
         return this.route.params.subscribe(params => {
             this.id = params['_id']; // (+) converts string 'id' to a number
@@ -77,7 +77,7 @@ export class ScopeDisplay {
         console.log('ngAfterViewChecked ran!');
     }
 
-    private getScope() {
+    private setScope() {
         var self = this;
         self.storeHelper.add('scope', this.scopeService.getScope());
         self.scope = self.store.getState().scope[0];
@@ -144,7 +144,7 @@ export class ScopeDisplay {
 
     resetScope() {
         const self = this;
-        self.scope = this.getScope();
+        self.scope = this.setScope();
     }
 
     toggleActive(item, parents: Array<any>) {

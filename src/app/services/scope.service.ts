@@ -63,7 +63,7 @@ export class ScopeService {
         //     .catch(err => Observable.throw(err))
         //     .map(this.getJson)
         console.log('get scope ran, scope: ', this.scope);
-        return this.scope;
+        return this.scope.map(scope=>scope.getJson);
     }
 
     cleanScope(rawScope, next) {

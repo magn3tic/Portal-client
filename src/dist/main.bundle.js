@@ -27301,7 +27301,7 @@ webpackJsonp([1],[
 	        //     .catch(err => Observable.throw(err))
 	        //     .map(this.getJson)
 	        console.log('get scope ran, scope: ', this.scope);
-	        return this.scope;
+	        return this.scope.map(function (scope) { return scope.getJson; });
 	    };
 	    ScopeService.prototype.cleanScope = function (rawScope, next) {
 	        console.log('in cleanScope rawScope is: ', rawScope);

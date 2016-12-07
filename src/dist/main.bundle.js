@@ -26769,8 +26769,8 @@ webpackJsonp([1],[
 	    };
 	    ScopeDisplay.prototype.getScope = function () {
 	        var self = this;
-	        // changed for https requirement of gh-pages... our api is http.
 	        return this.scopeService.getScope();
+	        // changed for https requirement of gh-pages... our api is http.
 	        // .subscribe((res) => {
 	        //     this.scopeService.cleanScope(res, function (res) {
 	        //         console.log('ngOnInit cleanScope callback: ', res);
@@ -27301,6 +27301,7 @@ webpackJsonp([1],[
 	        //     .map(this.checkForError)
 	        //     .catch(err => Observable.throw(err))
 	        //     .map(this.getJson)
+	        console.log('get scope ran, scope: ', this.scope);
 	        return this.scope;
 	    };
 	    ScopeService.prototype.cleanScope = function (rawScope, next) {

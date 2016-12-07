@@ -141,7 +141,8 @@ export class ScopeDisplay {
     }
 
     resetScope() {
-        this.getScope();
+        const self = this;
+        self.scope = this.getScope();
     }
 
     toggleActive(item, parents: Array<any>) {

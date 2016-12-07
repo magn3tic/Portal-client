@@ -62,8 +62,8 @@ export class ScopeService {
         //     .map(this.checkForError)
         //     .catch(err => Observable.throw(err))
         //     .map(this.getJson)
-        console.log('get scope ran, scope: ', this.scope);
         const useScope = _.clone(this.scope);
+        console.log('get scope ran, scope: ', this.scope, ' this.scope === useScope: ', this.scope === useScope);
         return useScope;
     }
 

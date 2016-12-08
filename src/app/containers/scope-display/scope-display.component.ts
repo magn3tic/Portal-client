@@ -145,7 +145,8 @@ export class ScopeDisplay {
         this.scopeService.getScope()
             .subscribe((res) => {
                 this.scopeService.cleanScope(res, function (res) {
-                    self.scope = self.store.getState().scope[0];
+                    let scopeCopy = _.clone(self.store.getState().scope[0]) 
+                    self.scope = scopeCopy;
                     console.log('self.scope in reset: ', self.scope, ' state: ', self.store.getState());
                 })
             })

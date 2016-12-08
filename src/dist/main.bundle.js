@@ -26823,7 +26823,8 @@ webpackJsonp([1],[
 	        this.scopeService.getScope()
 	            .subscribe(function (res) {
 	            _this.scopeService.cleanScope(res, function (res) {
-	                self.scope = self.store.getState().scope[0];
+	                var scopeCopy = _.clone(self.store.getState().scope[0]);
+	                self.scope = scopeCopy;
 	                console.log('self.scope in reset: ', self.scope, ' state: ', self.store.getState());
 	            });
 	        });

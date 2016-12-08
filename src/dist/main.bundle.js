@@ -26770,25 +26770,15 @@ webpackJsonp([1],[
 	    ScopeDisplay.prototype.setScope = function () {
 	        var _this = this;
 	        var self = this;
-	        var hasBeenSet = false;
-	        if (hasBeenSet) {
-	            console.log('hasBeenSet in true conditional: ', hasBeenSet);
-	            self.scope = self.store.getState().scope[0];
-	            return;
-	        }
-	        else {
-	            console.log('hasBeenSet in else conditional: ', hasBeenSet);
-	            hasBeenSet = true;
-	            this.scopeService.getScope()
-	                .subscribe(function (res) {
-	                _this.scopeService.cleanScope(res, function (res) {
-	                    console.log('ngOnInit cleanScope callback: ', res);
-	                    self.storeHelper.add('scope', res);
-	                    self.scope = self.store.getState().scope[0];
-	                    console.log('self.scope: ', self.scope);
-	                });
+	        this.scopeService.getScope()
+	            .subscribe(function (res) {
+	            _this.scopeService.cleanScope(res, function (res) {
+	                console.log('ngOnInit cleanScope callback: ', res);
+	                self.storeHelper.add('scope', res);
+	                self.scope = self.store.getState().scope[0];
+	                console.log('self.scope: ', self.scope);
 	            });
-	        }
+	        });
 	    };
 	    ScopeDisplay.prototype.saveScope = function () {
 	        var _this = this;
@@ -27298,12 +27288,7 @@ webpackJsonp([1],[
 	        }
 	    };
 	    ScopeService.prototype.createScope = function (path, body) {
-	        var cleanObj = _.forEach(body, function (obj) {
-	            _.deepMapValues(_.reject(obj, function (val) {
-	                console.log(' in deep map val: ', val);
-	                return console.log(!val.active);
-	            }));
-	        });
+	        var cleanObj = body;
 	        this.apiService.post(path, cleanObj)
 	            .subscribe(function (res) { return console.log('server response: ', res); });
 	    };

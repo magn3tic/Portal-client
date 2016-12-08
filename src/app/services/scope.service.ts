@@ -48,12 +48,7 @@ export class ScopeService {
     }
 
     createScope(path: string, body: any) {
-        let cleanObj = _.forEach(body, (obj)=> {
-            _.deepMapValues(_.reject(obj, (val)=> {
-                console.log(' in deep map val: ', val);
-                return console.log(!val.active);
-            }))
-        })
+        let cleanObj = body;
         this.apiService.post(path, cleanObj)
             .subscribe(res => console.log('server response: ', res))
     }

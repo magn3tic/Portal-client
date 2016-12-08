@@ -19,21 +19,21 @@ _.mixin(require("lodash-deep"));
     styles: [require('./scope-display.component.css')],
     template: require('./scope-display.component.html'),
     animations: [
-        trigger('itemState', [
-            state('false', style({
-                backgroundColor: '#F19495',
-                padding: '.3em',
-                transform: 'scale(1)'
-            })),
-            state('true', style({
-                backgroundColor: '#3BB089',
-                padding: '.5em',
-                transform: 'scale(1.03)'
-            })),
-            transition('inactive => active', animate('100ms ease-in')),
-            transition('active => inactive', animate('100ms ease-out'))
-        ])
-    ]
+    trigger('itemState', [
+      state('false', style({
+        backgroundColor: '#F19495',
+        padding: '.3em',
+        transform: 'scale(1)'
+      })),
+      state('true',   style({
+        backgroundColor: '#3BB089',
+        padding: '.5em',
+        transform: 'scale(1.03)'
+      })),
+      transition('inactive => active', animate('100ms ease-in')),
+      transition('active => inactive', animate('100ms ease-out'))
+    ])
+  ]
 })
 export class ScopeDisplay {
     api_url: string = CONFIG.API_URL;
@@ -79,26 +79,16 @@ export class ScopeDisplay {
 
     private setScope() {
         var self = this;
-        let hasBeenSet = false;
-
-        if (hasBeenSet) {
-            console.log('hasBeenSet in true conditional: ', hasBeenSet);
-            self.scope = self.store.getState().scope[0];
-            return;
-        } else {
-            console.log('hasBeenSet in else conditional: ', hasBeenSet);
-            hasBeenSet = true;
-            this.scopeService.getScope()
-                // changed for https requirement of gh-pages... our api is http.
-                .subscribe((res) => {
-                    this.scopeService.cleanScope(res, function (res) {
-                        console.log('ngOnInit cleanScope callback: ', res);
-                        self.storeHelper.add('scope', res);
-                        self.scope = self.store.getState().scope[0];
-                        console.log('self.scope: ', self.scope);
-                    })
+        this.scopeService.getScope()
+            // changed for https requirement of gh-pages... our api is http.
+            .subscribe((res) => {
+                this.scopeService.cleanScope(res, function (res) {
+                    console.log('ngOnInit cleanScope callback: ', res);
+                    self.storeHelper.add('scope', res);
+                    self.scope = self.store.getState().scope[0];
+                    console.log('self.scope: ', self.scope);
                 })
-        }
+            });
     }
 
     public saveScope() {

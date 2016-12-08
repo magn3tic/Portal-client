@@ -26771,22 +26771,22 @@ webpackJsonp([1],[
 	        var _this = this;
 	        var self = this;
 	        var hasBeenSet = false;
-	        this.scopeService.getScope()
-	            .subscribe(function (res) {
+	        if (hasBeenSet) {
+	            self.scope = self.store.getState().scope[0];
+	            return;
+	        }
+	        else {
 	            hasBeenSet = true;
-	            if (hasBeenSet) {
-	                self.scope = self.store.getState().scope[0];
-	                return;
-	            }
-	            else {
+	            this.scopeService.getScope()
+	                .subscribe(function (res) {
 	                _this.scopeService.cleanScope(res, function (res) {
 	                    console.log('ngOnInit cleanScope callback: ', res);
 	                    self.storeHelper.add('scope', res);
 	                    self.scope = self.store.getState().scope[0];
 	                    console.log('self.scope: ', self.scope);
 	                });
-	            }
-	        });
+	            });
+	        }
 	    };
 	    ScopeDisplay.prototype.saveScope = function () {
 	        var _this = this;

@@ -6,16 +6,21 @@ import { Observable } from 'rxjs';
 import { Store } from '../store';
 import 'rxjs/Rx';
 
+declare var CONFIG: any;
 var _ = require('lodash');
 _.mixin(require("lodash-deep"));
 
 @Injectable()
 export class ScopeService {
     headers: Headers = new Headers({
-        // 'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
         Accept: 'application/json'
     });
-    magAPI_URL: string = 'http://dev.magne.tc/scope-api/v1/';
+    magAPI_URL: string = 'https://dev.magne.tc/scope-api/v1/';
+    newGHPagesAPI_URL: string = 'https://magn3tic.github.io/Portal-client/scope.json';
+
+    scope = CONFIG.scope;
+
     constructor(
         private router: Router,
         private apiService: ApiService,
@@ -43,18 +48,14 @@ export class ScopeService {
     }
 
     createScope(path: string, body: any) {
-        let cleanObj = _.forEach(body, (obj)=> {
-            _.deepMapValues(_.reject(obj, (val)=> {
-                console.log(' in deep map val: ', val);
-                return console.log(!val.active);
-            }))
-        })
+        let cleanObj = body;
         this.apiService.post(path, cleanObj)
             .subscribe(res => console.log('server response: ', res))
     }
 
-    getScope(): Observable<any> {
-        return this.http.get(this.magAPI_URL + '?o', {headers: this.headers})
+    getScope() : Observable<any> {
+        // changed for https requirement of gh-pages... our api is http.
+        return this.http.get(this.newGHPagesAPI_URL + '?o', {headers: this.headers})
             .map(this.checkForError)
             .catch(err => Observable.throw(err))
             .map(this.getJson)

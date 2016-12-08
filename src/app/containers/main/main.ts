@@ -32,8 +32,9 @@ export class Main implements OnInit{
         .subscribe(res=> this.storeHelper.update('clients', res.data));
         
         // get scope object on initial load
-        this.scopeService.getScope()
-        .subscribe(res=> this.storeHelper.update('scope', res));
+        this.scopeService.getScope();
+        // changed for https requirement of gh-pages... our api is http.
+        // .subscribe(res=> this.storeHelper.update('scope', res));
 
     }
 

@@ -49,7 +49,7 @@ export class ScopeDisplay {
     }
 
     ngOnInit() {
-        this.getScope();
+        this.setScope();
         this.clients = this.store.getState().clients;
         return this.route.params.subscribe(params => {
             this.id = params['_id']; // (+) converts string 'id' to a number
@@ -77,9 +77,10 @@ export class ScopeDisplay {
         console.log('ngAfterViewChecked ran!');
     }
 
-    private getScope() {
+    private setScope() {
         var self = this;
         this.scopeService.getScope()
+            // changed for https requirement of gh-pages... our api is http.
             .subscribe((res) => {
                 this.scopeService.cleanScope(res, function (res) {
                     console.log('ngOnInit cleanScope callback: ', res);
@@ -140,7 +141,7 @@ export class ScopeDisplay {
     }
 
     resetScope() {
-        this.getScope();
+        this.setScope();
     }
 
     toggleActive(item, parents: Array<any>) {

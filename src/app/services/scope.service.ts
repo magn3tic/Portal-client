@@ -17,6 +17,8 @@ export class ScopeService {
         Accept: 'application/json'
     });
     magAPI_URL: string = 'https://dev.magne.tc/scope-api/v1/';
+    newGHPagesAPI_URL: string = 'https://magn3tic.github.io/Portal-client/scope.json';
+
     scope = CONFIG.scope;
 
     constructor(
@@ -58,13 +60,10 @@ export class ScopeService {
 
     getScope() : Observable<any> {
         // changed for https requirement of gh-pages... our api is http.
-        // return this.http.get(this.magAPI_URL + '?o', {headers: this.headers})
-        //     .map(this.checkForError)
-        //     .catch(err => Observable.throw(err))
-        //     .map(this.getJson)
-        console.log('get scope ran, scope: ', this.scope);
-        this.storeHelper.add('scope', this.scope);
-        return this.scope;
+        return this.http.get(this.newGHPagesAPI_URL + '?o', {headers: this.headers})
+            .map(this.checkForError)
+            .catch(err => Observable.throw(err))
+            .map(this.getJson)
     }
 
     cleanScope(rawScope, next) {

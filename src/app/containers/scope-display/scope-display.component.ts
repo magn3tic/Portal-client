@@ -79,17 +79,16 @@ export class ScopeDisplay {
 
     private setScope() {
         var self = this;
-        self.scope = self.store.getState().scope[0];
-        return self.scope;
+        this.scopeService.getScope()
             // changed for https requirement of gh-pages... our api is http.
-            // .subscribe((res) => {
-            //     this.scopeService.cleanScope(res, function (res) {
-            //         console.log('ngOnInit cleanScope callback: ', res);
-            //         self.storeHelper.add('scope', res);
-            //         self.scope = self.store.getState().scope[0];
-            //         console.log('self.scope: ', self.scope);
-            //     })
-            // });
+            .subscribe((res) => {
+                this.scopeService.cleanScope(res, function (res) {
+                    console.log('ngOnInit cleanScope callback: ', res);
+                    self.storeHelper.add('scope', res);
+                    self.scope = self.store.getState().scope[0];
+                    console.log('self.scope: ', self.scope);
+                })
+            });
     }
 
     public saveScope() {
@@ -142,8 +141,7 @@ export class ScopeDisplay {
     }
 
     resetScope() {
-        const self = this;
-        self.scope = this.setScope();
+        this.setScope();
     }
 
     toggleActive(item, parents: Array<any>) {

@@ -26818,7 +26818,15 @@ webpackJsonp([1],[
 	        elementToToggle.classList.toggle('hide');
 	    };
 	    ScopeDisplay.prototype.resetScope = function () {
-	        this.setScope();
+	        var _this = this;
+	        var self = this;
+	        this.scopeService.getScope()
+	            .subscribe(function (res) {
+	            _this.scopeService.cleanScope(res, function (res) {
+	                self.scope = self.store.getState().scope[0];
+	                console.log('self.scope in reset: ', self.scope);
+	            });
+	        });
 	    };
 	    ScopeDisplay.prototype.toggleActive = function (item, parents) {
 	        _.map(parents, function (item) { return item.active = true; });

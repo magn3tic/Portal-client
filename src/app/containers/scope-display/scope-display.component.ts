@@ -19,21 +19,21 @@ _.mixin(require("lodash-deep"));
     styles: [require('./scope-display.component.css')],
     template: require('./scope-display.component.html'),
     animations: [
-    trigger('itemState', [
-      state('false', style({
-        backgroundColor: '#F19495',
-        padding: '.3em',
-        transform: 'scale(1)'
-      })),
-      state('true',   style({
-        backgroundColor: '#3BB089',
-        padding: '.5em',
-        transform: 'scale(1.03)'
-      })),
-      transition('inactive => active', animate('100ms ease-in')),
-      transition('active => inactive', animate('100ms ease-out'))
-    ])
-  ]
+        trigger('itemState', [
+            state('false', style({
+                backgroundColor: '#F19495',
+                padding: '.3em',
+                transform: 'scale(1)'
+            })),
+            state('true', style({
+                backgroundColor: '#3BB089',
+                padding: '.5em',
+                transform: 'scale(1.03)'
+            })),
+            transition('inactive => active', animate('100ms ease-in')),
+            transition('active => inactive', animate('100ms ease-out'))
+        ])
+    ]
 })
 export class ScopeDisplay {
     api_url: string = CONFIG.API_URL;
@@ -141,7 +141,14 @@ export class ScopeDisplay {
     }
 
     resetScope() {
-        this.setScope();
+        const self = this;
+        this.scopeService.getScope()
+            .subscribe((res) => {
+                this.scopeService.cleanScope(res, function (res) {
+                    self.scope = self.store.getState().scope[0];
+                    console.log('self.scope in reset: ', self.scope);
+                })
+            })
     }
 
     toggleActive(item, parents: Array<any>) {

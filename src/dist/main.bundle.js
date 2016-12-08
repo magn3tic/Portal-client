@@ -26770,14 +26770,22 @@ webpackJsonp([1],[
 	    ScopeDisplay.prototype.setScope = function () {
 	        var _this = this;
 	        var self = this;
+	        var hasBeenSet = false;
 	        this.scopeService.getScope()
 	            .subscribe(function (res) {
-	            _this.scopeService.cleanScope(res, function (res) {
-	                console.log('ngOnInit cleanScope callback: ', res);
-	                self.storeHelper.add('scope', res);
+	            hasBeenSet = true;
+	            if (hasBeenSet) {
 	                self.scope = self.store.getState().scope[0];
-	                console.log('self.scope: ', self.scope);
-	            });
+	                return;
+	            }
+	            else {
+	                _this.scopeService.cleanScope(res, function (res) {
+	                    console.log('ngOnInit cleanScope callback: ', res);
+	                    self.storeHelper.add('scope', res);
+	                    self.scope = self.store.getState().scope[0];
+	                    console.log('self.scope: ', self.scope);
+	                });
+	            }
 	        });
 	    };
 	    ScopeDisplay.prototype.saveScope = function () {
@@ -26818,16 +26826,7 @@ webpackJsonp([1],[
 	        elementToToggle.classList.toggle('hide');
 	    };
 	    ScopeDisplay.prototype.resetScope = function () {
-	        var _this = this;
-	        var self = this;
-	        this.scopeService.getScope()
-	            .subscribe(function (res) {
-	            _this.scopeService.cleanScope(res, function (res) {
-	                var scopeCopy = _.clone(self.store.getState().scope[0]);
-	                self.scope = scopeCopy;
-	                console.log('self.scope in reset: ', self.scope, ' state: ', self.store.getState());
-	            });
-	        });
+	        this.setScope();
 	    };
 	    ScopeDisplay.prototype.toggleActive = function (item, parents) {
 	        _.map(parents, function (item) { return item.active = true; });

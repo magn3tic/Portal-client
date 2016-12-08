@@ -26772,10 +26772,12 @@ webpackJsonp([1],[
 	        var self = this;
 	        var hasBeenSet = false;
 	        if (hasBeenSet) {
+	            console.log('hasBeenSet in true conditional: ', hasBeenSet);
 	            self.scope = self.store.getState().scope[0];
 	            return;
 	        }
 	        else {
+	            console.log('hasBeenSet in else conditional: ', hasBeenSet);
 	            hasBeenSet = true;
 	            this.scopeService.getScope()
 	                .subscribe(function (res) {

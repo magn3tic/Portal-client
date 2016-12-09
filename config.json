@@ -3,7 +3,7 @@
     "API_URL": "this is prod"
   },
   "development": {
-    "API_URL": "https://magportal.herokuapp.com/",
+    "API_URL": "https://magportal.herokuapp.com",
     "endpoints": {
       "clientsAPI": "/clients",
       "test": "bar baz"

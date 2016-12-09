@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { RetrieveClients } from './retrieve-clients';
+import { ClientsService } from './clients.service';
 import { Store } from '../store';
 var _ = require('lodash');
 
@@ -7,7 +7,7 @@ var _ = require('lodash');
 export class MyClients {
   clients: Array<any> = [];
   myClients: any;
-  constructor(private retrieveClients: RetrieveClients, private store: Store) {}
+  constructor(private clientsService: ClientsService, private store: Store) {}
 
   getClients(user: String)  {
     let self = this;
@@ -18,7 +18,7 @@ export class MyClients {
     //     console.log(' self.clients: ', self.clients);
     //   })
     // });
-    this.myClients = _.filter(this.store.getState().clients,  {manager: {email: user}});
+    this.myClients = _.filter(this.store.getState().clients,  {data: {manager: {email: user}}});
     console.log('in MyClients service, this.myClients: ', this.myClients, ' user: ', user, ' this.clients: ', this.clients );
     return this.myClients;
   }  

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AuthService, MyClients, ApiService, StoreHelper, RetrieveClients } from '../../services'; // removed socket service temporarily until debugged
+import { AuthService, MyClients, ApiService, StoreHelper, ClientsService } from '../../services'; // removed socket service temporarily until debugged
 import { Router } from '@angular/router';
 import {Location} from '@angular/common';
 import {Store} from '../../store';
@@ -19,7 +19,7 @@ export class UserProfile implements OnInit {
     endpoint: string = 'users';
     super: boolean;
     clients: Array<any>;
-    constructor(private location: Location, private retrieveClients: RetrieveClients, private router: Router, private myClients: MyClients, private authService: AuthService, private apiService: ApiService, private store: Store, private storeHelper: StoreHelper) { }
+    constructor(private location: Location, private clientsService: ClientsService, private router: Router, private myClients: MyClients, private authService: AuthService, private apiService: ApiService, private store: Store, private storeHelper: StoreHelper) { }
 
     ngOnInit() {
         this.me = this.getMe();

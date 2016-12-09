@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService, StoreHelper, RetrieveClients, ScopeService } from '../../services';
+import { AuthService, StoreHelper, ClientsService, ScopeService } from '../../services';
 
 @Component({
     selector: 'main-container',
@@ -14,12 +14,12 @@ export class Main implements OnInit{
     user_email: string;
     super: boolean;
     admin: boolean;
-    constructor(private storeHelper: StoreHelper, private retrieveClients: RetrieveClients, private authService: AuthService, private scopeService: ScopeService) { }
+    constructor(private storeHelper: StoreHelper, private clientsService: ClientsService, private authService: AuthService, private scopeService: ScopeService) { }
 
     ngOnInit() {
         // get user on initial load
         this.authService.setUser(this.token_endpoint)
-        .subscribe(res=> {
+        .subscribe(res => {
             this.user_email = res.email;
             this.super = this.authService.userIsSuper();
             this.admin = this.authService.userIsAdmin();
@@ -28,7 +28,7 @@ export class Main implements OnInit{
         });
 
         // get clients on initial load
-        this.retrieveClients.fetchClients()
+        this.clientsService.fetchClients()
         .subscribe(res=> this.storeHelper.update('clients', res.data));
         
         // get scope object on initial load

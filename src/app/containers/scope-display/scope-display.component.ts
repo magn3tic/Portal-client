@@ -74,7 +74,7 @@ export class ScopeDisplay {
     }
 
     ngAfterViewChecked() {
-        console.log('ngAfterViewChecked ran!');
+        // console.log('ngAfterViewChecked ran!');
     }
 
     private setScope() {
@@ -119,7 +119,7 @@ export class ScopeDisplay {
                 );
                 self.scopeResult = [];
                 self.scope['client'] = self.client;
-                return self.scopeService.createScope('/scopes', self.scope);
+                return self.scopeService.createScope('/clients', self.store.getState()['activeClient']['_id'], {scope: self.scope, data: self.scope['client']});
             }, function (dismiss) {
                 // dismiss can be 'cancel', 'overlay',
                 // 'close', and 'timer'

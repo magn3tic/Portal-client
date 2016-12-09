@@ -42,7 +42,14 @@ export class ApiService {
     }
 
     post(path: string, body?: any): Observable<any> {
-        return this.http.post(encodeURI(`${this.api_url}${path}`), JSON.stringify(body), { headers: this.headers })
+        return this.http.post(encodeURI(`${this.api_url}${path}`), body, { headers: this.headers })
+            .map(this.checkForError)
+            .catch(err => Observable.throw(err))
+            .map(this.getJson)
+    }
+
+    update(path: string, id: string,  body?: any): Observable<any> {
+        return this.http.put(encodeURI(`${this.api_url}${path}/${id}`), body, { headers: this.headers })
             .map(this.checkForError)
             .catch(err => Observable.throw(err))
             .map(this.getJson)

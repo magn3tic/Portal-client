@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { Home, ClientDetails } from './ui';
-import { Main, Auth, DragulaSample, CreateUserForm, Admin, UserProfile, ScopeDisplay, ClientsDisplay } from './containers';
+import { Main, Auth, CreateUserForm, Admin, UserProfile, ScopeDisplay, ClientsDisplay } from './containers';
 import { AuthService, IsSuper } from './services';
 
 export const rootRouterConfig: Routes = [

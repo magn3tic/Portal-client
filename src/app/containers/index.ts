@@ -1,6 +1,5 @@
 export {Main} from './main';
 export {Auth} from './auth';
-export {DragulaSample} from './dragula';
 export {CreateUserForm} from './createUser';
 export {Admin} from './admin';
 export {UserProfile} from './user-profile';

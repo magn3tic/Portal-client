@@ -24,7 +24,7 @@
         <div class="content">
             <h4>My Clients</h4>
             <div *ngFor="let client of clients">
-                <h5><a [routerLink]="['/clients', client._id]">{{client.name}}</a></h5>
+                <h5><a [routerLink]="['/clients', client.data._id]">{{client.data.name}}</a></h5>
             </div>
         </div>
     </div>

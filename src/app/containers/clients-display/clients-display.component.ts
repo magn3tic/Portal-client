@@ -23,10 +23,13 @@ export class ClientsDisplay implements OnInit{
   }
 
   getClients() {
-    this.clientsService.fetchClients()
-    .subscribe((res)=> {
-      this.clients = this.store.getState()['clients'];
+    let trackNum = 0;
+    this.clients = _.filter(this.store.getState()['clients'][0], (client) => {
+      trackNum++;
+      console.log('trackNum: ', trackNum);
+      return client != null;
+      // client.properties.name.value != undefined;
     });
-    // console.log('in clients display this.clients: ', this.clients);
+    console.log('in clients display this.clients: ', this.clients);
   }
 }

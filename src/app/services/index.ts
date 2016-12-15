@@ -11,3 +11,4 @@ export {QuantityParsePipe} from './quantity-parse.pipe';
 export {SearchFilterPipe} from './search-filter.pipe';
 export {MyClients} from './my-clients';
 export {ClientsService} from './clients.service';
+export {HubSpotAPIService} from './hubspotAPI.service';

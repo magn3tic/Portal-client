@@ -18,7 +18,7 @@ export class MyClients {
     //     console.log(' self.clients: ', self.clients);
     //   })
     // });
-    this.myClients = _.filter(this.store.getState().clients,  {data: {manager: {email: user}}});
+    this.myClients = _.filter(this.store.getState().clients,  {manager: {email: user}});
     console.log('in MyClients service, this.myClients: ', this.myClients, ' user: ', user, ' this.clients: ', this.clients );
     return this.myClients;
   }  

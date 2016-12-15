@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService, StoreHelper, ClientsService, ScopeService } from '../../services';
 
+var _ = require('lodash');
+declare var CONFIG;
+
 @Component({
     selector: 'main-container',
     styles: [require('./main.component.css')],
@@ -8,6 +11,9 @@ import { AuthService, StoreHelper, ClientsService, ScopeService } from '../../se
 })
 
 export class Main implements OnInit{
+    magHttpsProxy: string = CONFIG.magneticProxy;
+    hubspotAPIAllContacts = CONFIG.hubspot.endpoints.allContacts;
+    hubspotAPIAllDeals = CONFIG.hubspot.endpoints.allDeals;
     // This endpoint is what validates and returns a user via JWT
     token_endpoint: string = 'auth/token';
     user_role: any;
@@ -17,6 +23,7 @@ export class Main implements OnInit{
     constructor(private storeHelper: StoreHelper, private clientsService: ClientsService, private authService: AuthService, private scopeService: ScopeService) { }
 
     ngOnInit() {
+        const self = this;
         // get user on initial load
         this.authService.setUser(this.token_endpoint)
         .subscribe(res => {
@@ -24,12 +31,19 @@ export class Main implements OnInit{
             this.super = this.authService.userIsSuper();
             this.admin = this.authService.userIsAdmin();
             this.storeHelper.update('user', res);
-            // console.log('this.super: ', this.super, ' authservice res: ', res);
         });
 
         // get clients on initial load
-        this.clientsService.fetchClients()
-        .subscribe(res=> this.storeHelper.update('clients', res.data));
+        this.clientsService.fetchDeals(this.hubspotAPIAllDeals, 'allDeals', 'includeAssociations=true&limit=250&properties=stage')
+        .subscribe(res => {
+            console.log('get all deals res: ', res);
+            let tempCompanyIdArr = [];
+            let clients = _.filter(res.data.deals, obj => {
+                return obj.associations.associatedCompanyIds[0] != undefined;
+            })
+            clients.forEach(client => tempCompanyIdArr.push(client.associations.associatedCompanyIds[0]));
+            this.clientsService.fetchCompanies(tempCompanyIdArr);
+        })
         
         // get scope object on initial load
         this.scopeService.getScope();

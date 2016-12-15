@@ -1,7 +1,9 @@
 <h1>Client Search</h1>
 <input type="text" [(ngModel)]="input"/>
-<div *ngFor="let client of clients | searchFilterPipe:input">
-  <h5><a [routerLink]="[clients, client._id]">Client Name: {{ client.name }}</a></h5>
+<!--<div *ngFor="let client of clients | searchFilterPipe:input">-->
+<div *ngFor="let client of clients let i = index;">
+  <!--<h5><a [routerLink]="[clients, client._id]">Client Name: {{ client.name }}</a></h5>-->
+  <h5>index: {{i}} Client Name: {{ (client.properties.name.value) ? client.properties.name.value : 'none' }}</h5>
 </div>
 <!--<div *ngFor="let client of clients">
   <h1>Client Name: {{client.data.name}}</h1>

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService, StoreHelper, RetrieveClients, ScopeService } from '../../services';
+import { AuthService, StoreHelper, ClientsService, ScopeService } from '../../services';
+
+var _ = require('lodash');
+declare var CONFIG;
 
 @Component({
     selector: 'main-container',
@@ -8,31 +11,40 @@ import { AuthService, StoreHelper, RetrieveClients, ScopeService } from '../../s
 })
 
 export class Main implements OnInit{
+    magHttpsProxy: string = CONFIG.magneticProxy;
+    hubspotAPIAllContacts = CONFIG.hubspot.endpoints.allContacts;
+    hubspotAPIAllDeals = CONFIG.hubspot.endpoints.allDeals;
     // This endpoint is what validates and returns a user via JWT
     token_endpoint: string = 'auth/token';
     user_role: any;
     user_email: string;
     super: boolean;
     admin: boolean;
-    constructor(private storeHelper: StoreHelper, private retrieveClients: RetrieveClients, private authService: AuthService, private scopeService: ScopeService) { }
+    constructor(private storeHelper: StoreHelper, private clientsService: ClientsService, private authService: AuthService, private scopeService: ScopeService) { }
 
     ngOnInit() {
+        const self = this;
         // get user on initial load
         this.authService.setUser(this.token_endpoint)
-        .subscribe(res=> {
+        .subscribe(res => {
             this.user_email = res.email;
             this.super = this.authService.userIsSuper();
             this.admin = this.authService.userIsAdmin();
             this.storeHelper.update('user', res);
-            // console.log('this.super: ', this.super, ' authservice res: ', res);
         });
 
         // get clients on initial load
-        this.retrieveClients.fetchClients()
-        .subscribe(res=> this.storeHelper.update('clients', res.data));
-        
+        // this.clientsService.fetchDeals(this.hubspotAPIAllDeals, 'allDeals', 'includeAssociations=true&limit=250&properties=stage')
+        this.clientsService.fetchCompanies();
+        // .map(res=> res.json())
+        // .subscribe(clients => {
+        //     console.log('get all companies: ', clients);
+        //     let tempCompanyIdArr = [];
+        //     clients.forEach(client => tempCompanyIdArr.push(client));
+        // })
+
         // get scope object on initial load
-        this.scopeService.getScope();
+        // this.scopeService.getScope();
         // changed for https requirement of gh-pages... our api is http.
         // .subscribe(res=> this.storeHelper.update('scope', res));
 

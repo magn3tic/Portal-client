@@ -1,12 +1,24 @@
 {
   "production": {
-    "API_URL": "this is prod"
+    "API_URL": "this is prod",
+    "hubspotAPIKey": "cd63a972-83d5-41d1-9476-7a31c2c53d92"
   },
   "development": {
     "API_URL": "https://magportal.herokuapp.com",
     "endpoints": {
-      "clientsAPI": "/clients",
-      "test": "bar baz"
+      "clientsAPI": "/clients"
+    },
+    "magneticProxy": "http://dev.magne.tc/api/hubspot/",
+    "hubspot": {
+      "APIURL": "https://api.hubapi.com/",
+      "APIKEY": "hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92",
+      "endpoints": {
+        "allContacts": "contacts/v1/lists/all/contacts/all/",
+        "allDeals": "deals/v1/deal/paged/",
+        "getCompany": "/companies/v2/companies/:companyId",
+        "getCompanies": "http://dev.magne.tc/api/hubspot/cache/clients.json",
+        "companyContacts": "companies/v2/companies/:companyId/contacts"
+      }
     },
     "scope": [
       {

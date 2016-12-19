@@ -17,7 +17,8 @@ export class ScopeService {
         Accept: 'application/json'
     });
     magAPI_URL: string = 'https://dev.magne.tc/scope-api/v1/';
-    newGHPagesAPI_URL: string = 'https://magn3tic.github.io/Portal-client/scope.json';
+    newGHPagesAPI_URL: string = 'http://localhost:3000/scope.json';
+    testing = 'testing';
 
     scope = CONFIG.scope;
 
@@ -47,13 +48,14 @@ export class ScopeService {
         }
     }
 
-    createScope(path: string, body: any) {
-        let cleanObj = body;
-        this.apiService.post(path, cleanObj)
+    createScope(path: string, id: any, body: any) {
+        console.log('body in createScope: ', body);
+        this.apiService.update(path, id, body)
             .subscribe(res => console.log('server response: ', res))
     }
 
     getScope() : Observable<any> {
+        console.log('in get scope api being used is: ', this.newGHPagesAPI_URL);
         // changed for https requirement of gh-pages... our api is http.
         return this.http.get(this.newGHPagesAPI_URL + '?o', {headers: this.headers})
             .map(this.checkForError)

@@ -24,23 +24,16 @@ export class ClientDetails implements OnInit{
   ngOnInit() {
     this.clients = this.store.getState()['clients'];
     this.sub = this.route.params.subscribe(params => {
-       this.id = params['_id']; // (+) converts string 'id' to a number
+       this.id = params['companyId']; // (+) converts string 'id' to a number
         this.findClient(this.id);
     });
   }
 
-  findClient(clientID) {
+  findClient(companyID) {
     let self = this;
   //get client through route params
-  this.client = (_.find(this.clients, {_id: clientID})) ? 
-  _.find(this.clients, {_id: clientID}) : self.router.navigate(['clients'])
-  .then(()=> {
-    swal(
-      'No Client Data',
-      "Returning to clients view",
-      'error'
-    )
-  })
+  this.client = (companyID) ? _.find(this.clients[0], {companyId: parseInt(companyID)}) : self.router.navigate(['clients'])
+  console.log('this.client: ', this.client);
   }
 
   goBack(): void {

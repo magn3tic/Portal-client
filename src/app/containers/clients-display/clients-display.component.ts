@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { ApiService, StoreHelper, AuthService, RetrieveClients } from '../../services'
+import { ApiService, StoreHelper, AuthService, ClientsService } from '../../services'
 import { Store } from '../../store';
 declare var CONFIG: any;
 var _ = require('lodash');
@@ -11,10 +11,9 @@ var _ = require('lodash');
 })
 export class ClientsDisplay implements OnInit{
 
-  constructor(private retrieveClients: RetrieveClients, private apiService: ApiService, private storeHelper: StoreHelper, private authService: AuthService, private store: Store) {
+  constructor(private clientsService: ClientsService, private apiService: ApiService, private storeHelper: StoreHelper, private authService: AuthService, private store: Store) {
 
   }
-  clientsAPI: string = CONFIG.endpoints.clientsAPI;
   clients;
   input:any;
   
@@ -23,10 +22,7 @@ export class ClientsDisplay implements OnInit{
   }
 
   getClients() {
-    this.retrieveClients.fetchClients()
-    .subscribe((res)=> {
-      this.clients = this.store.getState()['clients'];
-    });
+    this.clients = this.store.getState()['clients'][0];
     console.log('in clients display this.clients: ', this.clients);
   }
 }

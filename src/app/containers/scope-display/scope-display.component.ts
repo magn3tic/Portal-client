@@ -19,21 +19,21 @@ _.mixin(require("lodash-deep"));
     styles: [require('./scope-display.component.css')],
     template: require('./scope-display.component.html'),
     animations: [
-    trigger('itemState', [
-      state('false', style({
-        backgroundColor: '#F19495',
-        padding: '.3em',
-        transform: 'scale(1)'
-      })),
-      state('true',   style({
-        backgroundColor: '#3BB089',
-        padding: '.5em',
-        transform: 'scale(1.03)'
-      })),
-      transition('inactive => active', animate('100ms ease-in')),
-      transition('active => inactive', animate('100ms ease-out'))
-    ])
-  ]
+        trigger('itemState', [
+            state('false', style({
+                backgroundColor: '#F19495',
+                padding: '.3em',
+                transform: 'scale(1)'
+            })),
+            state('true', style({
+                backgroundColor: '#3BB089',
+                padding: '.5em',
+                transform: 'scale(1.03)'
+            })),
+            transition('inactive => active', animate('100ms ease-in')),
+            transition('active => inactive', animate('100ms ease-out'))
+        ])
+    ]
 })
 export class ScopeDisplay {
     api_url: string = CONFIG.API_URL;
@@ -42,6 +42,7 @@ export class ScopeDisplay {
     scope: Object;
     clients: Array<Object>;
     client: Object;
+    private sub: any;
 
     public scopeResult: Array<any> = [];
 
@@ -51,30 +52,21 @@ export class ScopeDisplay {
     ngOnInit() {
         this.setScope();
         this.clients = this.store.getState().clients;
-        return this.route.params.subscribe(params => {
-            this.id = params['_id']; // (+) converts string 'id' to a number
+        this.sub = this.route.params.subscribe(params => {
+            this.id = params['companyId']; // (+) converts string 'id' to a number
             this.findClient(this.id);
         });
     }
 
-    findClient(clientID) {
+    findClient(companyID) {
         let self = this;
         //get client through route params
-        this.client = (_.find(this.clients, { _id: clientID })) ?
-            _.find(this.clients, { _id: clientID }) : self.router.navigate(['clients'])
-                .then(() => {
-                    swal(
-                        'No Client Data',
-                        "Returning to clients view",
-                        'error'
-                    )
-                })
-        console.log('this.client: ', this.client)
-        this.storeHelper.update('activeClient', this.client);
-    }
-
-    ngAfterViewChecked() {
-        console.log('ngAfterViewChecked ran!');
+        this.client = (companyID) ? _.find(this.clients[0], { companyId: parseInt(companyID) }) : self.router.navigate(['clients'])
+        if(!this.store.getState['activeClient']) {
+            this.storeHelper.add('activeClient', this.client);
+        } else {
+            this.storeHelper.update('activeClient', this.client);
+        }
     }
 
     private setScope() {
@@ -83,9 +75,12 @@ export class ScopeDisplay {
             // changed for https requirement of gh-pages... our api is http.
             .subscribe((res) => {
                 this.scopeService.cleanScope(res, function (res) {
-                    console.log('ngOnInit cleanScope callback: ', res);
-                    self.storeHelper.add('scope', res);
-                    self.scope = self.store.getState().scope[0];
+                    if(!self.store.getState()['scope']) {
+                        self.storeHelper.add('scope', res);
+                    } else {
+                        self.storeHelper.update('scope', res);
+                    }
+                    self.scope = self.store.getState()['scope'];
                     console.log('self.scope: ', self.scope);
                 })
             });
@@ -119,7 +114,7 @@ export class ScopeDisplay {
                 );
                 self.scopeResult = [];
                 self.scope['client'] = self.client;
-                return self.scopeService.createScope('/scopes', self.scope);
+                return self.scopeService.createScope('/clients', self.store.getState()['activeClient']['_id'], { scope: self.scope, data: self.scope['client'] });
             }, function (dismiss) {
                 // dismiss can be 'cancel', 'overlay',
                 // 'close', and 'timer'

@@ -16,6 +16,7 @@
         "allContacts": "contacts/v1/lists/all/contacts/all/",
         "allDeals": "deals/v1/deal/paged/",
         "getCompany": "/companies/v2/companies/:companyId",
+        "getCompanies": "http://dev.magne.tc/api/hubspot/cache/clients.json",
         "companyContacts": "companies/v2/companies/:companyId/contacts"
       }
     },

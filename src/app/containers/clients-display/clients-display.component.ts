@@ -14,7 +14,6 @@ export class ClientsDisplay implements OnInit{
   constructor(private clientsService: ClientsService, private apiService: ApiService, private storeHelper: StoreHelper, private authService: AuthService, private store: Store) {
 
   }
-  clientsAPI: string = CONFIG.endpoints.clientsAPI;
   clients;
   input:any;
   
@@ -23,13 +22,7 @@ export class ClientsDisplay implements OnInit{
   }
 
   getClients() {
-    let trackNum = 0;
-    this.clients = _.filter(this.store.getState()['clients'][0], (client) => {
-      trackNum++;
-      console.log('trackNum: ', trackNum);
-      return client != null;
-      // client.properties.name.value != undefined;
-    });
+    this.clients = this.store.getState()['clients'][0];
     console.log('in clients display this.clients: ', this.clients);
   }
 }

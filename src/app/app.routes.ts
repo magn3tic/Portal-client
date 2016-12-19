@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { Home, ClientDetails } from './ui';
 import { Main, Auth, CreateUserForm, Admin, UserProfile, ScopeDisplay, ClientsDisplay } from './containers';
-import { AuthService, IsSuper } from './services';
+import { AuthService, IsSuper, ClientsService } from './services';
 
 export const rootRouterConfig: Routes = [
   {
@@ -23,7 +23,7 @@ export const rootRouterConfig: Routes = [
         component: ScopeDisplay
       },
       {
-        path: 'scope/:client._id',
+        path: 'scope/:companyId',
         component: ScopeDisplay
       },
       {
@@ -32,10 +32,11 @@ export const rootRouterConfig: Routes = [
       },
       {
         path: 'clients',
-        component: ClientsDisplay
+        component: ClientsDisplay,
+        canActivate: [ClientsService]
       },
       {
-        path: 'clients/:_id',
+        path: 'clients/:companyId',
         component: ClientDetails
       }
     ]

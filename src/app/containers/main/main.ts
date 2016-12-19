@@ -34,19 +34,17 @@ export class Main implements OnInit{
         });
 
         // get clients on initial load
-        this.clientsService.fetchDeals(this.hubspotAPIAllDeals, 'allDeals', 'includeAssociations=true&limit=250&properties=stage')
-        .subscribe(res => {
-            console.log('get all deals res: ', res);
-            let tempCompanyIdArr = [];
-            let clients = _.filter(res.data.deals, obj => {
-                return obj.associations.associatedCompanyIds[0] != undefined;
-            })
-            clients.forEach(client => tempCompanyIdArr.push(client.associations.associatedCompanyIds[0]));
-            this.clientsService.fetchCompanies(tempCompanyIdArr);
-        })
-        
+        // this.clientsService.fetchDeals(this.hubspotAPIAllDeals, 'allDeals', 'includeAssociations=true&limit=250&properties=stage')
+        this.clientsService.fetchCompanies();
+        // .map(res=> res.json())
+        // .subscribe(clients => {
+        //     console.log('get all companies: ', clients);
+        //     let tempCompanyIdArr = [];
+        //     clients.forEach(client => tempCompanyIdArr.push(client));
+        // })
+
         // get scope object on initial load
-        this.scopeService.getScope();
+        // this.scopeService.getScope();
         // changed for https requirement of gh-pages... our api is http.
         // .subscribe(res=> this.storeHelper.update('scope', res));
 

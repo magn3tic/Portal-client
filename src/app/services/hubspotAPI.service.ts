@@ -13,8 +13,8 @@ export class HubSpotAPIService {
         'Content-Type': 'application/json',
         Accept: 'application/json'
     });
-
-  clientsAPI: string = CONFIG.endpoints.clientsAPI;
+  
+  companiesAPI: string = CONFIG.hubspot.endpoints.getCompanies;
   magHttpsProxy: string = CONFIG.magneticProxy;
   hubspotAPIEndpoint: string = CONFIG.hubspot.APIURL
   hubspotAPIKey: string = CONFIG.hubspot.APIKEY;
@@ -55,4 +55,9 @@ export class HubSpotAPIService {
       .catch(err => Observable.throw(err))
       .map(this.getJson)
   }
+
+  getCompanies() {
+    return this.http.get(this.companiesAPI);
+  }
+
 }

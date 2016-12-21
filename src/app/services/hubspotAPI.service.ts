@@ -57,7 +57,7 @@ export class HubSpotAPIService {
   }
 
   getCompanies() {
-    return this.http.get(this.companiesAPI);
+    return this.http.get(this.magHttpsProxy);
   }
 
 }

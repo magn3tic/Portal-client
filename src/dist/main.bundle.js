@@ -18954,7 +18954,7 @@ webpackJsonp([1],[
 	            .map(this.getJson);
 	    };
 	    HubSpotAPIService.prototype.getCompanies = function () {
-	        return this.http.get(this.companiesAPI);
+	        return this.http.get(this.magHttpsProxy);
 	    };
 	    return HubSpotAPIService;
 	}());

@@ -5,7 +5,7 @@
     "endpoints": {
       "clientsAPI": "/clients"
     },
-    "magneticProxy": "https://express-proxy-gxnmpmrekg.now.sh",
+    "magneticProxy": "https://express-proxy-gxnmpmrekg.now.sh/api",
     "hubspot": {
       "APIURL": "https://api.hubapi.com/",
       "APIKEY": "hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92",

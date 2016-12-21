@@ -23,6 +23,7 @@
     "endpoints": {
       "clientsAPI": "/clients"
     },
+    "scopeAPI": "https://magn3tic.github.io/Portal-client/scope.json",
     "magneticProxy": "https://express-proxy-togppeylca.now.sh/hubAPI",
     "hubspot": {
       "APIURL": "https://api.hubapi.com/",

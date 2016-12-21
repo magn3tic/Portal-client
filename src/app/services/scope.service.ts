@@ -17,7 +17,7 @@ export class ScopeService {
         Accept: 'application/json'
     });
     magAPI_URL: string = 'https://dev.magne.tc/scope-api/v1/';
-    newGHPagesAPI_URL: string = 'http://localhost:3000/scope.json';
+    newGHPagesAPI_URL: string = CONFIG.scopeAPI;
     testing = 'testing';
 
     scope = CONFIG.scope;

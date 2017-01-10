@@ -26228,7 +26228,7 @@ webpackJsonp([1],[
 	    {
 	        path: '',
 	        component: containers_1.Main,
-	        canActivate: [services_1.AuthService],
+	        // canActivate: [AuthService],
 	        children: [
 	            {
 	                path: '',

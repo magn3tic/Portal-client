@@ -7,7 +7,7 @@ export const rootRouterConfig: Routes = [
   {
     path: '',
     component: Main,
-    canActivate: [AuthService],
+    // canActivate: [AuthService],
     children: [
       {
         path: '',

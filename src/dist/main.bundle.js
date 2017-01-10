@@ -26263,7 +26263,6 @@ webpackJsonp([1],[
 	        ]
 	    },
 	    { path: 'auth', component: containers_1.Auth },
-	    { path: '*code*', redirectTo: 'home' }
 	];
 	
 

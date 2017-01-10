@@ -26217,7 +26217,7 @@ webpackJsonp([1],[
 	        canActivate: [services_1.AuthService],
 	        children: [
 	            {
-	                path: ':code',
+	                path: 'home/:code',
 	                component: ui_1.Home
 	            },
 	            {

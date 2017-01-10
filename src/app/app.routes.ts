@@ -1,26 +1,17 @@
 import { Routes } from '@angular/router';
 import { Home, ClientDetails } from './ui';
-import { Main, Auth, CreateUserForm, Admin, UserProfile, ScopeDisplay, ClientsDisplay } from './containers';
+import { Main, Auth, UserProfile, ScopeDisplay, ClientsDisplay } from './containers';
 import { AuthService, IsSuper, ClientsService } from './services';
 
 export const rootRouterConfig: Routes = [
   {
     path: '',
     component: Main,
-    // canActivate: [AuthService],
+    canActivate: [AuthService],
     children: [
       {
         path: 'home',
         component: Home
-      },
-      {
-        path: 'admin',
-        component: Admin,
-        canActivate: [IsSuper]
-      },
-      {
-        path: 'scope',
-        component: ScopeDisplay
       },
       {
         path: 'scope/:companyId',

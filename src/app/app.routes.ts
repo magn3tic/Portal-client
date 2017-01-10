@@ -10,7 +10,7 @@ export const rootRouterConfig: Routes = [
     canActivate: [AuthService],
     children: [
       {
-        path: 'home/:code',
+        path: '',
         component: Home
       },
       {

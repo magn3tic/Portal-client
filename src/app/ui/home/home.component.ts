@@ -12,7 +12,7 @@ export class Home implements OnInit{
   constructor(private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    this.route = this.activatedRoute.params['code'];
+    this.route = window.location;
   }
 
 };

@@ -26217,7 +26217,7 @@ webpackJsonp([1],[
 	        canActivate: [services_1.AuthService],
 	        children: [
 	            {
-	                path: 'home/:code',
+	                path: '',
 	                component: ui_1.Home
 	            },
 	            {
@@ -26401,7 +26401,7 @@ webpackJsonp([1],[
 	        this.router = router;
 	        this.authService = authService;
 	        this.activatedRoute = activatedRoute;
-	        this.hubAuthAPI = 'https://app.hubspot.com/oauth/authorize?client_id=4341ae1b-abed-4c31-99b5-712a2c1f4b38&scope=contacts%20automation&redirect_uri=https://magn3tic.github.io/Portal-client/#/';
+	        this.hubAuthAPI = 'https://app.hubspot.com/oauth/authorize?client_id=4341ae1b-abed-4c31-99b5-712a2c1f4b38&scope=contacts%20automation&redirect_uri=https://magn3tic.github.io/Portal-client/#/home';
 	        this.route = 'none yet';
 	    }
 	    Auth.prototype.authenticate = function () {
@@ -27466,7 +27466,7 @@ webpackJsonp([1],[
 	        this.route = 'none yet';
 	    }
 	    Home.prototype.ngOnInit = function () {
-	        this.route = this.activatedRoute.params['code'];
+	        this.route = window.location;
 	    };
 	    return Home;
 	}());

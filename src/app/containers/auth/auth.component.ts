@@ -14,14 +14,6 @@ import {Router} from '@angular/router';
 
 export class Auth {
   JWT_KEY: string = 'magnetic_token';
-  user = {
-    email: '',
-    password: ''
-  };
-  mode: string = 'signin';
-  localAuth: string = 'auth/local';
-  tokenAuth: string = 'auth/token';
-  endpoint: string = 'auth/local';
   hubAuthAPI: string = 'https://app.hubspot.com/oauth/authorize?client_id=4341ae1b-abed-4c31-99b5-712a2c1f4b38&scope=contacts%20automation&redirect_uri=https://magn3tic.github.io/Portal-client/#/';
 
   constructor(private router: Router, private authService: AuthService) {}

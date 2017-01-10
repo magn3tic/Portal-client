@@ -38,10 +38,10 @@ export const rootRouterConfig: Routes = [
       {
         path: 'clients/:companyId',
         component: ClientDetails
-      }
+      },
+      { path: 'auth', component: Auth },
     ]
   },
-  { path: 'auth', component: Auth },
   { path: '**', redirectTo: '' }
 ];
 

@@ -1,29 +1,29 @@
-<form novalidate (submit)="authenticate()" #authForm="ngForm" class="form-horizontal">
-<fieldset>
+<!--<form novalidate (submit)="authenticate()" #authForm="ngForm" class="form-horizontal">-->
+<!--<fieldset>-->
 
 <!-- Form Name -->
-<legend class="text-center">Mag Portal Login</legend>
+<!--<legend class="text-center">Mag Portal Login</legend>-->
 
 <!-- Text input-->
-<div class="form-group">
+<!--<div class="form-group">
   <label class="col-md-4 control-label" for="email">Email Address</label>  
   <div class="col-md-4">
   <input id="email" name="email" type="text" placeholder="email address" class="form-control input-md" pattern="^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$" [(ngModel)]="user.email" error-msg="Please provide a correct email!" required autofocus>
   <span class="help-block">Please enter your email address</span>  
   </div>
-</div>
+</div>-->
 
 <!-- Password input-->
-<div class="form-group">
+<!--<div class="form-group">
   <label class="col-md-4 control-label" for="password">Password</label>
   <div class="col-md-4">
     <input id="password" name="password" type="password" placeholder="password" class="form-control input-md" [(ngModel)]="user.password" #password="ngModel" error-msg="Please create a password" required minlength="3">
     <span class="help-block">Please enter your password</span>
   </div>
-</div>
+</div>-->
 
 <!-- Button -->
-<div class="form-group">
+<!--<div class="form-group">
   <label class="col-md-4 control-label" for="signin"></label>
   <div class="col-md-4">
     <button [disabled]="!authForm.form.valid" type="submit" id="signin" name="signin" class="btn btn-primary">Signin</button>
@@ -31,4 +31,6 @@
 </div>
 
 </fieldset>
-</form>
+</form>-->
+
+<a href="{{hubAuthAPI}}"></a>

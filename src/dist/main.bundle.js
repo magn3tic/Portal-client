@@ -26214,7 +26214,7 @@ webpackJsonp([1],[
 	    {
 	        path: '',
 	        component: containers_1.Main,
-	        canActivate: [services_1.AuthService],
+	        // canActivate: [AuthService],
 	        children: [
 	            {
 	                path: '',
@@ -26409,13 +26409,8 @@ webpackJsonp([1],[
 	        this.localAuth = 'auth/local';
 	        this.tokenAuth = 'auth/token';
 	        this.endpoint = 'auth/local';
+	        this.hubAuthAPI = 'https://app.hubspot.com/oauth/authorize?client_id=4341ae1b-abed-4c31-99b5-712a2c1f4b38&scope=contacts%20automation&redirect_uri=https://magn3tic.github.io/Portal-client/#/';
 	    }
-	    Auth.prototype.authenticate = function () {
-	        var _this = this;
-	        window.localStorage.getItem(this.JWT_KEY) === 'null' || 'undefined' ? this.endpoint = this.localAuth : this.endpoint = this.tokenAuth;
-	        this.authService.authenticate(this.endpoint, this.user)
-	            .subscribe(function () { return _this.router.navigate(['']); });
-	    };
 	    return Auth;
 	}());
 	Auth = __decorate([
@@ -28004,7 +27999,7 @@ webpackJsonp([1],[
 /* 409 */
 /***/ function(module, exports) {
 
-	module.exports = "<form novalidate (submit)=\"authenticate()\" #authForm=\"ngForm\" class=\"form-horizontal\">\n<fieldset>\n\n<!-- Form Name -->\n<legend class=\"text-center\">Mag Portal Login</legend>\n\n<!-- Text input-->\n<div class=\"form-group\">\n  <label class=\"col-md-4 control-label\" for=\"email\">Email Address</label>  \n  <div class=\"col-md-4\">\n  <input id=\"email\" name=\"email\" type=\"text\" placeholder=\"email address\" class=\"form-control input-md\" pattern=\"^[a-z]+[a-z0-9._]+@[a-z]+\\.[a-z.]{2,5}$\" [(ngModel)]=\"user.email\" error-msg=\"Please provide a correct email!\" required autofocus>\n  <span class=\"help-block\">Please enter your email address</span>  \n  </div>\n</div>\n\n<!-- Password input-->\n<div class=\"form-group\">\n  <label class=\"col-md-4 control-label\" for=\"password\">Password</label>\n  <div class=\"col-md-4\">\n    <input id=\"password\" name=\"password\" type=\"password\" placeholder=\"password\" class=\"form-control input-md\" [(ngModel)]=\"user.password\" #password=\"ngModel\" error-msg=\"Please create a password\" required minlength=\"3\">\n    <span class=\"help-block\">Please enter your password</span>\n  </div>\n</div>\n\n<!-- Button -->\n<div class=\"form-group\">\n  <label class=\"col-md-4 control-label\" for=\"signin\"></label>\n  <div class=\"col-md-4\">\n    <button [disabled]=\"!authForm.form.valid\" type=\"submit\" id=\"signin\" name=\"signin\" class=\"btn btn-primary\">Signin</button>\n  </div>\n</div>\n\n</fieldset>\n</form>\n"
+	module.exports = "<!--<form novalidate (submit)=\"authenticate()\" #authForm=\"ngForm\" class=\"form-horizontal\">-->\n<!--<fieldset>-->\n\n<!-- Form Name -->\n<!--<legend class=\"text-center\">Mag Portal Login</legend>-->\n\n<!-- Text input-->\n<!--<div class=\"form-group\">\n  <label class=\"col-md-4 control-label\" for=\"email\">Email Address</label>  \n  <div class=\"col-md-4\">\n  <input id=\"email\" name=\"email\" type=\"text\" placeholder=\"email address\" class=\"form-control input-md\" pattern=\"^[a-z]+[a-z0-9._]+@[a-z]+\\.[a-z.]{2,5}$\" [(ngModel)]=\"user.email\" error-msg=\"Please provide a correct email!\" required autofocus>\n  <span class=\"help-block\">Please enter your email address</span>  \n  </div>\n</div>-->\n\n<!-- Password input-->\n<!--<div class=\"form-group\">\n  <label class=\"col-md-4 control-label\" for=\"password\">Password</label>\n  <div class=\"col-md-4\">\n    <input id=\"password\" name=\"password\" type=\"password\" placeholder=\"password\" class=\"form-control input-md\" [(ngModel)]=\"user.password\" #password=\"ngModel\" error-msg=\"Please create a password\" required minlength=\"3\">\n    <span class=\"help-block\">Please enter your password</span>\n  </div>\n</div>-->\n\n<!-- Button -->\n<!--<div class=\"form-group\">\n  <label class=\"col-md-4 control-label\" for=\"signin\"></label>\n  <div class=\"col-md-4\">\n    <button [disabled]=\"!authForm.form.valid\" type=\"submit\" id=\"signin\" name=\"signin\" class=\"btn btn-primary\">Signin</button>\n  </div>\n</div>\n\n</fieldset>\n</form>-->\n\n<a href=\"{{hubAuthAPI}}\"></a>\n"
 
 /***/ },
 /* 410 */

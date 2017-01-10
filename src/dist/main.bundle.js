@@ -26245,10 +26245,10 @@ webpackJsonp([1],[
 	            {
 	                path: 'clients/:companyId',
 	                component: ui_1.ClientDetails
-	            },
-	            { path: 'auth', component: containers_1.Auth },
+	            }
 	        ]
 	    },
+	    { path: 'auth', component: containers_1.Auth },
 	    { path: '**', redirectTo: '' }
 	];
 	

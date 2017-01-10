@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { Home, ClientDetails } from './ui';
+import { Home, ClientDetails, Test } from './ui';
 import { Main, Auth, UserProfile, ScopeDisplay, ClientsDisplay } from './containers';
 import { AuthService, IsSuper, ClientsService } from './services';
 
@@ -7,7 +7,7 @@ export const rootRouterConfig: Routes = [
   {
     path: '',
     component: Main,
-    canActivate: [AuthService],
+    // canActivate: [AuthService],
     children: [
       {
         path: 'home',
@@ -33,6 +33,7 @@ export const rootRouterConfig: Routes = [
     ]
   },
   { path: 'auth', component: Auth },
-  // { path: '*code*', redirectTo: 'home' }
+  { path: 'test', component: Test }
+  // { path: '**', redirectTo: 'home' }
 ];
 

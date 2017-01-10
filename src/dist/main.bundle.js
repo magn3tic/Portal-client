@@ -26231,7 +26231,7 @@ webpackJsonp([1],[
 	        // canActivate: [AuthService],
 	        children: [
 	            {
-	                path: '',
+	                path: 'home',
 	                component: ui_1.Home
 	            },
 	            {
@@ -26263,7 +26263,7 @@ webpackJsonp([1],[
 	        ]
 	    },
 	    { path: 'auth', component: containers_1.Auth },
-	    { path: '**', redirectTo: '' }
+	    { path: '**', redirectTo: 'home' }
 	];
 	
 

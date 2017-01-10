@@ -10,7 +10,7 @@ export const rootRouterConfig: Routes = [
     // canActivate: [AuthService],
     children: [
       {
-        path: '',
+        path: 'home',
         component: Home
       },
       {
@@ -42,6 +42,6 @@ export const rootRouterConfig: Routes = [
     ]
   },
   { path: 'auth', component: Auth },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: 'home' }
 ];
 

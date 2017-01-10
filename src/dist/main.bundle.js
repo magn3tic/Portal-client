@@ -26415,7 +26415,7 @@ webpackJsonp([1],[
 	        this.router = router;
 	        this.authService = authService;
 	        this.activatedRoute = activatedRoute;
-	        this.hubAuthAPI = 'https://app.hubspot.com/oauth/authorize?client_id=4341ae1b-abed-4c31-99b5-712a2c1f4b38&scope=contacts%20automation&redirect_uri=https://magn3tic.github.io/Portal-client/#/home';
+	        this.hubAuthAPI = 'https://app.hubspot.com/oauth/authorize?client_id=4341ae1b-abed-4c31-99b5-712a2c1f4b38&scope=contacts%20automation&redirect_uri=https://magn3tic.github.io/Portal-client/#/';
 	        this.route = 'none yet';
 	    }
 	    Auth.prototype.authenticate = function () {

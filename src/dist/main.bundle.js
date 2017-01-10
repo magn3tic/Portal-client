@@ -27997,7 +27997,7 @@ webpackJsonp([1],[
 /* 409 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container\">\n  <a href=\"{{hubAuthAPI}}\" class=\"btn btn-primary\">hubAuth</a>\n</div>\n\n"
+	module.exports = "<div class=\"container\">\n  <a (click)=\"authenticate\" href=\"{{hubAuthAPI}}\" class=\"btn btn-primary\">hubAuth</a>\n</div>\n\n"
 
 /***/ },
 /* 410 */

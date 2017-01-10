@@ -26397,12 +26397,18 @@ webpackJsonp([1],[
 	var services_1 = __webpack_require__(15);
 	var router_1 = __webpack_require__(23);
 	var Auth = (function () {
-	    function Auth(router, authService) {
+	    function Auth(router, authService, activatedRoute) {
 	        this.router = router;
 	        this.authService = authService;
-	        this.JWT_KEY = 'magnetic_token';
+	        this.activatedRoute = activatedRoute;
 	        this.hubAuthAPI = 'https://app.hubspot.com/oauth/authorize?client_id=4341ae1b-abed-4c31-99b5-712a2c1f4b38&scope=contacts%20automation&redirect_uri=https://magn3tic.github.io/Portal-client/#/';
 	    }
+	    Auth.prototype.authenticate = function () {
+	        // window.localStorage.getItem((this.JWT_KEY) === 'null' || 'undefined' ? this.endpoint = this.localAuth : this.endpoint = this.tokenAuth;
+	        // this.authService.authenticate(this.endpoint, this.user)
+	        // .subscribe(()=>this.router.navigate(['']))
+	        console.log('route params: ', this.activatedRoute.params);
+	    };
 	    return Auth;
 	}());
 	Auth = __decorate([
@@ -26411,11 +26417,11 @@ webpackJsonp([1],[
 	        styles: ["\n    a:hover {\n        cursor: pointer;\n      }\n  "],
 	        template: __webpack_require__(409)
 	    }),
-	    __metadata("design:paramtypes", [typeof (_a = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _a || Object, typeof (_b = typeof services_1.AuthService !== "undefined" && services_1.AuthService) === "function" && _b || Object])
+	    __metadata("design:paramtypes", [typeof (_a = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _a || Object, typeof (_b = typeof services_1.AuthService !== "undefined" && services_1.AuthService) === "function" && _b || Object, typeof (_c = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _c || Object])
 	], Auth);
 	exports.Auth = Auth;
 	;
-	var _a, _b;
+	var _a, _b, _c;
 
 
 /***/ },
@@ -27991,7 +27997,7 @@ webpackJsonp([1],[
 /* 409 */
 /***/ function(module, exports) {
 
-	module.exports = "<a href=\"{{hubAuthAPI}}\" class=\"btn btn-primary\">hubAuth</a>\n"
+	module.exports = "<div class=\"container\">\n  <a href=\"{{hubAuthAPI}}\" class=\"btn btn-primary\">hubAuth</a>\n</div>\n\n"
 
 /***/ },
 /* 410 */

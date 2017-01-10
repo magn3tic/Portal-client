@@ -23,7 +23,7 @@ export class CreateUserForm {
   constructor(private router: Router, private authService: AuthService) {}
 
   authenticate() {
-    this.authService.authenticate(this.endpoint, this.user)
-    .subscribe(()=>this.router.navigate(['']))
+    this.authService.authenticate()
+    .then(()=>this.router.navigate(['']))
   }
 }; 

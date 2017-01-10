@@ -31,23 +31,27 @@ export class AuthService implements CanActivate {
             .map(res => res.data);
     }
 
-    authenticate(path, creds) {
-        return this.apiService.post(`/${path}`, creds)
-            .do(res => this.setJwt(res.token))
-            .do(res => this.storeHelper.update('user', res.data))
-            .map(res => res.data)
-            .do(
-            (data) => swal(
-                'Sweet!',
-                'Thanks for being a part of #MAGFam ' + '<b>' +this.store.getState().user['email'] + '</b>',
-                'success'
-            ),
-            (err) => swal(
-                'Oops...',
-                err.statusText,
-                'error'
-            )
-            );
+    authenticate() {
+    let result = new Promise((resolve, reject) => {
+        resolve(true);
+    }); 
+    return result;
+        // return this.apiService.post(`/${path}`, creds)
+        //     .do(res => this.setJwt(res.token))
+        //     .do(res => this.storeHelper.update('user', res.data))
+        //     .map(res => res.data)
+        //     .do(
+        //     (data) => swal(
+        //         'Sweet!',
+        //         'Thanks for being a part of #MAGFam ' + '<b>' +this.store.getState().user['email'] + '</b>',
+        //         'success'
+        //     ),
+        //     (err) => swal(
+        //         'Oops...',
+        //         err.statusText,
+        //         'error'
+        //     )
+        //     );
     }
 
     signout() {

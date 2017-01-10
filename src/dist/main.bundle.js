@@ -18768,13 +18768,27 @@ webpackJsonp([1],[
 	            .do(function (res) { return _this.storeHelper.update('user', res.data); })
 	            .map(function (res) { return res.data; });
 	    };
-	    AuthService.prototype.authenticate = function (path, creds) {
-	        var _this = this;
-	        return this.apiService.post("/" + path, creds)
-	            .do(function (res) { return _this.setJwt(res.token); })
-	            .do(function (res) { return _this.storeHelper.update('user', res.data); })
-	            .map(function (res) { return res.data; })
-	            .do(function (data) { return swal('Sweet!', 'Thanks for being a part of #MAGFam ' + '<b>' + _this.store.getState().user['email'] + '</b>', 'success'); }, function (err) { return swal('Oops...', err.statusText, 'error'); });
+	    AuthService.prototype.authenticate = function () {
+	        var result = new Promise(function (resolve, reject) {
+	            resolve(true);
+	        });
+	        return result;
+	        // return this.apiService.post(`/${path}`, creds)
+	        //     .do(res => this.setJwt(res.token))
+	        //     .do(res => this.storeHelper.update('user', res.data))
+	        //     .map(res => res.data)
+	        //     .do(
+	        //     (data) => swal(
+	        //         'Sweet!',
+	        //         'Thanks for being a part of #MAGFam ' + '<b>' +this.store.getState().user['email'] + '</b>',
+	        //         'success'
+	        //     ),
+	        //     (err) => swal(
+	        //         'Oops...',
+	        //         err.statusText,
+	        //         'error'
+	        //     )
+	        //     );
 	    };
 	    AuthService.prototype.signout = function () {
 	        window.localStorage.removeItem(this.JWT_KEY);
@@ -26405,10 +26419,10 @@ webpackJsonp([1],[
 	        this.route = 'none yet';
 	    }
 	    Auth.prototype.authenticate = function () {
+	        var _this = this;
 	        // window.localStorage.getItem((this.JWT_KEY) === 'null' || 'undefined' ? this.endpoint = this.localAuth : this.endpoint = this.tokenAuth;
-	        // this.authService.authenticate(this.endpoint, this.user)
-	        // .subscribe(()=>this.router.navigate(['']))
-	        return true;
+	        this.authService.authenticate()
+	            .then(function () { return _this.router.navigate(['']); });
 	    };
 	    return Auth;
 	}());
@@ -26520,8 +26534,8 @@ webpackJsonp([1],[
 	    }
 	    CreateUserForm.prototype.authenticate = function () {
 	        var _this = this;
-	        this.authService.authenticate(this.endpoint, this.user)
-	            .subscribe(function () { return _this.router.navigate(['']); });
+	        this.authService.authenticate()
+	            .then(function () { return _this.router.navigate(['']); });
 	    };
 	    return CreateUserForm;
 	}());

@@ -42,6 +42,6 @@ export const rootRouterConfig: Routes = [
     ]
   },
   { path: 'auth', component: Auth },
-  { path: '**', redirectTo: 'home' }
+  { path: '*code*', redirectTo: 'home' }
 ];
 

@@ -26402,12 +26402,13 @@ webpackJsonp([1],[
 	        this.authService = authService;
 	        this.activatedRoute = activatedRoute;
 	        this.hubAuthAPI = 'https://app.hubspot.com/oauth/authorize?client_id=4341ae1b-abed-4c31-99b5-712a2c1f4b38&scope=contacts%20automation&redirect_uri=https://magn3tic.github.io/Portal-client/#/';
+	        this.route = 'none yet';
 	    }
 	    Auth.prototype.authenticate = function () {
 	        // window.localStorage.getItem((this.JWT_KEY) === 'null' || 'undefined' ? this.endpoint = this.localAuth : this.endpoint = this.tokenAuth;
 	        // this.authService.authenticate(this.endpoint, this.user)
 	        // .subscribe(()=>this.router.navigate(['']))
-	        console.log('route params: ', this.activatedRoute.params);
+	        this.route = this.activatedRoute.params;
 	    };
 	    return Auth;
 	}());
@@ -27997,7 +27998,7 @@ webpackJsonp([1],[
 /* 409 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container\">\n  <a (click)=\"authenticate\" href=\"{{hubAuthAPI}}\" class=\"btn btn-primary\">hubAuth</a>\n</div>\n\n"
+	module.exports = "<div class=\"container\">\n  <a (click)=\"authenticate()\" href=\"{{hubAuthAPI}}\" class=\"btn btn-primary\">hubAuth</a>\n  <h1>Route params: {{route}}</h1>\n</div>\n\n"
 
 /***/ },
 /* 410 */

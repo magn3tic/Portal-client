@@ -14,6 +14,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 
 export class Auth {
   hubAuthAPI: string = 'https://app.hubspot.com/oauth/authorize?client_id=4341ae1b-abed-4c31-99b5-712a2c1f4b38&scope=contacts%20automation&redirect_uri=https://magn3tic.github.io/Portal-client/#/';
+  route: any = 'none yet';
 
   constructor(private router: Router, private authService: AuthService, private activatedRoute: ActivatedRoute) {}
 
@@ -22,6 +23,6 @@ export class Auth {
     // window.localStorage.getItem((this.JWT_KEY) === 'null' || 'undefined' ? this.endpoint = this.localAuth : this.endpoint = this.tokenAuth;
     // this.authService.authenticate(this.endpoint, this.user)
     // .subscribe(()=>this.router.navigate(['']))
-    console.log('route params: ', this.activatedRoute.params)
+    this.route = this.activatedRoute.params;
   }
 }; 

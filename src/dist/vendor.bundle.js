@@ -10,7 +10,7 @@ webpackJsonp([2],{
 	__webpack_require__(49);
 	__webpack_require__(6);
 	__webpack_require__(62);
-	__webpack_require__(23);
+	__webpack_require__(21);
 	// RxJS 5
 	// import 'rxjs/Rx';
 	// For vendors for example jQuery, Lodash, angular2-jwt import them here
@@ -23,7 +23,7 @@ webpackJsonp([2],{
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(22);
+	var root_1 = __webpack_require__(23);
 	var toSubscriber_1 = __webpack_require__(686);
 	var observable_1 = __webpack_require__(91);
 	/**
@@ -460,7 +460,7 @@ webpackJsonp([2],{
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(22);
+	var root_1 = __webpack_require__(23);
 	var isArray_1 = __webpack_require__(36);
 	var isPromise_1 = __webpack_require__(202);
 	var Observable_1 = __webpack_require__(1);
@@ -10837,29 +10837,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 22:
-/***/ function(module, exports) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
-	var objectTypes = {
-	    'boolean': false,
-	    'function': true,
-	    'object': true,
-	    'number': false,
-	    'string': false,
-	    'undefined': false
-	};
-	exports.root = (objectTypes[typeof self] && self) || (objectTypes[typeof window] && window);
-	var freeGlobal = objectTypes[typeof global] && global;
-	if (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal)) {
-	    exports.root = freeGlobal;
-	}
-	//# sourceMappingURL=root.js.map
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-
-/***/ 23:
+/***/ 21:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14566,6 +14544,28 @@ webpackJsonp([2],{
 
 	}));
 
+
+/***/ },
+
+/***/ 23:
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
+	var objectTypes = {
+	    'boolean': false,
+	    'function': true,
+	    'object': true,
+	    'number': false,
+	    'string': false,
+	    'undefined': false
+	};
+	exports.root = (objectTypes[typeof self] && self) || (objectTypes[typeof window] && window);
+	var freeGlobal = objectTypes[typeof global] && global;
+	if (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal)) {
+	    exports.root = freeGlobal;
+	}
+	//# sourceMappingURL=root.js.map
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 
@@ -23774,7 +23774,7 @@ webpackJsonp([2],{
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(22);
+	var root_1 = __webpack_require__(23);
 	var Symbol = root_1.root.Symbol;
 	if (typeof Symbol === 'function') {
 	    if (Symbol.iterator) {
@@ -24112,7 +24112,7 @@ webpackJsonp([2],{
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(22);
+	var root_1 = __webpack_require__(23);
 	function getSymbolObservable(context) {
 	    var $$observable;
 	    var Symbol = context.Symbol;
@@ -24140,7 +24140,7 @@ webpackJsonp([2],{
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(22);
+	var root_1 = __webpack_require__(23);
 	var Symbol = root_1.root.Symbol;
 	exports.$$rxSubscriber = (typeof Symbol === 'function' && typeof Symbol.for === 'function') ?
 	    Symbol.for('rxSubscriber') : '@@rxSubscriber';
@@ -24860,7 +24860,7 @@ webpackJsonp([2],{
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var root_1 = __webpack_require__(22);
+	var root_1 = __webpack_require__(23);
 	var Observable_1 = __webpack_require__(1);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
@@ -43401,7 +43401,7 @@ webpackJsonp([2],{
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var root_1 = __webpack_require__(22);
+	var root_1 = __webpack_require__(23);
 	var Observable_1 = __webpack_require__(1);
 	var iterator_1 = __webpack_require__(74);
 	/**

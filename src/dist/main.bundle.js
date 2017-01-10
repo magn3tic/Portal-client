@@ -17411,7 +17411,7 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var root_1 = __webpack_require__(22);
+	var root_1 = __webpack_require__(23);
 	var Action_1 = __webpack_require__(667);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
@@ -18743,7 +18743,7 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(6);
-	var router_1 = __webpack_require__(23);
+	var router_1 = __webpack_require__(21);
 	var index_1 = __webpack_require__(15);
 	var store_1 = __webpack_require__(19);
 	__webpack_require__(57);
@@ -18823,7 +18823,7 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(6);
-	var router_1 = __webpack_require__(23);
+	var router_1 = __webpack_require__(21);
 	var hubspotAPI_service_1 = __webpack_require__(133);
 	var index_1 = __webpack_require__(15);
 	var store_1 = __webpack_require__(19);
@@ -19816,7 +19816,7 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var root_1 = __webpack_require__(22);
+	var root_1 = __webpack_require__(23);
 	var tryCatch_1 = __webpack_require__(20);
 	var errorObject_1 = __webpack_require__(18);
 	var Observable_1 = __webpack_require__(1);
@@ -21198,7 +21198,7 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(22);
+	var root_1 = __webpack_require__(23);
 	/**
 	 * @param PromiseCtor
 	 * @return {Promise<T>}
@@ -26173,7 +26173,7 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(6);
-	var router_1 = __webpack_require__(23);
+	var router_1 = __webpack_require__(21);
 	var app_routes_1 = __webpack_require__(208);
 	var app_component_1 = __webpack_require__(129);
 	var services_1 = __webpack_require__(15);
@@ -26217,7 +26217,7 @@ webpackJsonp([1],[
 	        canActivate: [services_1.AuthService],
 	        children: [
 	            {
-	                path: '',
+	                path: ':code',
 	                component: ui_1.Home
 	            },
 	            {
@@ -26269,7 +26269,7 @@ webpackJsonp([1],[
 	};
 	var core_1 = __webpack_require__(6);
 	var services_1 = __webpack_require__(15); // removed socketService temporarily until debugged
-	var router_1 = __webpack_require__(23);
+	var router_1 = __webpack_require__(21);
 	var store_1 = __webpack_require__(19);
 	var Admin = (function () {
 	    function Admin(router, apiService, store, storeHelper, authService) {
@@ -26395,7 +26395,7 @@ webpackJsonp([1],[
 	};
 	var core_1 = __webpack_require__(6);
 	var services_1 = __webpack_require__(15);
-	var router_1 = __webpack_require__(23);
+	var router_1 = __webpack_require__(21);
 	var Auth = (function () {
 	    function Auth(router, authService, activatedRoute) {
 	        this.router = router;
@@ -26506,7 +26506,7 @@ webpackJsonp([1],[
 	};
 	var core_1 = __webpack_require__(6);
 	var services_1 = __webpack_require__(15);
-	var router_1 = __webpack_require__(23);
+	var router_1 = __webpack_require__(21);
 	var CreateUserForm = (function () {
 	    function CreateUserForm(router, authService) {
 	        this.router = router;
@@ -26651,11 +26651,11 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(6);
-	var router_1 = __webpack_require__(23);
+	var router_1 = __webpack_require__(21);
 	var platform_browser_1 = __webpack_require__(49);
 	var services_1 = __webpack_require__(15);
 	// import { DragulaService } from 'ng2-dragula/ng2-dragula';
-	var router_2 = __webpack_require__(23);
+	var router_2 = __webpack_require__(21);
 	var store_1 = __webpack_require__(19);
 	var _ = __webpack_require__(25);
 	_.mixin(__webpack_require__(171));
@@ -26808,7 +26808,7 @@ webpackJsonp([1],[
 	};
 	var core_1 = __webpack_require__(6);
 	var services_1 = __webpack_require__(15); // removed socket service temporarily until debugged
-	var router_1 = __webpack_require__(23);
+	var router_1 = __webpack_require__(21);
 	var common_1 = __webpack_require__(61);
 	var store_1 = __webpack_require__(19);
 	var UserProfile = (function () {
@@ -27022,7 +27022,7 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(6);
-	var router_1 = __webpack_require__(23);
+	var router_1 = __webpack_require__(21);
 	var auth_service_1 = __webpack_require__(131);
 	var store_1 = __webpack_require__(19);
 	__webpack_require__(57);
@@ -27184,7 +27184,7 @@ webpackJsonp([1],[
 	};
 	var core_1 = __webpack_require__(6);
 	var http_1 = __webpack_require__(62);
-	var router_1 = __webpack_require__(23);
+	var router_1 = __webpack_require__(21);
 	var index_1 = __webpack_require__(15);
 	var rxjs_1 = __webpack_require__(57);
 	var store_1 = __webpack_require__(19);
@@ -27388,8 +27388,8 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(6);
-	var router_1 = __webpack_require__(23);
-	var router_2 = __webpack_require__(23);
+	var router_1 = __webpack_require__(21);
+	var router_2 = __webpack_require__(21);
 	var common_1 = __webpack_require__(61);
 	var services_1 = __webpack_require__(15);
 	var store_1 = __webpack_require__(19);
@@ -27459,9 +27459,15 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(6);
+	var router_1 = __webpack_require__(21);
 	var Home = (function () {
-	    function Home() {
+	    function Home(activatedRoute) {
+	        this.activatedRoute = activatedRoute;
+	        this.route = 'none yet';
 	    }
+	    Home.prototype.ngOnInit = function () {
+	        this.route = this.activatedRoute.params['code'];
+	    };
 	    return Home;
 	}());
 	Home = __decorate([
@@ -27470,10 +27476,12 @@ webpackJsonp([1],[
 	        styles: [__webpack_require__(694)],
 	        template: __webpack_require__(416)
 	    }),
-	    __metadata("design:paramtypes", [])
+	    __metadata("design:paramtypes", [typeof (_a = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _a || Object])
 	], Home);
 	exports.Home = Home;
-	
+	;
+	var _a;
+
 
 /***/ },
 /* 237 */
@@ -28040,7 +28048,7 @@ webpackJsonp([1],[
 /* 416 */
 /***/ function(module, exports) {
 
-	module.exports = "<h3>Welcome to the Scope Builder Tool</h3>\n<p>For more information on how to properly use this tool please refer to the documentation included in the following document</p>"
+	module.exports = "<h3>Welcome to the Scope Builder Tool</h3>\n<p>For more information on how to properly use this tool please refer to the documentation included in the following document</p>\n\n<p>Params: {{route}}</p>"
 
 /***/ },
 /* 417 */,
@@ -31214,7 +31222,7 @@ webpackJsonp([1],[
 	var Subscriber_1 = __webpack_require__(3);
 	var Observable_1 = __webpack_require__(1);
 	var Subscription_1 = __webpack_require__(17);
-	var root_1 = __webpack_require__(22);
+	var root_1 = __webpack_require__(23);
 	var ReplaySubject_1 = __webpack_require__(88);
 	var tryCatch_1 = __webpack_require__(20);
 	var errorObject_1 = __webpack_require__(18);
@@ -39360,7 +39368,7 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(22);
+	var root_1 = __webpack_require__(23);
 	var RequestAnimationFrameDefinition = (function () {
 	    function RequestAnimationFrameDefinition(root) {
 	        if (root.requestAnimationFrame) {
@@ -39438,7 +39446,7 @@ webpackJsonp([1],[
 	Some credit for this helper goes to http://github.com/YuzuJS/setImmediate
 	*/
 	"use strict";
-	var root_1 = __webpack_require__(22);
+	var root_1 = __webpack_require__(23);
 	var ImmediateDefinition = (function () {
 	    function ImmediateDefinition(root) {
 	        this.root = root;
@@ -39649,7 +39657,7 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(22);
+	var root_1 = __webpack_require__(23);
 	var MapPolyfill_1 = __webpack_require__(682);
 	exports.Map = root_1.root.Map || (function () { return MapPolyfill_1.MapPolyfill; })();
 	//# sourceMappingURL=Map.js.map
@@ -39711,7 +39719,7 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(22);
+	var root_1 = __webpack_require__(23);
 	var Object = root_1.root.Object;
 	if (typeof Object.assign != 'function') {
 	    (function () {

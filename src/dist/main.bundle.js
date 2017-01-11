@@ -26204,7 +26204,7 @@ webpackJsonp([1],[
 	}());
 	AppModule = __decorate([
 	    core_1.NgModule({
-	        declarations: [app_component_1.AppComponent, ui_1.Home, ui_1.ClientDetails, containers_1.Main, containers_1.Auth, containers_1.UserProfile, containers_1.ScopeDisplay, containers_1.ClientsDisplay, services_1.KeysPipe, services_1.ValuesPipe, services_1.QuantityParsePipe, services_1.ClientParsePipe, services_1.SearchFilterPipe],
+	        declarations: [ui_1.Test, app_component_1.AppComponent, ui_1.Home, ui_1.ClientDetails, containers_1.Main, containers_1.Auth, containers_1.UserProfile, containers_1.ScopeDisplay, containers_1.ClientsDisplay, services_1.KeysPipe, services_1.ValuesPipe, services_1.QuantityParsePipe, services_1.ClientParsePipe, services_1.SearchFilterPipe],
 	        imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpModule, router_1.RouterModule.forRoot(app_routes_1.rootRouterConfig), ng2_dragula_1.DragulaModule, forms_1.ReactiveFormsModule],
 	        providers: [services_1.ApiService, services_1.MyClients, services_1.ClientsService, services_1.HubSpotAPIService].concat(index_1.providers, [{ provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy }]),
 	        bootstrap: [app_component_1.AppComponent]

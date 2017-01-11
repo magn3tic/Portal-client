@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { Home, ClientDetails, Test } from './ui';
+import { Home, ClientDetails, Test, PageNotFound } from './ui';
 import { Main, Auth, UserProfile, ScopeDisplay, ClientsDisplay } from './containers';
 import { AuthService, IsSuper, ClientsService } from './services';
 
@@ -34,6 +34,6 @@ export const rootRouterConfig: Routes = [
   },
   { path: 'auth', component: Auth },
   { path: 'test', component: Test },
-  { path: '**', redirectTo: 'home' }
+  { path: '**', component: PageNotFound }
 ];
 

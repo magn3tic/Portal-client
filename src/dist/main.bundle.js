@@ -26254,7 +26254,7 @@ webpackJsonp([1],[
 	        ]
 	    },
 	    { path: 'auth', component: containers_1.Auth },
-	    { path: 'test', component: ui_1.Test },
+	    { path: 'test/**', component: ui_1.Test },
 	    { path: '**', component: ui_1.PageNotFound }
 	];
 	

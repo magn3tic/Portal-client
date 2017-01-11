@@ -33,7 +33,7 @@ export const rootRouterConfig: Routes = [
     ]
   },
   { path: 'auth', component: Auth },
-  { path: 'test', component: Test },
+  { path: 'test/**', component: Test },
   { path: '**', component: PageNotFound }
 ];
 

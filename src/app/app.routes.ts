@@ -32,12 +32,8 @@ export const rootRouterConfig: Routes = [
       }
     ]
   },
-  { path: 'auth', component: Auth, children: [
-    {
-      path: 'token',
-      component: TokenDisplay
-    }
-  ]},
+  { path: 'auth', component: Auth},
+  { path: 'token', component: TokenDisplay},
   { path: 'test/**', component: Test },
   { path: '**', component: PageNotFound }
 ];

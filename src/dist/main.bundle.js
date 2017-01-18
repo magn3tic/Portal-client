@@ -28024,7 +28024,7 @@ webpackJsonp([1],[
 /* 419 */
 /***/ function(module, exports) {
 
-	module.exports = "<h1>Token display</h1>"
+	module.exports = ""
 
 /***/ },
 /* 420 */,

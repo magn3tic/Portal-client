@@ -26282,7 +26282,7 @@ webpackJsonp([1],[
 	        this.authService = authService;
 	        this.activatedRoute = activatedRoute;
 	        // This initiates a Oauth 2.0 connection via passport.js
-	        this.hubAuthAPI = 'https://3af9c93a.ngrok.io'; // Hide this in config vars
+	        this.hubAuthAPI = 'https://3af9c93a.ngrok.io/hubAuth'; // Hide this in config vars
 	        this.route = 'none yet';
 	    }
 	    Auth.prototype.authenticate = function () {

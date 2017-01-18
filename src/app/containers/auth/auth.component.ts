@@ -13,7 +13,8 @@ import {Router, ActivatedRoute} from '@angular/router';
 })
 
 export class Auth {
-  hubAuthAPI: string = 'https://cf4fc706.ngrok.io/hubAuth';
+  // This initiates a Oauth 2.0 connection via passport.js
+  hubAuthAPI: string = 'https://3af9c93a.ngrok.io'; // Hide this in config vars
   route: any = 'none yet';
 
   constructor(private router: Router, private authService: AuthService, private activatedRoute: ActivatedRoute) {}

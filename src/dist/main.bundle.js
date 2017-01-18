@@ -26257,7 +26257,7 @@ webpackJsonp([1],[
 	    },
 	    { path: 'auth', component: containers_1.Auth, children: [
 	            {
-	                path: '/auth/token',
+	                path: 'token',
 	                component: ui_1.TokenDisplay
 	            }
 	        ] },

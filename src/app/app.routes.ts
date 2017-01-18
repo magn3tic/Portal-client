@@ -34,7 +34,7 @@ export const rootRouterConfig: Routes = [
   },
   { path: 'auth', component: Auth, children: [
     {
-      path: '/auth/token',
+      path: 'token',
       component: TokenDisplay
     }
   ]},

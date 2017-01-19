@@ -57,8 +57,8 @@ export class AuthService implements CanActivate {
         this.store.purge();
         this.clearJWT()
         .then(status => {
-            console.log('status is: ', status);
-            if(status === 'logout successful') {
+            if(status === 202) {
+                console.log('status is: ', status);
               this.router.navigate(['', 'auth'])
             } else {
               console.error('status of clearJWT: ', status);

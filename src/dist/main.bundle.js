@@ -18793,8 +18793,8 @@ webpackJsonp([1],[
 	        this.store.purge();
 	        this.clearJWT()
 	            .then(function (status) {
-	            console.log('status is: ', status);
-	            if (status === 'logout successful') {
+	            if (status === 202) {
+	                console.log('status is: ', status);
 	                _this.router.navigate(['', 'auth']);
 	            }
 	            else {

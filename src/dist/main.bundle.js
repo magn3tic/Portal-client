@@ -18758,8 +18758,9 @@ webpackJsonp([1],[
 	        this.HUBTOKEN = null;
 	        this.setJwt(window.localStorage.getItem(this.JWTKEY));
 	    }
-	    AuthService.prototype.setJwt = function (jwt) {
-	        window.localStorage.setItem(this.JWTKEY, jwt);
+	    AuthService.prototype.setJwt = function (jwt, key) {
+	        var jwt_key = (key) ? key : this.JWTKEY;
+	        window.localStorage.setItem(jwt_key, jwt);
 	        this.apiService.setHeaders({ Authorization: "Bearer " + jwt });
 	    };
 	    // Set relevent user information to localStorage to submit author credentials with new scopes
@@ -27466,7 +27467,7 @@ webpackJsonp([1],[
 	    TokenDisplay.prototype.getToken = function () {
 	        var _this = this;
 	        this.apiService.get(this.HUBTOKENURL)
-	            .map(function (token) { return _this.authService.setJwt(token.accessToken); });
+	            .map(function (token) { return _this.authService.setJwt(token.accessToken, _this.JWTKEY); });
 	        // .map(token => this.storeHelper.add('user-acccess-jwt', token['accessToken']))
 	        // .map(token => this.storeHelper.add('user-refresh-jwt', token['refreshToken']));
 	        // .map(token => this.storeHelper.update('user-refresh-jwt', token.refreshToken));

@@ -25,8 +25,9 @@ export class AuthService implements CanActivate {
         this.setJwt(window.localStorage.getItem(this.JWTKEY));
     }
 
-    setJwt(jwt: string) {
-        window.localStorage.setItem(this.JWTKEY, jwt);
+    setJwt(jwt: string, key?: string) {
+        let jwt_key = (key) ? key : this.JWTKEY;
+        window.localStorage.setItem(jwt_key, jwt);
         this.apiService.setHeaders({ Authorization: `Bearer ${jwt}` });
     }
 

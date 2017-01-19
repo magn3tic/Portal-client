@@ -18785,22 +18785,6 @@ webpackJsonp([1],[
 	            }
 	        });
 	        return result;
-	        // return this.apiService.post(`/${path}`, creds)
-	        //     .do(res => this.setJwt(res.token))
-	        //     .do(res => this.storeHelper.update('user', res.data))
-	        //     .map(res => res.data)
-	        //     .do(
-	        //     (data) => swal(
-	        //         'Sweet!',
-	        //         'Thanks for being a part of #MAGFam ' + '<b>' +this.store.getState().user['email'] + '</b>',
-	        //         'success'
-	        //     ),
-	        //     (err) => swal(
-	        //         'Oops...',
-	        //         err.statusText,
-	        //         'error'
-	        //     )
-	        //     );
 	    };
 	    AuthService.prototype.signout = function () {
 	        window.localStorage.removeItem(this.JWTKEY);
@@ -26304,10 +26288,9 @@ webpackJsonp([1],[
 	        this.route = 'none yet';
 	    }
 	    Auth.prototype.authenticate = function () {
-	        var _this = this;
 	        // window.localStorage.getItem((this.JWT_KEY) === 'null' || 'undefined' ? this.endpoint = this.localAuth : this.endpoint = this.tokenAuth;
 	        this.authService.authenticate()
-	            .then(function () { return _this.router.navigate(['']); })
+	            .then(function (token) { return console.log('authservice.authenticate promise returned: ', token); })
 	            .catch(function (err) { return console.log('auth promise rejection: ', err); });
 	    };
 	    return Auth;

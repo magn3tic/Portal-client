@@ -38,34 +38,18 @@ export class AuthService implements CanActivate {
     }
 
     authenticate() {
-    let result = new Promise((resolve, reject) => {
-        if(window.localStorage.getItem(this.JWTKEY)) {
-          resolve(window.localStorage.getItem(this.JWTKEY))
-        } else if(window.localStorage.getItem(this.JWTKEY).length < 1) {
-          this.http.get(this.HUBAUTHAPI)
-          .map((res) => this.HUBTOKEN = res['access_token'])
-          .do(token => window.localStorage.setItem(this.JWTKEY, this.HUBTOKEN));
-        } else {
-            reject('auth service authenticate rejection. No hubspot token provided in auth.service.ts authenticate()')
-        }
-    }); 
-    return result;
-        // return this.apiService.post(`/${path}`, creds)
-        //     .do(res => this.setJwt(res.token))
-        //     .do(res => this.storeHelper.update('user', res.data))
-        //     .map(res => res.data)
-        //     .do(
-        //     (data) => swal(
-        //         'Sweet!',
-        //         'Thanks for being a part of #MAGFam ' + '<b>' +this.store.getState().user['email'] + '</b>',
-        //         'success'
-        //     ),
-        //     (err) => swal(
-        //         'Oops...',
-        //         err.statusText,
-        //         'error'
-        //     )
-        //     );
+        let result = new Promise((resolve, reject) => {
+            if (window.localStorage.getItem(this.JWTKEY)) {
+                resolve(window.localStorage.getItem(this.JWTKEY))
+            } else if (window.localStorage.getItem(this.JWTKEY).length < 1) {
+                this.http.get(this.HUBAUTHAPI)
+                    .map((res) => this.HUBTOKEN = res['access_token'])
+                    .do(token => window.localStorage.setItem(this.JWTKEY, this.HUBTOKEN));
+            } else {
+                reject('auth service authenticate rejection. No hubspot token provided in auth.service.ts authenticate()')
+            }
+        });
+        return result;
     }
 
     signout() {

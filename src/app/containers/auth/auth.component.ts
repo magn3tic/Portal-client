@@ -25,7 +25,7 @@ export class Auth {
   authenticate() {
     // window.localStorage.getItem((this.JWT_KEY) === 'null' || 'undefined' ? this.endpoint = this.localAuth : this.endpoint = this.tokenAuth;
     this.authService.authenticate()
-    .then(()=>this.router.navigate(['']))
+    .then(token => console.log('authservice.authenticate promise returned: ', token))
     .catch(err => console.log('auth promise rejection: ', err))
   }
 }; 

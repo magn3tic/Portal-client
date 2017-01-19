@@ -41,7 +41,7 @@ export class TokenDisplay implements OnInit {
             // _.forEach(localTokens, (token) => {
             //   console.log('local tokens: ', token);
             // })
-            this.storeHelper.add('USERREFJWT', localToken);
+            this.storeHelper.update('user'['refToken'], localToken[0]);
 
           })
           .catch(err => console.error(err))

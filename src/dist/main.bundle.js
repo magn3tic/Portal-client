@@ -26301,9 +26301,10 @@ webpackJsonp([1],[
 	        this.route = 'none yet';
 	    }
 	    Auth.prototype.authenticate = function () {
+	        var _this = this;
 	        // window.localStorage.getItem((this.JWT_KEY) === 'null' || 'undefined' ? this.endpoint = this.localAuth : this.endpoint = this.tokenAuth;
-	        this.authService.authenticate();
-	        // .then(()=>this.router.navigate(['']))
+	        this.authService.authenticate()
+	            .then(function () { return _this.router.navigate(['']); });
 	    };
 	    return Auth;
 	}());

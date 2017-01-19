@@ -27505,9 +27505,10 @@ webpackJsonp([1],[
 	            _this.authService.setJwt(token, _this.JWTKEY)
 	                .then(function (localTokens) {
 	                // Will want to loop through the localstorage tokens
+	                console.log('localTokens: ', localTokens);
 	                _.forEach(localTokens, function (token, key) {
 	                    console.log('local tokens: ', token);
-	                    _this.storeHelper.update('user', { key: token });
+	                    _this.storeHelper.update('user', { 'key': token });
 	                });
 	            })
 	                .catch(function (err) { return console.error(err); });

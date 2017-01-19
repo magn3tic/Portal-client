@@ -36,8 +36,8 @@ export class TokenDisplay implements OnInit{
   getToken() {
     this.apiService.get(this.HUBTOKENURL)
     .map(token => this.authService.setJwt(token.accessToken))
-    .map(token => this.storeHelper.update('user-acccess-jwt', token['accessToken']))
-    .map(token => this.storeHelper.update('user-refresh-jwt', token['refreshToken']));
+    .map(token => this.storeHelper.add('user-acccess-jwt', token['accessToken']))
+    .map(token => this.storeHelper.add('user-refresh-jwt', token['refreshToken']));
     // .map(token => this.storeHelper.update('user-refresh-jwt', token.refreshToken));
   }
 

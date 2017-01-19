@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Http, Response} from '@angular/http';
+import {Http} from '@angular/http';
 import {ActivatedRoute} from '@angular/router';
 import {ApiService} from '../../services';
 
@@ -16,8 +16,7 @@ export class TokenDisplay implements OnInit{
   constructor(
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
-    private http: Http,
-    private response: Response
+    private http: Http
     ) {
       
     }

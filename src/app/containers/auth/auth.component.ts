@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {AuthService} from '../../services';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Router} from '@angular/router';
 
 declare var CONFIG: any;
 
@@ -16,10 +16,9 @@ declare var CONFIG: any;
 
 export class Auth {
   // This initiates a Oauth 2.0 connection via passport.js
-  hubAuthAPI: string = CONFIG.HUBAUTHAPI; // Hide this in config vars
-  route: any = 'none yet';
+  hubAuthAPI: string = CONFIG.hubspot.HUBAUTHAPI; // Hide this in config vars
 
-  constructor(private router: Router, private authService: AuthService, private activatedRoute: ActivatedRoute) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   
   authenticate() {

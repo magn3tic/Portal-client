@@ -18766,7 +18766,7 @@ webpackJsonp([1],[
 	            window.localStorage.setItem(jwt_key, jwt);
 	            if (window.localStorage.getItem(jwt_key)) {
 	                _this.apiService.setHeaders({ Authorization: "Bearer " + jwt });
-	                resolve(JSON.parse(window.localStorage.getItem(jwt_key)));
+	                resolve(window.localStorage.getItem(jwt_key));
 	            }
 	            else {
 	                reject('no jwt_key in localStorage');
@@ -27502,6 +27502,7 @@ webpackJsonp([1],[
 	        var _this = this;
 	        this.apiService.get(this.HUBTOKENURL)
 	            .subscribe(function (token) {
+	            console.log('in getToken, token: ', token);
 	            _this.authService.setJwt(token, _this.JWTKEY)
 	                .then(function (localTokens) {
 	                // Will want to loop through the localstorage tokens

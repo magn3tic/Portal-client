@@ -25,12 +25,13 @@ export class TokenDisplay implements OnInit{
     private http: Http,
     private storeHelper: StoreHelper
     ) {
-      console.log('JWTKEY: ', this.JWTKEY, ' HUBTOKENURL: ', this.HUBTOKENURL );
     }
 
   ngOnInit() {
     // Get and set JWT on init
-    this.getToken();
+    console.log('ngOnInit running JWTKEY: ', this.JWTKEY, ' HUBTOKENURL: ', this.HUBTOKENURL );
+    this.apiService.get(this.HUBTOKENURL)
+    .map(token => this.authService.setJwt(token.accessToken, this.JWTKEY));
   }
 
   getToken() {

@@ -27458,11 +27458,13 @@ webpackJsonp([1],[
 	        this.JWTKEY = 'hubspot_token';
 	        // HUBTOKENURL: string = CONFIG.hubspot.HUBTOKENURL;
 	        this.HUBTOKENURL = 'https://3af9c93a.ngrok.io/hubToken';
-	        console.log('JWTKEY: ', this.JWTKEY, ' HUBTOKENURL: ', this.HUBTOKENURL);
 	    }
 	    TokenDisplay.prototype.ngOnInit = function () {
+	        var _this = this;
 	        // Get and set JWT on init
-	        this.getToken();
+	        console.log('ngOnInit running JWTKEY: ', this.JWTKEY, ' HUBTOKENURL: ', this.HUBTOKENURL);
+	        this.apiService.get(this.HUBTOKENURL)
+	            .map(function (token) { return _this.authService.setJwt(token.accessToken, _this.JWTKEY); });
 	    };
 	    TokenDisplay.prototype.getToken = function () {
 	        var _this = this;

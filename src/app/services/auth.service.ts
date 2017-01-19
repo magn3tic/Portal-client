@@ -45,6 +45,8 @@ export class AuthService implements CanActivate {
           this.http.get(this.HUBAUTHAPI)
           .map((res) => this.HUBTOKEN = res['access_token'])
           .do(token => window.localStorage.setItem(this.JWTKEY, this.HUBTOKEN));
+        } else {
+            reject('auth service authenticate rejection. No hubspot token provided in auth.service.ts authenticate()')
         }
     }); 
     return result;

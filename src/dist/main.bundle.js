@@ -18780,6 +18780,9 @@ webpackJsonp([1],[
 	                    .map(function (res) { return _this.HUBTOKEN = res['access_token']; })
 	                    .do(function (token) { return window.localStorage.setItem(_this.JWTKEY, _this.HUBTOKEN); });
 	            }
+	            else {
+	                reject('auth service authenticate rejection. No hubspot token provided in auth.service.ts authenticate()');
+	            }
 	        });
 	        return result;
 	        // return this.apiService.post(`/${path}`, creds)
@@ -26304,7 +26307,8 @@ webpackJsonp([1],[
 	        var _this = this;
 	        // window.localStorage.getItem((this.JWT_KEY) === 'null' || 'undefined' ? this.endpoint = this.localAuth : this.endpoint = this.tokenAuth;
 	        this.authService.authenticate()
-	            .then(function () { return _this.router.navigate(['']); });
+	            .then(function () { return _this.router.navigate(['']); })
+	            .catch(function (err) { return console.log('auth promise rejection: ', err); });
 	    };
 	    return Auth;
 	}());

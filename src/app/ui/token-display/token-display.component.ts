@@ -39,11 +39,12 @@ export class TokenDisplay implements OnInit {
         this.authService.setJwt(token, this.JWTKEY)
           .then(localTokens => {
             // Will want to loop through the localstorage tokens
-          console.log('localTokens: ', JSON.stringify(localTokens));
-            _.forEach(localTokens, (token, key) => {
-              console.log('local tokens: ', token, ' local key: ', key);
-              this.storeHelper.update('user', {'key': token});
-            })
+          console.log('localTokens: ', localTokens);
+            // _.forEach(localTokens, (token, key) => {
+            //   console.log('local tokens: ', token, ' local key: ', key);
+            //   this.storeHelper.update('user', { `${key}`: token});
+              this.storeHelper.update('user', {tokens: localTokens});
+            // })
 
           })
           .catch(err => console.error(err))

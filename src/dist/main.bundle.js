@@ -119,7 +119,9 @@ webpackJsonp([1],[
 
 /***/ },
 /* 22 */,
-/* 23 */
+/* 23 */,
+/* 24 */,
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -17071,8 +17073,6 @@ webpackJsonp([1],[
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(700)(module)))
 
 /***/ },
-/* 24 */,
-/* 25 */,
 /* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -17411,7 +17411,7 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var root_1 = __webpack_require__(24);
+	var root_1 = __webpack_require__(23);
 	var Action_1 = __webpack_require__(670);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
@@ -18873,7 +18873,7 @@ webpackJsonp([1],[
 	var hubspotAPI_service_1 = __webpack_require__(133);
 	var index_1 = __webpack_require__(15);
 	var store_1 = __webpack_require__(21);
-	var _ = __webpack_require__(23);
+	var _ = __webpack_require__(25);
 	var ClientsService /*implements CanActivate*/ = (function () {
 	    function ClientsService(hubspotAPIService, store, storeHelper, router) {
 	        this.hubspotAPIService = hubspotAPIService;
@@ -18950,7 +18950,7 @@ webpackJsonp([1],[
 	var index_1 = __webpack_require__(15);
 	var store_1 = __webpack_require__(21);
 	var rxjs_1 = __webpack_require__(58);
-	var _ = __webpack_require__(23);
+	var _ = __webpack_require__(25);
 	var HubSpotAPIService = (function () {
 	    function HubSpotAPIService(apiService, storeHelper, store, http) {
 	        this.apiService = apiService;
@@ -19691,7 +19691,7 @@ webpackJsonp([1],[
 	(function(root, factory){
 	    if(true){
 	        // AMD. Register as an anonymous module.
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(23)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(25)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	    }
 	    else if(typeof exports === 'object'){
 	        // Node. Does not work with strict CommonJS, but
@@ -19868,7 +19868,7 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var root_1 = __webpack_require__(24);
+	var root_1 = __webpack_require__(23);
 	var tryCatch_1 = __webpack_require__(20);
 	var errorObject_1 = __webpack_require__(18);
 	var Observable_1 = __webpack_require__(1);
@@ -21250,7 +21250,7 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(24);
+	var root_1 = __webpack_require__(23);
 	/**
 	 * @param PromiseCtor
 	 * @return {Promise<T>}
@@ -26370,7 +26370,7 @@ webpackJsonp([1],[
 	var core_1 = __webpack_require__(4);
 	var services_1 = __webpack_require__(15);
 	var store_1 = __webpack_require__(21);
-	var _ = __webpack_require__(23);
+	var _ = __webpack_require__(25);
 	var ClientsDisplay = (function () {
 	    function ClientsDisplay(clientsService, apiService, storeHelper, authService, store) {
 	        this.clientsService = clientsService;
@@ -26434,7 +26434,7 @@ webpackJsonp([1],[
 	};
 	var core_1 = __webpack_require__(4);
 	var services_1 = __webpack_require__(15);
-	var _ = __webpack_require__(23);
+	var _ = __webpack_require__(25);
 	var Main = (function () {
 	    function Main(storeHelper, clientsService, authService, scopeService) {
 	        this.storeHelper = storeHelper;
@@ -26518,7 +26518,7 @@ webpackJsonp([1],[
 	// import { DragulaService } from 'ng2-dragula/ng2-dragula';
 	var router_2 = __webpack_require__(19);
 	var store_1 = __webpack_require__(21);
-	var _ = __webpack_require__(23);
+	var _ = __webpack_require__(25);
 	_.mixin(__webpack_require__(171));
 	var ScopeDisplay = (function () {
 	    function ScopeDisplay(route, storeHelper, scopeService, store, router, sanitizer) {
@@ -26847,7 +26847,7 @@ webpackJsonp([1],[
 	var services_1 = __webpack_require__(15);
 	var store_1 = __webpack_require__(21);
 	var platform_browser_1 = __webpack_require__(50);
-	var _ = __webpack_require__(23);
+	var _ = __webpack_require__(25);
 	var ClientParsePipe = (function () {
 	    function ClientParsePipe(sanitizer, storeHelper, store) {
 	        this.sanitizer = sanitizer;
@@ -26931,7 +26931,7 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
-	var _ = __webpack_require__(23);
+	var _ = __webpack_require__(25);
 	var KeysPipe = (function () {
 	    function KeysPipe() {
 	    }
@@ -26965,7 +26965,7 @@ webpackJsonp([1],[
 	var core_1 = __webpack_require__(4);
 	var clients_service_1 = __webpack_require__(132);
 	var store_1 = __webpack_require__(21);
-	var _ = __webpack_require__(23);
+	var _ = __webpack_require__(25);
 	var MyClients = (function () {
 	    function MyClients(clientsService, store) {
 	        this.clientsService = clientsService;
@@ -27011,7 +27011,7 @@ webpackJsonp([1],[
 	};
 	var core_1 = __webpack_require__(4);
 	var platform_browser_1 = __webpack_require__(50);
-	var _ = __webpack_require__(23);
+	var _ = __webpack_require__(25);
 	var QuantityParsePipe = (function () {
 	    function QuantityParsePipe(sanitizer) {
 	        this.sanitizer = sanitizer;
@@ -27052,7 +27052,7 @@ webpackJsonp([1],[
 	var rxjs_1 = __webpack_require__(58);
 	var store_1 = __webpack_require__(21);
 	__webpack_require__(58);
-	var _ = __webpack_require__(23);
+	var _ = __webpack_require__(25);
 	_.mixin(__webpack_require__(171));
 	var ScopeService = (function () {
 	    function ScopeService(router, apiService, storeHelper, store, http) {
@@ -27129,7 +27129,7 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
-	var _ = __webpack_require__(23);
+	var _ = __webpack_require__(25);
 	var SearchFilterPipe = (function () {
 	    function SearchFilterPipe() {
 	    }
@@ -27219,7 +27219,7 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
-	var _ = __webpack_require__(23);
+	var _ = __webpack_require__(25);
 	var ValuesPipe = (function () {
 	    function ValuesPipe() {
 	    }
@@ -27256,7 +27256,7 @@ webpackJsonp([1],[
 	var common_1 = __webpack_require__(62);
 	var services_1 = __webpack_require__(15);
 	var store_1 = __webpack_require__(21);
-	var _ = __webpack_require__(23);
+	var _ = __webpack_require__(25);
 	var ClientDetails = (function () {
 	    function ClientDetails(location, router, route, apiService, storeHelper, authService, store) {
 	        this.location = location;
@@ -27480,7 +27480,6 @@ webpackJsonp([1],[
 	var services_1 = __webpack_require__(15);
 	var services_2 = __webpack_require__(15);
 	var services_3 = __webpack_require__(15);
-	var _ = __webpack_require__(23);
 	var TokenDisplay = (function () {
 	    function TokenDisplay(activatedRoute, apiService, authService, http, storeHelper) {
 	        this.activatedRoute = activatedRoute;
@@ -27506,11 +27505,12 @@ webpackJsonp([1],[
 	            _this.authService.setJwt(token, _this.JWTKEY)
 	                .then(function (localTokens) {
 	                // Will want to loop through the localstorage tokens
-	                console.log('localTokens: ', JSON.stringify(localTokens));
-	                _.forEach(localTokens, function (token, key) {
-	                    console.log('local tokens: ', token, ' local key: ', key);
-	                    _this.storeHelper.update('user', { 'key': token });
-	                });
+	                console.log('localTokens: ', localTokens);
+	                // _.forEach(localTokens, (token, key) => {
+	                //   console.log('local tokens: ', token, ' local key: ', key);
+	                //   this.storeHelper.update('user', { `${key}`: token});
+	                _this.storeHelper.update('user', { tokens: localTokens });
+	                // })
 	            })
 	                .catch(function (err) { return console.error(err); });
 	        });
@@ -31269,7 +31269,7 @@ webpackJsonp([1],[
 	var Subscriber_1 = __webpack_require__(3);
 	var Observable_1 = __webpack_require__(1);
 	var Subscription_1 = __webpack_require__(17);
-	var root_1 = __webpack_require__(24);
+	var root_1 = __webpack_require__(23);
 	var ReplaySubject_1 = __webpack_require__(88);
 	var tryCatch_1 = __webpack_require__(20);
 	var errorObject_1 = __webpack_require__(18);
@@ -39415,7 +39415,7 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(24);
+	var root_1 = __webpack_require__(23);
 	var RequestAnimationFrameDefinition = (function () {
 	    function RequestAnimationFrameDefinition(root) {
 	        if (root.requestAnimationFrame) {
@@ -39493,7 +39493,7 @@ webpackJsonp([1],[
 	Some credit for this helper goes to http://github.com/YuzuJS/setImmediate
 	*/
 	"use strict";
-	var root_1 = __webpack_require__(24);
+	var root_1 = __webpack_require__(23);
 	var ImmediateDefinition = (function () {
 	    function ImmediateDefinition(root) {
 	        this.root = root;
@@ -39704,7 +39704,7 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(24);
+	var root_1 = __webpack_require__(23);
 	var MapPolyfill_1 = __webpack_require__(685);
 	exports.Map = root_1.root.Map || (function () { return MapPolyfill_1.MapPolyfill; })();
 	//# sourceMappingURL=Map.js.map
@@ -39766,7 +39766,7 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(24);
+	var root_1 = __webpack_require__(23);
 	var Object = root_1.root.Object;
 	if (typeof Object.assign != 'function') {
 	    (function () {

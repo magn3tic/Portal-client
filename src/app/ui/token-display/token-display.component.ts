@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Http} from '@angular/http';
 import {ActivatedRoute} from '@angular/router';
 import {ApiService} from '../../services';
+import {AuthService} from '../../services';
 
 declare var CONFIG: any;
 
@@ -18,6 +19,7 @@ export class TokenDisplay implements OnInit{
   constructor(
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
+    private authService: AuthService,
     private http: Http
     ) {
       console.log('JWTKEY: ', this.JWTKEY, ' HUBTOKENURL: ', this.HUBTOKENURL );
@@ -28,14 +30,9 @@ export class TokenDisplay implements OnInit{
     this.getToken();
   }
 
-  setJwt(jwt: string) {
-        window.localStorage.setItem(this.JWTKEY, jwt);
-        this.apiService.setHeaders({ Authorization: `Bearer ${jwt}` });
-    }
-
   getToken() {
     this.apiService.get(this.HUBTOKENURL)
-    .do(token => this.setJwt(token));
+    .do(token => this.authService.setJwt(token));
   }
 
 };

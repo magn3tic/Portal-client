@@ -252,7 +252,7 @@
 	  , toPrimitive    = __webpack_require__(46)
 	  , dP             = Object.defineProperty;
 
-	exports.f = __webpack_require__(15) ? Object.defineProperty : function defineProperty(O, P, Attributes){
+	exports.f = __webpack_require__(16) ? Object.defineProperty : function defineProperty(O, P, Attributes){
 	  anObject(O);
 	  P = toPrimitive(P, true);
 	  anObject(Attributes);
@@ -265,7 +265,8 @@
 	};
 
 /***/ },
-/* 15 */
+/* 15 */,
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Thank's IE8 for his funny defineProperty
@@ -274,7 +275,6 @@
 	});
 
 /***/ },
-/* 16 */,
 /* 17 */,
 /* 18 */,
 /* 19 */,
@@ -369,7 +369,7 @@
 
 	var dP         = __webpack_require__(14)
 	  , createDesc = __webpack_require__(44);
-	module.exports = __webpack_require__(15) ? function(object, key, value){
+	module.exports = __webpack_require__(16) ? function(object, key, value){
 	  return dP.f(object, key, createDesc(1, value));
 	} : function(object, key, value){
 	  object[key] = value;
@@ -570,7 +570,7 @@
 	  , IE8_DOM_DEFINE = __webpack_require__(144)
 	  , gOPD           = Object.getOwnPropertyDescriptor;
 
-	exports.f = __webpack_require__(15) ? gOPD : function getOwnPropertyDescriptor(O, P){
+	exports.f = __webpack_require__(16) ? gOPD : function getOwnPropertyDescriptor(O, P){
 	  O = toIObject(O);
 	  P = toPrimitive(P, true);
 	  if(IE8_DOM_DEFINE)try {
@@ -584,7 +584,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	if(__webpack_require__(15)){
+	if(__webpack_require__(16)){
 	  var LIBRARY             = __webpack_require__(66)
 	    , global              = __webpack_require__(10)
 	    , fails               = __webpack_require__(8)
@@ -1383,7 +1383,7 @@
 	'use strict';
 	var global      = __webpack_require__(10)
 	  , dP          = __webpack_require__(14)
-	  , DESCRIPTORS = __webpack_require__(15)
+	  , DESCRIPTORS = __webpack_require__(16)
 	  , SPECIES     = __webpack_require__(12)('species');
 
 	module.exports = function(KEY){
@@ -2082,7 +2082,7 @@
 
 	'use strict';
 	var global         = __webpack_require__(10)
-	  , DESCRIPTORS    = __webpack_require__(15)
+	  , DESCRIPTORS    = __webpack_require__(16)
 	  , LIBRARY        = __webpack_require__(66)
 	  , $typed         = __webpack_require__(83)
 	  , hide           = __webpack_require__(29)
@@ -2531,7 +2531,7 @@
 	  , $iterDefine = __webpack_require__(105)
 	  , step        = __webpack_require__(148)
 	  , setSpecies  = __webpack_require__(68)
-	  , DESCRIPTORS = __webpack_require__(15)
+	  , DESCRIPTORS = __webpack_require__(16)
 	  , fastKey     = __webpack_require__(43).fastKey
 	  , SIZE        = DESCRIPTORS ? '_s' : 'size';
 
@@ -2786,7 +2786,7 @@
 /* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = !__webpack_require__(15) && !__webpack_require__(8)(function(){
+	module.exports = !__webpack_require__(16) && !__webpack_require__(8)(function(){
 	  return Object.defineProperty(__webpack_require__(142)('div'), 'a', {get: function(){ return 7; }}).a != 7;
 	});
 
@@ -2899,7 +2899,7 @@
 	  , anObject = __webpack_require__(7)
 	  , getKeys  = __webpack_require__(60);
 
-	module.exports = __webpack_require__(15) ? Object.defineProperties : function defineProperties(O, Properties){
+	module.exports = __webpack_require__(16) ? Object.defineProperties : function defineProperties(O, Properties){
 	  anObject(O);
 	  var keys   = getKeys(Properties)
 	    , length = keys.length
@@ -3077,7 +3077,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	// 21.2.5.3 get RegExp.prototype.flags()
-	if(__webpack_require__(15) && /./g.flags != 'g')__webpack_require__(14).f(RegExp.prototype, 'flags', {
+	if(__webpack_require__(16) && /./g.flags != 'g')__webpack_require__(14).f(RegExp.prototype, 'flags', {
 	  configurable: true,
 	  get: __webpack_require__(100)
 	});
@@ -3229,7 +3229,7 @@
 	// ECMAScript 6 symbols shim
 	var global         = __webpack_require__(10)
 	  , has            = __webpack_require__(24)
-	  , DESCRIPTORS    = __webpack_require__(15)
+	  , DESCRIPTORS    = __webpack_require__(16)
 	  , $export        = __webpack_require__(2)
 	  , redefine       = __webpack_require__(27)
 	  , META           = __webpack_require__(43).KEY
@@ -4513,7 +4513,7 @@
 	};
 
 	// 19.2.4.2 name
-	NAME in FProto || __webpack_require__(15) && dP(FProto, NAME, {
+	NAME in FProto || __webpack_require__(16) && dP(FProto, NAME, {
 	  configurable: true,
 	  get: function(){
 	    try {
@@ -4866,7 +4866,7 @@
 	      && (BROKEN_COF ? fails(function(){ proto.valueOf.call(that); }) : cof(that) != NUMBER)
 	        ? inheritIfRequired(new Base(toNumber(it)), that, $Number) : toNumber(it);
 	  };
-	  for(var keys = __webpack_require__(15) ? gOPN(Base) : (
+	  for(var keys = __webpack_require__(16) ? gOPN(Base) : (
 	    // ES3:
 	    'MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,' +
 	    // ES6 (in case, if modules with ES6 Number statics required before):
@@ -5142,7 +5142,7 @@
 
 	var $export = __webpack_require__(2);
 	// 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
-	$export($export.S + $export.F * !__webpack_require__(15), 'Object', {defineProperties: __webpack_require__(151)});
+	$export($export.S + $export.F * !__webpack_require__(16), 'Object', {defineProperties: __webpack_require__(151)});
 
 /***/ },
 /* 329 */
@@ -5150,7 +5150,7 @@
 
 	var $export = __webpack_require__(2);
 	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-	$export($export.S + $export.F * !__webpack_require__(15), 'Object', {defineProperty: __webpack_require__(14).f});
+	$export($export.S + $export.F * !__webpack_require__(16), 'Object', {defineProperty: __webpack_require__(14).f});
 
 /***/ },
 /* 330 */
@@ -5654,7 +5654,7 @@
 	  // "new" creates a new object, old webkit buggy here
 	  , CORRECT_NEW       = new $RegExp(re1) !== re1;
 
-	if(__webpack_require__(15) && (!CORRECT_NEW || __webpack_require__(8)(function(){
+	if(__webpack_require__(16) && (!CORRECT_NEW || __webpack_require__(8)(function(){
 	  re2[__webpack_require__(12)('match')] = false;
 	  // RegExp constructor can alter flags and IsRegExp works correct with @@match
 	  return $RegExp(re1) != re1 || $RegExp(re2) == re2 || $RegExp(re1, 'i') != '/a/i';
@@ -5692,7 +5692,7 @@
 	__webpack_require__(162);
 	var anObject    = __webpack_require__(7)
 	  , $flags      = __webpack_require__(100)
-	  , DESCRIPTORS = __webpack_require__(15)
+	  , DESCRIPTORS = __webpack_require__(16)
 	  , TO_STRING   = 'toString'
 	  , $toString   = /./[TO_STRING];
 

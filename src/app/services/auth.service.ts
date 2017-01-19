@@ -73,7 +73,7 @@ export class AuthService implements CanActivate {
 
     canActivate(): boolean {
         const isAuth = this.isAuthorized();
-        // console.log('isAuth: ', isAuth);
+        console.log('isAuth: ', isAuth);
 
         if (!isAuth) {
             this.router.navigate(['', 'auth'])

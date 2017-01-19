@@ -18807,7 +18807,7 @@ webpackJsonp([1],[
 	    };
 	    AuthService.prototype.canActivate = function () {
 	        var isAuth = this.isAuthorized();
-	        // console.log('isAuth: ', isAuth);
+	        console.log('isAuth: ', isAuth);
 	        if (!isAuth) {
 	            this.router.navigate(['', 'auth']);
 	        }
@@ -26241,7 +26241,7 @@ webpackJsonp([1],[
 	    {
 	        path: '',
 	        component: containers_1.Main,
-	        // canActivate: [AuthService],
+	        canActivate: [services_1.AuthService],
 	        children: [
 	            {
 	                path: 'home',

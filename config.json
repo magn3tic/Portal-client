@@ -7,8 +7,11 @@
     },
     "magneticProxy": "https://express-proxy-togppeylca.now.sh/hubAPI",
     "hubspot": {
+      "HUBAUTHAPI": "https://3af9c93a.ngrok.io/hubAuth",
+      "HUBTOKENURL": "https://3af9c93a.ngrok.io/hubToken",
       "APIURL": "https://api.hubapi.com/",
       "APIKEY": "hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92",
+      "JWTKEY": "hubspot_token",
       "endpoints": {
         "allContacts": "contacts/v1/lists/all/contacts/all/",
         "allDeals": "deals/v1/deal/paged/",

@@ -1,25 +1,31 @@
 import { Injectable } from '@angular/core';
+import { Http, Response } from '@angular/http';
 import { CanActivate, Router } from '@angular/router';
 import { ApiService, StoreHelper } from './index';
 import { Store } from '../store';
 import 'rxjs/Rx';
 
+declare var CONFIG: any;
 declare var swal: any;
 
 @Injectable()
 export class AuthService implements CanActivate {
-    JWT_KEY: string = 'magnetic_token';
+    JWTKEY: string = CONFIG.hubspot.JWTKEY;
+    HUBAUTHAPI: string = CONFIG.hubspot.HUBAUTHAPI;
+    HUBTOKEN: string = null;
     constructor(
         private router: Router,
         private apiService: ApiService,
         private storeHelper: StoreHelper,
-        private store: Store
+        private store: Store,
+        private http: Http,
+        private response: Response
     ) {
-        this.setJwt(window.localStorage.getItem(this.JWT_KEY));
+        this.setJwt(window.localStorage.getItem(this.JWTKEY));
     }
 
     setJwt(jwt: string) {
-        window.localStorage.setItem(this.JWT_KEY, jwt);
+        window.localStorage.setItem(this.JWTKEY, jwt);
         this.apiService.setHeaders({ Authorization: `Bearer ${jwt}` });
     }
 
@@ -33,7 +39,13 @@ export class AuthService implements CanActivate {
 
     authenticate() {
     let result = new Promise((resolve, reject) => {
-        resolve(true);
+        if(window.localStorage.getItem(this.JWTKEY)) {
+          resolve(window.localStorage.getItem(this.JWTKEY))
+        } else if(window.localStorage.getItem(this.JWTKEY).length < 1) {
+          this.http.get(this.HUBAUTHAPI)
+          .map((res) => this.HUBTOKEN = res['access_token'])
+          .do(token => window.localStorage.setItem(this.JWTKEY, this.HUBTOKEN));
+        }
     }); 
     return result;
         // return this.apiService.post(`/${path}`, creds)
@@ -55,13 +67,13 @@ export class AuthService implements CanActivate {
     }
 
     signout() {
-        window.localStorage.removeItem(this.JWT_KEY);
+        window.localStorage.removeItem(this.JWTKEY);
         this.store.purge();
         this.router.navigate(['', 'auth'])
     }
 
     isAuthorized(): boolean {
-        return (window.localStorage.getItem(this.JWT_KEY) == 'undefined' || window.localStorage.getItem(this.JWT_KEY) == 'null') ? false : true;
+        return (window.localStorage.getItem(this.JWTKEY) == 'undefined' || window.localStorage.getItem(this.JWTKEY) == 'null') ? false : true;
     }
 
     canActivate(): boolean {

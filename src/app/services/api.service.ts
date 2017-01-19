@@ -2,6 +2,7 @@ import { Http, Headers, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
 import {Store} from '../store';
 import { Observable } from 'rxjs';
+
 declare var CONFIG: any;
 
 @Injectable()

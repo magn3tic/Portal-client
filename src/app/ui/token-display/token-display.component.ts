@@ -1,5 +1,9 @@
 import {Component, OnInit} from '@angular/core';
+import {Http, Response} from '@angular/http';
 import {ActivatedRoute} from '@angular/router';
+import {ApiService} from '../../services';
+
+declare var CONFIG: any;
 
 @Component({
   selector: 'token-display',
@@ -7,12 +11,30 @@ import {ActivatedRoute} from '@angular/router';
   template: require('./token-display.component.html')
 })
 export class TokenDisplay implements OnInit{
-  route: any = 'none';
-
-  constructor(private activatedRoute: ActivatedRoute) {}
+  JWTKEY: string = CONFIG.hubspot.JWTKEY;
+  HUBTOKENURL: string = CONFIG.hubspot.HUBTOKENURL;
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private apiService: ApiService,
+    private http: Http,
+    private response: Response
+    ) {
+      
+    }
 
   ngOnInit() {
-    this.route = window.location;
+    // Get and set JWT on init
+    this.getToken();
+  }
+
+  setJwt(jwt: string) {
+        window.localStorage.setItem(this.JWTKEY, jwt);
+        this.apiService.setHeaders({ Authorization: `Bearer ${jwt}` });
+    }
+
+  getToken() {
+    this.apiService.get(this.HUBTOKENURL)
+    .do(token => this.setJwt(token));
   }
 
 };

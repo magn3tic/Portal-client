@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {AuthService} from '../../services';
 import {Router, ActivatedRoute} from '@angular/router';
 
+declare var CONFIG: any;
+
 @Component({
   selector: 'auth-container',
   styles: [`
@@ -14,7 +16,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 
 export class Auth {
   // This initiates a Oauth 2.0 connection via passport.js
-  hubAuthAPI: string = 'https://3af9c93a.ngrok.io/hubAuth'; // Hide this in config vars
+  hubAuthAPI: string = CONFIG.HUBAUTHAPI; // Hide this in config vars
   route: any = 'none yet';
 
   constructor(private router: Router, private authService: AuthService, private activatedRoute: ActivatedRoute) {}

@@ -18763,7 +18763,7 @@ webpackJsonp([1],[
 	        var jwt_key = (key) ? key : this.JWTKEY;
 	        return new Promise(function (resolve, reject) {
 	            window.localStorage.setItem(jwt_key, jwt);
-	            if (window.localStorage.getItem(jwt_key)['accessToken'].length > 1) {
+	            if (window.localStorage.getItem(jwt_key)) {
 	                _this.apiService.setHeaders({ Authorization: "Bearer " + jwt });
 	                resolve(window.localStorage.getItem(jwt_key));
 	            }

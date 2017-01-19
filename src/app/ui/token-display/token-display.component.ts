@@ -26,21 +26,21 @@ export class TokenDisplay implements OnInit{
     private storeHelper: StoreHelper
     ) {
       this.apiService.get(this.HUBTOKENURL)
-      .map(token => this.authService.setJwt(token.accessToken, this.JWTKEY));
+      .subscribe(token => this.authService.setJwt(token.accessToken, this.JWTKEY));
     }
 
   ngOnInit() {
     // Get and set JWT on init
     console.log('ngOnInit running JWTKEY: ', this.JWTKEY, ' HUBTOKENURL: ', this.HUBTOKENURL );
-    this.apiService.get(this.HUBTOKENURL)
-    .map(token => this.authService.setJwt(token.accessToken, this.JWTKEY));
+    // this.apiService.get(this.HUBTOKENURL)
+    // .subscribe(token => this.authService.setJwt(token.accessToken, this.JWTKEY));
   }
 
   getToken() {
     this.apiService.get(this.HUBTOKENURL)
-    .map(token => this.authService.setJwt(token.accessToken, this.JWTKEY));
-    // .map(token => this.storeHelper.add('user-acccess-jwt', token['accessToken']))
-    // .map(token => this.storeHelper.add('user-refresh-jwt', token['refreshToken']));
+    .subscribe(token => this.authService.setJwt(token.accessToken, this.JWTKEY))
+    // .do(token => this.storeHelper.add('user-acccess-jwt', token['accessToken']))
+    // .do(token => this.storeHelper.add('user-refresh-jwt', token['refreshToken']));
     // .map(token => this.storeHelper.update('user-refresh-jwt', token.refreshToken));
   }
 

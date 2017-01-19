@@ -27,8 +27,15 @@ export class AuthService implements CanActivate {
 
     setJwt(jwt: string, key?: string) {
         let jwt_key = (key) ? key : this.JWTKEY;
-        window.localStorage.setItem(jwt_key, jwt);
-        this.apiService.setHeaders({ Authorization: `Bearer ${jwt}` });
+        return new Promise((resolve, reject) => {
+          window.localStorage.setItem(jwt_key, jwt);
+          if(window.localStorage.getItem(jwt_key)['accessToken'].length > 1) {
+            this.apiService.setHeaders({ Authorization: `Bearer ${jwt}` });
+            resolve(window.localStorage.getItem(jwt_key))
+          } else {
+            reject('no jwt_key in localStorage')  
+          }
+        })
     }
 
     // Set relevent user information to localStorage to submit author credentials with new scopes

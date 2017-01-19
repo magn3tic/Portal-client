@@ -38,8 +38,17 @@ export class TokenDisplay implements OnInit{
 
   getToken() {
     this.apiService.get(this.HUBTOKENURL)
-    .subscribe(token => this.authService.setJwt(token.accessToken, this.JWTKEY))
-    // .do(token => this.storeHelper.add('user-acccess-jwt', token['accessToken']))
+    .subscribe(token => {
+    this.authService.setJwt(token.accessToken, this.JWTKEY)
+    .then(localTokens => {
+    _.forEach(localTokens, (token) => {
+      console.log('local tokens: ', token);
+    })
+    })
+    .catch(err => console.error(err))
+  })
+    
+    // .map(token => this.storeHelper.add('user-acccess-jwt', token['accessToken']))
     // .do(token => this.storeHelper.add('user-refresh-jwt', token['refreshToken']));
     // .map(token => this.storeHelper.update('user-refresh-jwt', token.refreshToken));
   }

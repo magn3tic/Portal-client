@@ -27445,12 +27445,14 @@ webpackJsonp([1],[
 	var router_1 = __webpack_require__(19);
 	var services_1 = __webpack_require__(15);
 	var services_2 = __webpack_require__(15);
+	var services_3 = __webpack_require__(15);
 	var TokenDisplay = (function () {
-	    function TokenDisplay(activatedRoute, apiService, authService, http) {
+	    function TokenDisplay(activatedRoute, apiService, authService, http, storeHelper) {
 	        this.activatedRoute = activatedRoute;
 	        this.apiService = apiService;
 	        this.authService = authService;
 	        this.http = http;
+	        this.storeHelper = storeHelper;
 	        // JWTKEY: string = CONFIG.hubspot.JWTKEY;
 	        this.JWTKEY = 'hubspot_token';
 	        // HUBTOKENURL: string = CONFIG.hubspot.HUBTOKENURL;
@@ -27464,7 +27466,10 @@ webpackJsonp([1],[
 	    TokenDisplay.prototype.getToken = function () {
 	        var _this = this;
 	        this.apiService.get(this.HUBTOKENURL)
-	            .subscribe(function (token) { return _this.authService.setJwt(token.accessToken); });
+	            .map(function (token) { return _this.authService.setJwt(token.accessToken); })
+	            .map(function (token) { return _this.storeHelper.update('user-acccess-jwt', token['accessToken']); })
+	            .map(function (token) { return _this.storeHelper.update('user-refresh-jwt', token['refreshToken']); });
+	        // .map(token => this.storeHelper.update('user-refresh-jwt', token.refreshToken));
 	    };
 	    return TokenDisplay;
 	}());
@@ -27474,11 +27479,11 @@ webpackJsonp([1],[
 	        styles: [__webpack_require__(699)],
 	        template: __webpack_require__(419)
 	    }),
-	    __metadata("design:paramtypes", [typeof (_a = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _a || Object, typeof (_b = typeof services_1.ApiService !== "undefined" && services_1.ApiService) === "function" && _b || Object, typeof (_c = typeof services_2.AuthService !== "undefined" && services_2.AuthService) === "function" && _c || Object, typeof (_d = typeof http_1.Http !== "undefined" && http_1.Http) === "function" && _d || Object])
+	    __metadata("design:paramtypes", [typeof (_a = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _a || Object, typeof (_b = typeof services_1.ApiService !== "undefined" && services_1.ApiService) === "function" && _b || Object, typeof (_c = typeof services_2.AuthService !== "undefined" && services_2.AuthService) === "function" && _c || Object, typeof (_d = typeof http_1.Http !== "undefined" && http_1.Http) === "function" && _d || Object, typeof (_e = typeof services_3.StoreHelper !== "undefined" && services_3.StoreHelper) === "function" && _e || Object])
 	], TokenDisplay);
 	exports.TokenDisplay = TokenDisplay;
 	;
-	var _a, _b, _c, _d;
+	var _a, _b, _c, _d, _e;
 
 
 /***/ },

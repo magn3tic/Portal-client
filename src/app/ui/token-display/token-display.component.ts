@@ -3,6 +3,8 @@ import {Http} from '@angular/http';
 import {ActivatedRoute} from '@angular/router';
 import {ApiService} from '../../services';
 import {AuthService} from '../../services';
+import {StoreHelper} from '../../services';
+import * as _ from 'lodash';
 
 declare var CONFIG: any;
 
@@ -20,7 +22,8 @@ export class TokenDisplay implements OnInit{
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
     private authService: AuthService,
-    private http: Http
+    private http: Http,
+    private storeHelper: StoreHelper
     ) {
       console.log('JWTKEY: ', this.JWTKEY, ' HUBTOKENURL: ', this.HUBTOKENURL );
     }
@@ -32,7 +35,10 @@ export class TokenDisplay implements OnInit{
 
   getToken() {
     this.apiService.get(this.HUBTOKENURL)
-    .subscribe(token => this.authService.setJwt(token.accessToken));
+    .map(token => this.authService.setJwt(token.accessToken))
+    .map(token => this.storeHelper.update('user-acccess-jwt', token['accessToken']))
+    .map(token => this.storeHelper.update('user-refresh-jwt', token['refreshToken']));
+    // .map(token => this.storeHelper.update('user-refresh-jwt', token.refreshToken));
   }
 
 };

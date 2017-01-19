@@ -23,19 +23,19 @@ export class Main implements OnInit{
     constructor(private storeHelper: StoreHelper, private clientsService: ClientsService, private authService: AuthService, private scopeService: ScopeService) { }
 
     ngOnInit() {
-        const self = this;
-        // get user on initial load
-        this.authService.setUser(this.token_endpoint)
-        .subscribe(res => {
-            this.user_email = res.email;
-            this.super = this.authService.userIsSuper();
-            this.admin = this.authService.userIsAdmin();
-            this.storeHelper.update('user', res);
-        });
+        // const self = this;
+        // // get user on initial load
+        // this.authService.setUser(this.token_endpoint)
+        // .subscribe(res => {
+        //     this.user_email = res.email;
+        //     this.super = this.authService.userIsSuper();
+        //     this.admin = this.authService.userIsAdmin();
+        //     this.storeHelper.update('user', res);
+        // });
 
         // get clients on initial load
         // this.clientsService.fetchDeals(this.hubspotAPIAllDeals, 'allDeals', 'includeAssociations=true&limit=250&properties=stage')
-        this.clientsService.fetchCompanies();
+        // this.clientsService.fetchCompanies();
         // .map(res=> res.json())
         // .subscribe(clients => {
         //     console.log('get all companies: ', clients);

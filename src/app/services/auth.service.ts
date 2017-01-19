@@ -14,6 +14,7 @@ export class AuthService implements CanActivate {
     JWTKEY: string = 'hubspot_token';
     // HUBAUTHAPI: string = CONFIG.hubspot.HUBAUTHAPI;
     HUBAUTHAPI: string = 'https://3af9c93a.ngrok.io/hubAuth';
+    HUBJWTPURGE: string = 'https://3af9c93a.ngrok.io/hubLogout';
     HUBTOKEN: string = null;
     constructor(
         private router: Router,
@@ -35,6 +36,19 @@ export class AuthService implements CanActivate {
           } else {
             reject('no jwt_key in localStorage')  
           }
+        })
+    }
+
+    clearJWT() {
+        return new Promise((resolve, reject) => {
+            this.apiService.get(this.HUBJWTPURGE)
+            .subscribe(statusCode => {
+              if(statusCode === 202){
+                resolve(statusCode);
+              } else {
+                reject('error in clearJWT: ' + statusCode);
+              }
+            })
         })
     }
 
@@ -64,7 +78,15 @@ export class AuthService implements CanActivate {
     signout() {
         window.localStorage.removeItem(this.JWTKEY);
         this.store.purge();
-        this.router.navigate(['', 'auth'])
+        this.clearJWT()
+        .then(status => {
+            if(status === 202) {
+              this.router.navigate(['', 'auth'])
+            } else {
+                console.error('status of clearJWT: ', status);
+            }
+        })
+        .catch(err => console.log(err));
     }
 
     isAuthorized(): boolean {

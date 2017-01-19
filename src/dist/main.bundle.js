@@ -18755,6 +18755,7 @@ webpackJsonp([1],[
 	        this.JWTKEY = 'hubspot_token';
 	        // HUBAUTHAPI: string = CONFIG.hubspot.HUBAUTHAPI;
 	        this.HUBAUTHAPI = 'https://3af9c93a.ngrok.io/hubAuth';
+	        this.HUBJWTPURGE = 'https://3af9c93a.ngrok.io/hubLogout';
 	        this.HUBTOKEN = null;
 	        this.setJwt(window.localStorage.getItem(this.JWTKEY));
 	    }
@@ -18770,6 +18771,20 @@ webpackJsonp([1],[
 	            else {
 	                reject('no jwt_key in localStorage');
 	            }
+	        });
+	    };
+	    AuthService.prototype.clearJWT = function () {
+	        var _this = this;
+	        return new Promise(function (resolve, reject) {
+	            _this.apiService.get(_this.HUBJWTPURGE)
+	                .subscribe(function (statusCode) {
+	                if (statusCode === 202) {
+	                    resolve(statusCode);
+	                }
+	                else {
+	                    reject('error in clearJWT: ' + statusCode);
+	                }
+	            });
 	        });
 	    };
 	    // Set relevent user information to localStorage to submit author credentials with new scopes
@@ -18798,9 +18813,19 @@ webpackJsonp([1],[
 	        return result;
 	    };
 	    AuthService.prototype.signout = function () {
+	        var _this = this;
 	        window.localStorage.removeItem(this.JWTKEY);
 	        this.store.purge();
-	        this.router.navigate(['', 'auth']);
+	        this.clearJWT()
+	            .then(function (status) {
+	            if (status === 202) {
+	                _this.router.navigate(['', 'auth']);
+	            }
+	            else {
+	                console.error('status of clearJWT: ', status);
+	            }
+	        })
+	            .catch(function (err) { return console.log(err); });
 	    };
 	    AuthService.prototype.isAuthorized = function () {
 	        return (window.localStorage.getItem(this.JWTKEY) == 'undefined' || window.localStorage.getItem(this.JWTKEY) == 'null') ? false : true;
@@ -26423,19 +26448,18 @@ webpackJsonp([1],[
 	        this.token_endpoint = 'auth/token';
 	    }
 	    Main.prototype.ngOnInit = function () {
-	        var _this = this;
-	        var self = this;
-	        // get user on initial load
-	        this.authService.setUser(this.token_endpoint)
-	            .subscribe(function (res) {
-	            _this.user_email = res.email;
-	            _this.super = _this.authService.userIsSuper();
-	            _this.admin = _this.authService.userIsAdmin();
-	            _this.storeHelper.update('user', res);
-	        });
+	        // const self = this;
+	        // // get user on initial load
+	        // this.authService.setUser(this.token_endpoint)
+	        // .subscribe(res => {
+	        //     this.user_email = res.email;
+	        //     this.super = this.authService.userIsSuper();
+	        //     this.admin = this.authService.userIsAdmin();
+	        //     this.storeHelper.update('user', res);
+	        // });
 	        // get clients on initial load
 	        // this.clientsService.fetchDeals(this.hubspotAPIAllDeals, 'allDeals', 'includeAssociations=true&limit=250&properties=stage')
-	        this.clientsService.fetchCompanies();
+	        // this.clientsService.fetchCompanies();
 	        // .map(res=> res.json())
 	        // .subscribe(clients => {
 	        //     console.log('get all companies: ', clients);
@@ -26746,7 +26770,7 @@ webpackJsonp([1],[
 	        this.headers = new http_1.Headers({
 	            'Content-Type': 'application/json',
 	            Accept: 'application/json',
-	            Authorization: window.localStorage['magnetic_token']
+	            Authorization: window.localStorage['hubspot_token']
 	        });
 	        this.api_url = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).API_URL;
 	    }

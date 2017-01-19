@@ -27459,7 +27459,6 @@ webpackJsonp([1],[
 	var _ = __webpack_require__(23);
 	var TokenDisplay = (function () {
 	    function TokenDisplay(activatedRoute, apiService, authService, http, storeHelper) {
-	        var _this = this;
 	        this.activatedRoute = activatedRoute;
 	        this.apiService = apiService;
 	        this.authService = authService;
@@ -27469,14 +27468,11 @@ webpackJsonp([1],[
 	        this.JWTKEY = 'hubspot_token';
 	        // HUBTOKENURL: string = CONFIG.hubspot.HUBTOKENURL;
 	        this.HUBTOKENURL = 'https://3af9c93a.ngrok.io/hubToken';
-	        this.apiService.get(this.HUBTOKENURL)
-	            .subscribe(function (token) { return _this.authService.setJwt(token.accessToken, _this.JWTKEY); });
 	    }
 	    TokenDisplay.prototype.ngOnInit = function () {
 	        // Get and set JWT on init
 	        console.log('ngOnInit running JWTKEY: ', this.JWTKEY, ' HUBTOKENURL: ', this.HUBTOKENURL);
-	        // this.apiService.get(this.HUBTOKENURL)
-	        // .subscribe(token => this.authService.setJwt(token.accessToken, this.JWTKEY));
+	        this.getToken();
 	    };
 	    TokenDisplay.prototype.getToken = function () {
 	        var _this = this;

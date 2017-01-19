@@ -18,7 +18,9 @@ export class Auth {
   // This initiates a Oauth 2.0 connection via passport.js
   hubAuthAPI: string = CONFIG.hubspot.HUBAUTHAPI; // Hide this in config vars
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) {
+    console.log('hubauthapi: ', this.hubAuthAPI);
+  }
 
   
   authenticate() {

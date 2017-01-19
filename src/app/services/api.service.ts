@@ -11,7 +11,7 @@ export class ApiService {
     headers: Headers = new Headers({
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        Authorization: window.localStorage['hubspot_token']
+        Authorization: window.localStorage['hubspot_token']['accessToken']
     });
 
     api_url: string = CONFIG.API_URL;

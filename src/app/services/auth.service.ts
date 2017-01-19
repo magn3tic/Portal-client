@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http } from '@angular/http';
 import { CanActivate, Router } from '@angular/router';
 import { ApiService, StoreHelper } from './index';
 import { Store } from '../store';
@@ -18,8 +18,7 @@ export class AuthService implements CanActivate {
         private apiService: ApiService,
         private storeHelper: StoreHelper,
         private store: Store,
-        private http: Http,
-        private response: Response
+        private http: Http
     ) {
         this.setJwt(window.localStorage.getItem(this.JWTKEY));
     }

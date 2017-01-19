@@ -18766,7 +18766,7 @@ webpackJsonp([1],[
 	            window.localStorage.setItem(jwt_key, jwt);
 	            if (window.localStorage.getItem(jwt_key)) {
 	                _this.apiService.setHeaders({ Authorization: "Bearer " + jwt });
-	                resolve(window.localStorage.getItem(jwt_key));
+	                resolve(JSON.parse(window.localStorage.getItem(jwt_key)));
 	            }
 	            else {
 	                reject('no jwt_key in localStorage');
@@ -27505,7 +27505,7 @@ webpackJsonp([1],[
 	            _this.authService.setJwt(token, _this.JWTKEY)
 	                .then(function (localTokens) {
 	                // Will want to loop through the localstorage tokens
-	                console.log('localTokens: ', localTokens);
+	                console.log('localTokens: ', JSON.stringify(localTokens));
 	                _.forEach(localTokens, function (token, key) {
 	                    console.log('local tokens: ', token);
 	                    _this.storeHelper.update('user', { 'key': token });

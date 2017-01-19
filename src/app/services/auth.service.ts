@@ -32,7 +32,7 @@ export class AuthService implements CanActivate {
           window.localStorage.setItem(jwt_key, jwt);
           if(window.localStorage.getItem(jwt_key)) {
             this.apiService.setHeaders({ Authorization: `Bearer ${jwt}` });
-            resolve(window.localStorage.getItem(jwt_key))
+            resolve(JSON.parse(window.localStorage.getItem(jwt_key)))
           } else {
             reject('no jwt_key in localStorage')  
           }

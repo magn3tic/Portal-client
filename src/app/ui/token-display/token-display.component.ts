@@ -11,14 +11,16 @@ declare var CONFIG: any;
   template: require('./token-display.component.html')
 })
 export class TokenDisplay implements OnInit{
-  JWTKEY: string = CONFIG.hubspot.JWTKEY;
-  HUBTOKENURL: string = CONFIG.hubspot.HUBTOKENURL;
+  // JWTKEY: string = CONFIG.hubspot.JWTKEY;
+  JWTKEY: string = 'hubspot_token';
+  // HUBTOKENURL: string = CONFIG.hubspot.HUBTOKENURL;
+  HUBTOKENURL: string = 'https://3af9c93a.ngrok.io/hubToken';
   constructor(
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
     private http: Http
     ) {
-      
+      console.log('JWTKEY: ', this.JWTKEY, ' HUBTOKENURL: ', this.HUBTOKENURL );
     }
 
   ngOnInit() {

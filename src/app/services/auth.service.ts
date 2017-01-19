@@ -10,8 +10,10 @@ declare var swal: any;
 
 @Injectable()
 export class AuthService implements CanActivate {
-    JWTKEY: string = CONFIG.hubspot.JWTKEY;
-    HUBAUTHAPI: string = CONFIG.hubspot.HUBAUTHAPI;
+    // JWTKEY: string = CONFIG.hubspot.JWTKEY;
+    JWTKEY: string = 'hubspot_token';
+    // HUBAUTHAPI: string = CONFIG.hubspot.HUBAUTHAPI;
+    HUBAUTHAPI: string = 'https://3af9c93a.ngrok.io/hubAuth';
     HUBTOKEN: string = null;
     constructor(
         private router: Router,

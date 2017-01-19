@@ -57,8 +57,8 @@ export class AuthService implements CanActivate {
         this.store.purge();
         this.clearJWT()
             .then(status => {
+                console.log('status is: ', status);
                 if (status === 202) {
-                    console.log('status is: ', status);
                     swal({
                         title: 'Successfully Logged Out',
                         text: 'Thanks for using our portal',
@@ -70,7 +70,7 @@ export class AuthService implements CanActivate {
                             console.log('I was closed by the timer')
                         }
                     })
-                    this.router.navigate(['auth'])
+                    this.router.navigate(['/auth'])
                 } else {
                     console.error('status of clearJWT: ', status);
                 }

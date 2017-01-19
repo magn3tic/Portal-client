@@ -18793,8 +18793,8 @@ webpackJsonp([1],[
 	        this.store.purge();
 	        this.clearJWT()
 	            .then(function (status) {
+	            console.log('status is: ', status);
 	            if (status === 202) {
-	                console.log('status is: ', status);
 	                swal({
 	                    title: 'Successfully Logged Out',
 	                    text: 'Thanks for using our portal',
@@ -18805,7 +18805,7 @@ webpackJsonp([1],[
 	                        console.log('I was closed by the timer');
 	                    }
 	                });
-	                _this.router.navigate(['auth']);
+	                _this.router.navigate(['/auth']);
 	            }
 	            else {
 	                console.error('status of clearJWT: ', status);

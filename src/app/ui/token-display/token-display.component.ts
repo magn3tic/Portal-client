@@ -35,17 +35,10 @@ export class TokenDisplay implements OnInit {
   getToken() {
     this.apiService.get(this.HUBTOKENURL)
       .subscribe(token => {
-        console.log('in getToken, token: ', token);
+        // console.log('in getToken, token: ', token);
         this.authService.setJwt(token, this.JWTKEY)
           .then(localTokens => {
-            // Will want to loop through the localstorage tokens
-          console.log('localTokens: ', localTokens);
-            // _.forEach(localTokens, (token, key) => {
-            //   console.log('local tokens: ', token, ' local key: ', key);
-            //   this.storeHelper.update('user', { `${key}`: token});
-              this.storeHelper.update('user', {tokens: localTokens});
-            // })
-
+            this.storeHelper.update('user', { tokens: localTokens });
           })
           .catch(err => console.error(err))
       })

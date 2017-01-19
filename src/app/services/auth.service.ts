@@ -52,6 +52,21 @@ export class AuthService implements CanActivate {
         })
     }
 
+    signout() {
+        window.localStorage.removeItem(this.JWTKEY);
+        this.store.purge();
+        this.clearJWT()
+        .then(status => {
+            console.log('status is: ', status);
+            if(status === 'logout successful') {
+              this.router.navigate(['', 'auth'])
+            } else {
+              console.error('status of clearJWT: ', status);
+            }
+        })
+        .catch(err => console.log(err));
+    }
+
     // Set relevent user information to localStorage to submit author credentials with new scopes
     setUser(path) {
         return this.apiService.post(`/${path}`)
@@ -75,19 +90,6 @@ export class AuthService implements CanActivate {
         return result;
     }
 
-    signout() {
-        window.localStorage.removeItem(this.JWTKEY);
-        this.store.purge();
-        this.clearJWT()
-        .then(status => {
-            if(status === 202) {
-              this.router.navigate(['', 'auth'])
-            } else {
-                console.error('status of clearJWT: ', status);
-            }
-        })
-        .catch(err => console.log(err));
-    }
 
     isAuthorized(): boolean {
         return (window.localStorage.getItem(this.JWTKEY) == 'undefined' || window.localStorage.getItem(this.JWTKEY) == 'null') ? false : true;

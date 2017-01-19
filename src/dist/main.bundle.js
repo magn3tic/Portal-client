@@ -18787,6 +18787,22 @@ webpackJsonp([1],[
 	            });
 	        });
 	    };
+	    AuthService.prototype.signout = function () {
+	        var _this = this;
+	        window.localStorage.removeItem(this.JWTKEY);
+	        this.store.purge();
+	        this.clearJWT()
+	            .then(function (status) {
+	            console.log('status is: ', status);
+	            if (status === 'logout successful') {
+	                _this.router.navigate(['', 'auth']);
+	            }
+	            else {
+	                console.error('status of clearJWT: ', status);
+	            }
+	        })
+	            .catch(function (err) { return console.log(err); });
+	    };
 	    // Set relevent user information to localStorage to submit author credentials with new scopes
 	    AuthService.prototype.setUser = function (path) {
 	        var _this = this;
@@ -18811,21 +18827,6 @@ webpackJsonp([1],[
 	            }
 	        });
 	        return result;
-	    };
-	    AuthService.prototype.signout = function () {
-	        var _this = this;
-	        window.localStorage.removeItem(this.JWTKEY);
-	        this.store.purge();
-	        this.clearJWT()
-	            .then(function (status) {
-	            if (status === 202) {
-	                _this.router.navigate(['', 'auth']);
-	            }
-	            else {
-	                console.error('status of clearJWT: ', status);
-	            }
-	        })
-	            .catch(function (err) { return console.log(err); });
 	    };
 	    AuthService.prototype.isAuthorized = function () {
 	        return (window.localStorage.getItem(this.JWTKEY) == 'undefined' || window.localStorage.getItem(this.JWTKEY) == 'null') ? false : true;
@@ -27501,16 +27502,10 @@ webpackJsonp([1],[
 	        var _this = this;
 	        this.apiService.get(this.HUBTOKENURL)
 	            .subscribe(function (token) {
-	            console.log('in getToken, token: ', token);
+	            // console.log('in getToken, token: ', token);
 	            _this.authService.setJwt(token, _this.JWTKEY)
 	                .then(function (localTokens) {
-	                // Will want to loop through the localstorage tokens
-	                console.log('localTokens: ', localTokens);
-	                // _.forEach(localTokens, (token, key) => {
-	                //   console.log('local tokens: ', token, ' local key: ', key);
-	                //   this.storeHelper.update('user', { `${key}`: token});
 	                _this.storeHelper.update('user', { tokens: localTokens });
-	                // })
 	            })
 	                .catch(function (err) { return console.error(err); });
 	        });

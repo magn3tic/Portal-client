@@ -32,7 +32,7 @@ export class TokenDisplay implements OnInit{
 
   getToken() {
     this.apiService.get(this.HUBTOKENURL)
-    .subscribe(token => this.authService.setJwt(token));
+    .subscribe(token => this.authService.setJwt(token.accessToken));
   }
 
 };

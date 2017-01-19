@@ -18789,10 +18789,10 @@ webpackJsonp([1],[
 	    };
 	    AuthService.prototype.signout = function () {
 	        var _this = this;
-	        window.localStorage.removeItem(this.JWTKEY);
 	        this.store.purge();
 	        this.clearJWT()
 	            .then(function (status) {
+	            window.localStorage.removeItem(_this.JWTKEY);
 	            console.log('status is: ', status);
 	            if (status === 202) {
 	                swal({

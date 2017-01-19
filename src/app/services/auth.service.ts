@@ -53,10 +53,10 @@ export class AuthService implements CanActivate {
     }
 
     signout() {
-        window.localStorage.removeItem(this.JWTKEY);
         this.store.purge();
         this.clearJWT()
             .then(status => {
+                window.localStorage.removeItem(this.JWTKEY);
                 console.log('status is: ', status);
                 if (status === 202) {
                     swal({

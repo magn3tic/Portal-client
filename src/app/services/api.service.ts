@@ -36,7 +36,9 @@ export class ApiService {
     }
 
     get(path: string): Observable<any> {
-        return this.http.get(`${this.api_url}${path}`, { headers: this.headers })
+        // return this.http.get(`${this.api_url}${path}`, { headers: this.headers })
+        // this is to be updated when our node proxy server is permanently hosted
+        return this.http.get(`${path}`, { headers: this.headers })
             .map(this.checkForError)
             .catch(err => Observable.throw(err))
             .map(this.getJson)

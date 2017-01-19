@@ -26756,7 +26756,9 @@ webpackJsonp([1],[
 	        }
 	    };
 	    ApiService.prototype.get = function (path) {
-	        return this.http.get("" + this.api_url + path, { headers: this.headers })
+	        // return this.http.get(`${this.api_url}${path}`, { headers: this.headers })
+	        // this is to be updated when our node proxy server is permanently hosted
+	        return this.http.get("" + path, { headers: this.headers })
 	            .map(this.checkForError)
 	            .catch(function (err) { return rxjs_1.Observable.throw(err); })
 	            .map(this.getJson);

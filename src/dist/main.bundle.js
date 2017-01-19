@@ -27466,9 +27466,9 @@ webpackJsonp([1],[
 	    TokenDisplay.prototype.getToken = function () {
 	        var _this = this;
 	        this.apiService.get(this.HUBTOKENURL)
-	            .map(function (token) { return _this.authService.setJwt(token.accessToken); })
-	            .map(function (token) { return _this.storeHelper.add('user-acccess-jwt', token['accessToken']); })
-	            .map(function (token) { return _this.storeHelper.add('user-refresh-jwt', token['refreshToken']); });
+	            .map(function (token) { return _this.authService.setJwt(token.accessToken); });
+	        // .map(token => this.storeHelper.add('user-acccess-jwt', token['accessToken']))
+	        // .map(token => this.storeHelper.add('user-refresh-jwt', token['refreshToken']));
 	        // .map(token => this.storeHelper.update('user-refresh-jwt', token.refreshToken));
 	    };
 	    return TokenDisplay;

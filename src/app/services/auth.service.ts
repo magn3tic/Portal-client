@@ -29,26 +29,26 @@ export class AuthService implements CanActivate {
     setJwt(jwt: string, key?: string) {
         let jwt_key = (key) ? key : this.JWTKEY;
         return new Promise((resolve, reject) => {
-          window.localStorage.setItem(jwt_key, jwt);
-          if(window.localStorage.getItem(jwt_key)) {
-            this.apiService.setHeaders({ Authorization: `Bearer ${jwt}` });
-            resolve(jwt)
-          } else {
-            reject('no jwt_key in localStorage')  
-          }
+            window.localStorage.setItem(jwt_key, jwt);
+            if (window.localStorage.getItem(jwt_key)) {
+                this.apiService.setHeaders({ Authorization: `Bearer ${jwt['accessToken']}` });
+                resolve(jwt)
+            } else {
+                reject('no jwt_key in localStorage')
+            }
         })
     }
 
     clearJWT() {
         return new Promise((resolve, reject) => {
             this.apiService.get(this.HUBJWTPURGE)
-            .subscribe(statusCode => {
-              if(statusCode === 202){
-                resolve(statusCode);
-              } else {
-                reject('error in clearJWT: ' + statusCode);
-              }
-            })
+                .subscribe(statusCode => {
+                    if (statusCode === 202) {
+                        resolve(statusCode);
+                    } else {
+                        reject('error in clearJWT: ' + statusCode);
+                    }
+                })
         })
     }
 
@@ -56,15 +56,26 @@ export class AuthService implements CanActivate {
         window.localStorage.removeItem(this.JWTKEY);
         this.store.purge();
         this.clearJWT()
-        .then(status => {
-            if(status === 202) {
-                console.log('status is: ', status);
-              this.router.navigate(['', 'auth'])
-            } else {
-              console.error('status of clearJWT: ', status);
-            }
-        })
-        .catch(err => console.log(err));
+            .then(status => {
+                if (status === 202) {
+                    console.log('status is: ', status);
+                    swal({
+                        title: 'Successfully Logged Out',
+                        text: 'Thanks for using our portal',
+                        timer: 200,
+                    }).then(() => {
+
+                    }, (dismiss) => {
+                        if (dismiss === 'timer') {
+                            console.log('I was closed by the timer')
+                        }
+                    })
+                    this.router.navigate(['auth'])
+                } else {
+                    console.error('status of clearJWT: ', status);
+                }
+            })
+            .catch(err => console.log(err));
     }
 
     // Set relevent user information to localStorage to submit author credentials with new scopes

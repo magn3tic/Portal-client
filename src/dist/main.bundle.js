@@ -18765,7 +18765,7 @@ webpackJsonp([1],[
 	        return new Promise(function (resolve, reject) {
 	            window.localStorage.setItem(jwt_key, jwt);
 	            if (window.localStorage.getItem(jwt_key)) {
-	                _this.apiService.setHeaders({ Authorization: "Bearer " + jwt });
+	                _this.apiService.setHeaders({ Authorization: "Bearer " + jwt['accessToken'] });
 	                resolve(jwt);
 	            }
 	            else {
@@ -18795,7 +18795,17 @@ webpackJsonp([1],[
 	            .then(function (status) {
 	            if (status === 202) {
 	                console.log('status is: ', status);
-	                _this.router.navigate(['', 'auth']);
+	                swal({
+	                    title: 'Successfully Logged Out',
+	                    text: 'Thanks for using our portal',
+	                    timer: 200,
+	                }).then(function () {
+	                }, function (dismiss) {
+	                    if (dismiss === 'timer') {
+	                        console.log('I was closed by the timer');
+	                    }
+	                });
+	                _this.router.navigate(['auth']);
 	            }
 	            else {
 	                console.error('status of clearJWT: ', status);

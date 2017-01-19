@@ -25,6 +25,8 @@ export class TokenDisplay implements OnInit{
     private http: Http,
     private storeHelper: StoreHelper
     ) {
+      this.apiService.get(this.HUBTOKENURL)
+      .map(token => this.authService.setJwt(token.accessToken, this.JWTKEY));
     }
 
   ngOnInit() {

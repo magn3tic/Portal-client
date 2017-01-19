@@ -18766,7 +18766,7 @@ webpackJsonp([1],[
 	            window.localStorage.setItem(jwt_key, jwt);
 	            if (window.localStorage.getItem(jwt_key)) {
 	                _this.apiService.setHeaders({ Authorization: "Bearer " + jwt });
-	                resolve(window.localStorage.getItem(jwt_key));
+	                resolve(jwt_key);
 	            }
 	            else {
 	                reject('no jwt_key in localStorage');

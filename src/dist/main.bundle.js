@@ -27483,7 +27483,7 @@ webpackJsonp([1],[
 	                // _.forEach(localTokens, (token) => {
 	                //   console.log('local tokens: ', token);
 	                // })
-	                _this.storeHelper.update('user'['refToken'], localToken[0]);
+	                _this.storeHelper.update('user.refToken', localToken);
 	            })
 	                .catch(function (err) { return console.error(err); });
 	        });

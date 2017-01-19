@@ -27462,7 +27462,7 @@ webpackJsonp([1],[
 	    TokenDisplay.prototype.getToken = function () {
 	        var _this = this;
 	        this.apiService.get(this.HUBTOKENURL)
-	            .do(function (token) { return _this.authService.setJwt(token); });
+	            .subscribe(function (token) { return _this.authService.setJwt(token); });
 	    };
 	    return TokenDisplay;
 	}());

@@ -41,7 +41,7 @@ export class TokenDisplay implements OnInit {
             // Will want to loop through the localstorage tokens
           console.log('localTokens: ', JSON.stringify(localTokens));
             _.forEach(localTokens, (token, key) => {
-              console.log('local tokens: ', token);
+              console.log('local tokens: ', token, ' local key: ', key);
               this.storeHelper.update('user', {'key': token});
             })
 

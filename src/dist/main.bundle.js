@@ -27508,7 +27508,7 @@ webpackJsonp([1],[
 	                // Will want to loop through the localstorage tokens
 	                console.log('localTokens: ', JSON.stringify(localTokens));
 	                _.forEach(localTokens, function (token, key) {
-	                    console.log('local tokens: ', token);
+	                    console.log('local tokens: ', token, ' local key: ', key);
 	                    _this.storeHelper.update('user', { 'key': token });
 	                });
 	            })

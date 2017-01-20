@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../services';
 import { AuthService } from '../../services';
 import { StoreHelper } from '../../services';
@@ -16,10 +16,12 @@ declare var CONFIG: any;
 export class TokenDisplay implements OnInit {
   // JWTKEY: string = CONFIG.hubspot.JWTKEY;
   JWTKEY: string = 'hubspot_token';
+  JWTREFRESH: string = 'refresh_token';
   // HUBTOKENURL: string = CONFIG.hubspot.HUBTOKENURL;
   HUBTOKENURL: string = 'https://3af9c93a.ngrok.io/hubToken';
   constructor(
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private apiService: ApiService,
     private authService: AuthService,
     private http: Http,
@@ -34,13 +36,20 @@ export class TokenDisplay implements OnInit {
 
   getToken() {
     this.apiService.get(this.HUBTOKENURL)
-      .subscribe(token => {
-        console.log('in getToken, token: ', token);
-        this.authService.setJwt(token.accessToken, this.JWTKEY)
+      .subscribe(res => {
+        let resBody = JSON.parse(res._body);
+        console.log('get token res: ', resBody);
+        // console.log('res tokens: ', JSON.parse(res._body));
+        this.storeHelper.update('user', { tokens: resBody });
+        this.authService.setJwt(resBody.accessToken, this.JWTKEY)
           .then(localTokens => {
-            this.storeHelper.update('user', { tokens: localTokens });
+            this.authService.setJwt(resBody.refreshToken, this.JWTREFRESH).then(()=> {
+              this.router.navigate(['/home']);
+            })
+            // .then(jwt=> console.log('jwt: ', jwt))
+            .catch(err => console.log(err))
           })
-          .catch(err => console.error(err))
+          .catch(err => console.log(err))
       })
 
     // .map(token => this.storeHelper.add('user-acccess-jwt', token['accessToken']))

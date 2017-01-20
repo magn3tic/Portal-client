@@ -41,7 +41,15 @@ export class ApiService {
         return this.http.get(`${path}`, { headers: this.headers })
             .map(this.checkForError)
             .catch(err => Observable.throw(err))
-            .map(this.getJson)
+            .map(res => {
+                console.log('ApiService.get res: ', res);
+                if(res.status >= 200 && res.status < 300) {
+                    console.log('res.status ok: ', res.status);
+                    return res;
+                } else {
+                  return this.getJson;
+                }
+            })
     }
 
     post(path: string, body?: any): Observable<any> {

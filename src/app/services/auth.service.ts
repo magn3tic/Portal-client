@@ -37,45 +37,68 @@ export class AuthService implements CanActivate {
         })
     }
 
-    clearJWT() {
-        console.log('clearjwt called')
+    clearServerToken() {
+        console.log('clearServerToken called')
         return new Promise((resolve, reject) => {
             this.apiService.get(this.HUBJWTPURGE)
                 .subscribe(res => {
-                    console.log('res in clearJWT: ', res);
-                    if (res.statusCode === 202) {
-                        resolve(res.statusCode);
-                    } else {
-                        reject('error in clearJWT: ' + res.statusCode);
+                    console.log('res in clearServerToken: ', res);
+                    if (res.status >= 200 && res.status < 300) {
+                        console.log('clearServerToken res is a number: ', res);
+                        resolve('successfully cleared server')
+                    }
+                    else {
+                        console.log('error in auth clearServerToken');
+                        reject(res);
                     }
                 })
+        })
+    }
+
+    clearLocalStorage() {
+        console.log('clearing localStorage');
+        return new Promise((resolve, reject) => {
+            if(window.localStorage['hubspot_token']) {
+                window.localStorage.clear()
+                resolve('cleared localStorage')
+            } else if(window.localStorage['hubspot_token'] === 'undefined'){
+                resolve('local storage already clear')
+            } else {
+                reject('error clearing localStorage');
+            }
         })
     }
 
     signout() {
         console.log('signout called');
         this.store.purge();
-        this.clearJWT()
-            .then(status => {
-                console.log('status is: ', status);
-                window.localStorage.removeItem(this.JWTKEY);
-                if (status <= 202) {
-                    swal({
-                        title: 'Successfully Logged Out',
-                        text: 'Thanks for using our portal',
-                        timer: 200,
-                    }).then(() => {
+        return Promise.all([this.clearLocalStorage(), this.clearServerToken()])
+        .then(res => {
+            console.log('successful signout res: ', res);
+            this.router.navigate(['/']);
+        })
+        .catch(err => console.log('error in promise.all: ', err))
+        // this.clearServerToken()
+        //     .then(status => {
+        //         console.log('status is: ', status);
+        //         window.localStorage.removeItem(this.JWTKEY);
+        //         if (status <= 202) {
+        //             swal({
+        //                 title: 'Successfully Logged Out',
+        //                 text: 'Thanks for using our portal',
+        //                 timer: 200,
+        //             }).then(() => {
 
-                    }, (dismiss) => {
-                        if (dismiss === 'timer') {
-                            console.log('I was closed by the timer')
-                        }
-                    })
-                    this.router.navigate(['/auth'])
-                } else {
-                    console.error('status of clearJWT: ', status);
-                }
-            })
+        //             }, (dismiss) => {
+        //                 if (dismiss === 'timer') {
+        //                     console.log('I was closed by the timer')
+        //                 }
+        //             })
+        //             this.router.navigate(['/auth'])
+        //         } else {
+        //             console.error('status of clearServerToken: ', status);
+        //         }
+        //     })
             .catch(err => console.log(err));
     }
 
@@ -88,12 +111,16 @@ export class AuthService implements CanActivate {
     }
 
     authenticate() {
+        const self = this;
         let result = new Promise((resolve, reject) => {
             if (window.localStorage.getItem(this.JWTKEY)) {
                 resolve(window.localStorage.getItem(this.JWTKEY))
             } else if (window.localStorage.getItem(this.JWTKEY).length < 1) {
-                this.http.get(this.HUBAUTHAPI)
-                    .map((res) => this.HUBTOKEN = res['access_token'])
+                this.apiService.get(this.HUBAUTHAPI)
+                    .map((res) => {
+                        console.log('AuthService.authenticate conditional no hubspot_token in localStorage. apiService.get(HUBAUTHAPI) res: ', res);
+                        self.HUBTOKEN = res['access_token']
+                    })
                     .do(token => window.localStorage.setItem(this.JWTKEY, this.HUBTOKEN));
             } else {
                 reject('auth service authenticate rejection. No hubspot token provided in auth.service.ts authenticate()')
@@ -104,7 +131,7 @@ export class AuthService implements CanActivate {
 
 
     isAuthorized(): boolean {
-        return (window.localStorage.getItem(this.JWTKEY) == 'undefined' || window.localStorage.getItem(this.JWTKEY) == 'null') ? false : true;
+        return (window.localStorage.getItem(this.JWTKEY) == 'undefined' || window.localStorage.getItem(this.JWTKEY) == null) || !window.localStorage.getItem(this.JWTKEY).length ? false : true;
     }
 
     canActivate(): boolean {

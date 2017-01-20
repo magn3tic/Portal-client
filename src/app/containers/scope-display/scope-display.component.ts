@@ -88,7 +88,7 @@ export class ScopeDisplay {
 
     public saveScope() {
         // Need to place the majority of the logic here in the scope service
-        if (!window.localStorage['magnetic_token']) {
+        if (!window.localStorage['hubspot_token']) {
             swal(
                 'Error No User',
                 'You must be logged in to do that! Please login!',

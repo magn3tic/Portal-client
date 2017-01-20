@@ -38,6 +38,7 @@ export class AuthService implements CanActivate {
     }
 
     clearJWT() {
+        console.log('clearjwt called')
         return new Promise((resolve, reject) => {
             this.apiService.get(this.HUBJWTPURGE)
                 .subscribe(statusCode => {
@@ -52,6 +53,7 @@ export class AuthService implements CanActivate {
     }
 
     signout() {
+        console.log('signout called');
         this.store.purge();
         this.clearJWT()
             .then(status => {

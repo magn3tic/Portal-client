@@ -18774,6 +18774,7 @@ webpackJsonp([1],[
 	    };
 	    AuthService.prototype.clearJWT = function () {
 	        var _this = this;
+	        console.log('clearjwt called');
 	        return new Promise(function (resolve, reject) {
 	            _this.apiService.get(_this.HUBJWTPURGE)
 	                .subscribe(function (statusCode) {
@@ -18789,6 +18790,7 @@ webpackJsonp([1],[
 	    };
 	    AuthService.prototype.signout = function () {
 	        var _this = this;
+	        console.log('signout called');
 	        this.store.purge();
 	        this.clearJWT()
 	            .then(function (status) {

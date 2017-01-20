@@ -18794,8 +18794,8 @@ webpackJsonp([1],[
 	        this.store.purge();
 	        this.clearJWT()
 	            .then(function (status) {
+	            console.log('status is: ', JSON.stringify(status));
 	            window.localStorage.removeItem(_this.JWTKEY);
-	            console.log('status is: ', status);
 	            if (status <= 202) {
 	                swal({
 	                    title: 'Successfully Logged Out',

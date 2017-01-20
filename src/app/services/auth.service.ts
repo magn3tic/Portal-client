@@ -57,8 +57,8 @@ export class AuthService implements CanActivate {
         this.store.purge();
         this.clearJWT()
             .then(status => {
+                console.log('status is: ', JSON.stringify(status));
                 window.localStorage.removeItem(this.JWTKEY);
-                console.log('status is: ', status);
                 if (status <= 202) {
                     swal({
                         title: 'Successfully Logged Out',

@@ -42,7 +42,7 @@ export class ApiService {
             .map(this.checkForError)
             .catch(err => Observable.throw(err))
             .map(this.getJson)
-            .map(json => console.log('ApiService.get json: '))
+            .do(json => console.log('ApiService.get json: ', json))
             .map(json => json)
     }
 

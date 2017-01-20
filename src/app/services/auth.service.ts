@@ -41,12 +41,12 @@ export class AuthService implements CanActivate {
         console.log('clearjwt called')
         return new Promise((resolve, reject) => {
             this.apiService.get(this.HUBJWTPURGE)
-                .subscribe(statusCode => {
-                    console.log('statusCode in clearJWT: ', statusCode);
-                    if (statusCode === 202) {
-                        resolve(statusCode);
+                .map(res => {
+                    console.log('statusCode in clearJWT: ', res.statusCode);
+                    if (res.statusCode === 202) {
+                        resolve(res.statusCode);
                     } else {
-                        reject('error in clearJWT: ' + statusCode);
+                        reject('error in clearJWT: ' + res.statusCode);
                     }
                 })
         })
@@ -59,7 +59,7 @@ export class AuthService implements CanActivate {
             .then(status => {
                 window.localStorage.removeItem(this.JWTKEY);
                 console.log('status is: ', status);
-                if (status === 202) {
+                if (status <= 202) {
                     swal({
                         title: 'Successfully Logged Out',
                         text: 'Thanks for using our portal',

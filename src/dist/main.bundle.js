@@ -18777,13 +18777,13 @@ webpackJsonp([1],[
 	        console.log('clearjwt called');
 	        return new Promise(function (resolve, reject) {
 	            _this.apiService.get(_this.HUBJWTPURGE)
-	                .subscribe(function (statusCode) {
-	                console.log('statusCode in clearJWT: ', statusCode);
-	                if (statusCode === 202) {
-	                    resolve(statusCode);
+	                .map(function (res) {
+	                console.log('statusCode in clearJWT: ', res.statusCode);
+	                if (res.statusCode === 202) {
+	                    resolve(res.statusCode);
 	                }
 	                else {
-	                    reject('error in clearJWT: ' + statusCode);
+	                    reject('error in clearJWT: ' + res.statusCode);
 	                }
 	            });
 	        });
@@ -18796,7 +18796,7 @@ webpackJsonp([1],[
 	            .then(function (status) {
 	            window.localStorage.removeItem(_this.JWTKEY);
 	            console.log('status is: ', status);
-	            if (status === 202) {
+	            if (status <= 202) {
 	                swal({
 	                    title: 'Successfully Logged Out',
 	                    text: 'Thanks for using our portal',

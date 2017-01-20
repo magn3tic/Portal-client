@@ -27513,7 +27513,7 @@ webpackJsonp([1],[
 	        this.apiService.get(this.HUBTOKENURL)
 	            .subscribe(function (token) {
 	            console.log('in getToken, token: ', token);
-	            _this.authService.setJwt(token, _this.JWTKEY)
+	            _this.authService.setJwt(token.accessToken, _this.JWTKEY)
 	                .then(function (localTokens) {
 	                _this.storeHelper.update('user', { tokens: localTokens });
 	            })

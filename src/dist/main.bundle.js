@@ -18764,7 +18764,7 @@ webpackJsonp([1],[
 	        return new Promise(function (resolve, reject) {
 	            window.localStorage.setItem(jwt_key, jwt);
 	            if (window.localStorage.getItem(jwt_key)) {
-	                _this.apiService.setHeaders({ Authorization: "Bearer " + jwt['accessToken'] });
+	                _this.apiService.setHeaders({ Authorization: "Bearer " + jwt['hubspot_token']['accessToken'] });
 	                resolve(jwt);
 	            }
 	            else {
@@ -18777,12 +18777,8 @@ webpackJsonp([1],[
 	        console.log('clearjwt called');
 	        return new Promise(function (resolve, reject) {
 	            _this.apiService.get(_this.HUBJWTPURGE)
-	                .map(function (res) {
-	                console.log('in hubLogout res: ', res);
-	                return res.json();
-	            })
 	                .subscribe(function (res) {
-	                console.log('statusCode in clearJWT: ', res.statusCode);
+	                console.log('res in clearJWT: ', res);
 	                if (res.statusCode === 202) {
 	                    resolve(res.statusCode);
 	                }

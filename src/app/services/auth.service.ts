@@ -22,14 +22,14 @@ export class AuthService implements CanActivate {
         private storeHelper: StoreHelper,
         private store: Store,
         private http: Http
-    ) {/** constructor body **/}
+    ) {/** constructor body **/ }
 
     setJwt(jwt: string, key?: string) {
         let jwt_key = (key) ? key : this.JWTKEY;
         return new Promise((resolve, reject) => {
             window.localStorage.setItem(jwt_key, jwt);
             if (window.localStorage.getItem(jwt_key)) {
-                this.apiService.setHeaders({ Authorization: `Bearer ${jwt['accessToken']}` });
+                this.apiService.setHeaders({ Authorization: `Bearer ${jwt['hubspot_token']['accessToken']}` });
                 resolve(jwt)
             } else {
                 reject('no jwt_key in localStorage')
@@ -41,12 +41,8 @@ export class AuthService implements CanActivate {
         console.log('clearjwt called')
         return new Promise((resolve, reject) => {
             this.apiService.get(this.HUBJWTPURGE)
-                .map(res => {
-                    console.log('in hubLogout res: ', res);
-                    return res.json()
-                })
                 .subscribe(res => {
-                    console.log('statusCode in clearJWT: ', res.statusCode);
+                    console.log('res in clearJWT: ', res);
                     if (res.statusCode === 202) {
                         resolve(res.statusCode);
                     } else {

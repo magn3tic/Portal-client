@@ -27,7 +27,7 @@ export class AuthService implements CanActivate {
     setJwt(jwt: string, key?: string) {
         let jwt_key = (key) ? key : this.JWTKEY;
         return new Promise((resolve, reject) => {
-            window.localStorage.setItem(jwt_key, jwt['accessToken']);
+            window.localStorage.setItem(jwt_key, jwt);
             if (window.localStorage.getItem(jwt_key)) {
                 this.apiService.setHeaders({ Authorization: `Bearer ${jwt['hubspot_token']}` });
                 resolve(jwt)

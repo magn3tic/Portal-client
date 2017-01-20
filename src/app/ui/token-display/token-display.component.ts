@@ -35,7 +35,7 @@ export class TokenDisplay implements OnInit {
   getToken() {
     this.apiService.get(this.HUBTOKENURL)
       .subscribe(token => {
-        // console.log('in getToken, token: ', token);
+        console.log('in getToken, token: ', token);
         this.authService.setJwt(token, this.JWTKEY)
           .then(localTokens => {
             this.storeHelper.update('user', { tokens: localTokens });

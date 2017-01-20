@@ -22,9 +22,7 @@ export class AuthService implements CanActivate {
         private storeHelper: StoreHelper,
         private store: Store,
         private http: Http
-    ) {
-        this.setJwt(window.localStorage.getItem(this.JWTKEY));
-    }
+    ) {/** constructor body **/}
 
     setJwt(jwt: string, key?: string) {
         let jwt_key = (key) ? key : this.JWTKEY;

@@ -18777,6 +18777,10 @@ webpackJsonp([1],[
 	        console.log('clearjwt called');
 	        return new Promise(function (resolve, reject) {
 	            _this.apiService.get(_this.HUBJWTPURGE)
+	                .map(function (res) {
+	                console.log('in hubLogout res: ', res);
+	                return res.json();
+	            })
 	                .subscribe(function (res) {
 	                console.log('statusCode in clearJWT: ', res.statusCode);
 	                if (res.statusCode === 202) {
@@ -18794,7 +18798,7 @@ webpackJsonp([1],[
 	        this.store.purge();
 	        this.clearJWT()
 	            .then(function (status) {
-	            console.log('status is: ', JSON.stringify(status));
+	            console.log('status is: ', status);
 	            window.localStorage.removeItem(_this.JWTKEY);
 	            if (status <= 202) {
 	                swal({

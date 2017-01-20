@@ -41,6 +41,10 @@ export class AuthService implements CanActivate {
         console.log('clearjwt called')
         return new Promise((resolve, reject) => {
             this.apiService.get(this.HUBJWTPURGE)
+                .map(res => {
+                    console.log('in hubLogout res: ', res);
+                    return res.json()
+                })
                 .subscribe(res => {
                     console.log('statusCode in clearJWT: ', res.statusCode);
                     if (res.statusCode === 202) {
@@ -57,7 +61,7 @@ export class AuthService implements CanActivate {
         this.store.purge();
         this.clearJWT()
             .then(status => {
-                console.log('status is: ', JSON.stringify(status));
+                console.log('status is: ', status);
                 window.localStorage.removeItem(this.JWTKEY);
                 if (status <= 202) {
                     swal({

@@ -26809,8 +26809,7 @@ webpackJsonp([1],[
 	            .map(this.checkForError)
 	            .catch(function (err) { return rxjs_1.Observable.throw(err); })
 	            .map(this.getJson)
-	            .do(function (json) { return console.log('ApiService.get json: ', json); })
-	            .map(function (json) { return json; });
+	            .map(function (json) { return console.log; });
 	    };
 	    ApiService.prototype.post = function (path, body) {
 	        return this.http.post(encodeURI("" + this.api_url + path), body, { headers: this.headers })

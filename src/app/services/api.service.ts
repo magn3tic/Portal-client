@@ -42,8 +42,7 @@ export class ApiService {
             .map(this.checkForError)
             .catch(err => Observable.throw(err))
             .map(this.getJson)
-            .do(json => console.log('ApiService.get json: ', json))
-            .map(json => json)
+            .map(json => console.log)
     }
 
     post(path: string, body?: any): Observable<any> {

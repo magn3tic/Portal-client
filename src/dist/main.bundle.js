@@ -18777,7 +18777,7 @@ webpackJsonp([1],[
 	        console.log('clearjwt called');
 	        return new Promise(function (resolve, reject) {
 	            _this.apiService.get(_this.HUBJWTPURGE)
-	                .map(function (res) {
+	                .subscribe(function (res) {
 	                console.log('statusCode in clearJWT: ', res.statusCode);
 	                if (res.statusCode === 202) {
 	                    resolve(res.statusCode);

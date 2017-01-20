@@ -41,7 +41,7 @@ export class AuthService implements CanActivate {
         console.log('clearjwt called')
         return new Promise((resolve, reject) => {
             this.apiService.get(this.HUBJWTPURGE)
-                .map(res => {
+                .subscribe(res => {
                     console.log('statusCode in clearJWT: ', res.statusCode);
                     if (res.statusCode === 202) {
                         resolve(res.statusCode);

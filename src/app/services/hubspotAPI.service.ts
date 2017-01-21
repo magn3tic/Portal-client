@@ -20,6 +20,7 @@ export class HubSpotAPIService {
   // hubspotAPI: string = CONFIG.hubspot.APIURL
   hubspotAPI: string = 'https://api.hubapi.com/';
   HUBSPOTPROXY: string = 'https://3af9c93a.ngrok.io/hubAPI';
+  CONTACTSPROXY: string = 'https://3af9c93a.ngrok.io/hubContacts';
   hubspotAPIKey: string = CONFIG.hubspot.APIKEY;
   // hubContacts: string = CONFIG.hubspot.allContacts;
   hubContacts: string = 'contacts/v1/lists/all/contacts/all/';
@@ -43,27 +44,28 @@ export class HubSpotAPIService {
     }
 
   hubSpotAPICall(body: any, typeOfCall?: string, options?: any, log?: any) {
-    if(log) {
-      console.log('HubSpotAPI.service.ts hubSpotAPICall called with typeOfCall: ', typeOfCall);
-    }
-    console.log('body: ', body);
-    let reqBody = body;
-    let nonOptionsQuery = {
-      endpoint: reqBody
-    }
+  //   if(log) {
+  //     console.log('HubSpotAPI.service.ts hubSpotAPICall called with typeOfCall: ', typeOfCall);
+  //   }
+  //   console.log('body: ', body);
+  //   let reqBody = body;
+  //   let nonOptionsQuery = {
+  //     endpoint: reqBody
+  //   }
 
-    let optionsQuery = {
-      endpoint: reqBody,
-      options
-    }
-    return this.apiService.post(`${this.HUBSPOTPROXY}`, body)
-      .map(this.checkForError)
-      .catch(err => Observable.throw(err))
-      .map(this.getJson)
-  }
-
+  //   let optionsQuery = {
+  //     endpoint: reqBody,
+  //     options
+  //   }
+  //   return this.apiService.post(`${this.HUBSPOTPROXY}`, body)
+  //     .map(this.checkForError)
+  //     .catch(err => Observable.throw(err))
+  //     .map(this.getJson)
+  // }
+return this.http.get(this.CONTACTSPROXY)
+.map(res => console.log('contacts proxy returned: ', JSON.parse(res['_body'])))
   // getCompanies() {
   //   return this.http.get();
-  // }
+  }
 
 }

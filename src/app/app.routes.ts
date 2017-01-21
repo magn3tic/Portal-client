@@ -24,7 +24,7 @@ export const rootRouterConfig: Routes = [
       {
         path: 'clients',
         component: ClientsDisplay,
-        canActivate: [ClientsService]
+        // canActivate: [ClientsService]
       },
       {
         path: 'clients/:companyId',

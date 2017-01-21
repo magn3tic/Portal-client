@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { CanActivate, Router } from '@angular/router';
 import { ApiService, StoreHelper } from './index';
@@ -14,6 +14,7 @@ export class AuthService implements CanActivate {
     JWTKEY: string = 'hubspot_token';
     // HUBAUTHAPI: string = CONFIG.hubspot.HUBAUTHAPI;
     HUBAUTHAPI: string = 'https://3af9c93a.ngrok.io/hubAuth';
+    HUBSPOTPROXY: string = 'https://3af9c93a.ngrok.io/hubAPI';
     HUBJWTPURGE: string = 'https://3af9c93a.ngrok.io/hubLogout';
     HUBTOKEN: string = null;
     constructor(
@@ -29,7 +30,7 @@ export class AuthService implements CanActivate {
         return new Promise((resolve, reject) => {
             window.localStorage.setItem(jwt_key, jwt);
             if (window.localStorage.getItem(jwt_key)) {
-                this.apiService.setHeaders({ Authorization: `Bearer ${jwt[jwt_key]}`});
+                this.apiService.setHeaders({ Authorization: `Bearer ${jwt[jwt_key]}` });
                 resolve(jwt)
             } else {
                 reject('no jwt_key in localStorage')
@@ -58,10 +59,10 @@ export class AuthService implements CanActivate {
     clearLocalStorage() {
         console.log('clearing localStorage');
         return new Promise((resolve, reject) => {
-            if(window.localStorage['hubspot_token']) {
+            if (window.localStorage['hubspot_token']) {
                 window.localStorage.clear()
                 resolve('cleared localStorage')
-            } else if(window.localStorage['hubspot_token'] === 'undefined'){
+            } else if (window.localStorage['hubspot_token'] === 'undefined') {
                 resolve('local storage already clear')
             } else {
                 reject('error clearing localStorage');
@@ -73,40 +74,17 @@ export class AuthService implements CanActivate {
         console.log('signout called');
         this.store.purge();
         return Promise.all([this.clearLocalStorage(), this.clearServerToken()])
-        .then(res => {
-            console.log('successful signout res: ', res);
-            this.router.navigate(['/']);
-        })
-        .catch(err => console.log('error in promise.all: ', err))
-        // this.clearServerToken()
-        //     .then(status => {
-        //         console.log('status is: ', status);
-        //         window.localStorage.removeItem(this.JWTKEY);
-        //         if (status <= 202) {
-        //             swal({
-        //                 title: 'Successfully Logged Out',
-        //                 text: 'Thanks for using our portal',
-        //                 timer: 200,
-        //             }).then(() => {
-
-        //             }, (dismiss) => {
-        //                 if (dismiss === 'timer') {
-        //                     console.log('I was closed by the timer')
-        //                 }
-        //             })
-        //             this.router.navigate(['/auth'])
-        //         } else {
-        //             console.error('status of clearServerToken: ', status);
-        //         }
-        //     })
-            .catch(err => console.log(err));
+            .then(res => {
+                console.log('successful signout res: ', res);
+                this.router.navigate(['/']);
+            })
+            .catch(err => console.log('error in promise.all: ', err))
     }
 
     // Set relevent user information to localStorage to submit author credentials with new scopes
     setUser(path) {
         return this.apiService.post(`/${path}`)
             .do(res => this.setJwt(res.token))
-            .do(res => this.storeHelper.update('user', res.data))
             .map(res => res.data);
     }
 
@@ -131,24 +109,27 @@ export class AuthService implements CanActivate {
 
 
     isAuthorized(): boolean {
-        return (window.localStorage.getItem(this.JWTKEY) == 'undefined' || window.localStorage.getItem(this.JWTKEY) == null) || !window.localStorage.getItem(this.JWTKEY).length ? false : true;
+        let userIsAuth;
+        switch (window.localStorage.getItem('hubspot_token')) {
+            case null:
+                userIsAuth = false;
+                break;
+            case 'undefined':
+                userIsAuth = false;
+            default:
+                userIsAuth = true;
+                break;
+        }
+        return userIsAuth;
     }
 
     canActivate(): boolean {
         const isAuth = this.isAuthorized();
-        console.log('isAuth: ', isAuth);
+        console.log('canActivate isAuth check: ', isAuth);
 
         if (!isAuth) {
             this.router.navigate(['', 'auth'])
         }
         return isAuth;
-    }
-
-    userIsSuper() {
-        return (this.store.getState().user['role'] === "super") ? true : false;
-    }
-
-    userIsAdmin() {
-        return (this.store.getState().user['role'] === "admin") ? true : false;
     }
 }

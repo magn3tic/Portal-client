@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService, StoreHelper, ClientsService, ScopeService } from '../../services';
+import {Router} from '@angular/router';
 
 var _ = require('lodash');
 declare var CONFIG;
@@ -20,34 +21,12 @@ export class Main implements OnInit{
     user_email: string;
     super: boolean;
     admin: boolean;
-    constructor(private storeHelper: StoreHelper, private clientsService: ClientsService, private authService: AuthService, private scopeService: ScopeService) { }
+    constructor(private storeHelper: StoreHelper, private clientsService: ClientsService, private authService: AuthService, private scopeService: ScopeService, private router: Router) { }
 
     ngOnInit() {
-        // const self = this;
-        // // get user on initial load
-        // this.authService.setUser(this.token_endpoint)
-        // .subscribe(res => {
-        //     this.user_email = res.email;
-        //     this.super = this.authService.userIsSuper();
-        //     this.admin = this.authService.userIsAdmin();
-        //     this.storeHelper.update('user', res);
-        // });
-
-        // get clients on initial load
-        // this.clientsService.fetchDeals(this.hubspotAPIAllDeals, 'allDeals', 'includeAssociations=true&limit=250&properties=stage')
-        // this.clientsService.fetchCompanies();
-        // .map(res=> res.json())
-        // .subscribe(clients => {
-        //     console.log('get all companies: ', clients);
-        //     let tempCompanyIdArr = [];
-        //     clients.forEach(client => tempCompanyIdArr.push(client));
-        // })
-
-        // get scope object on initial load
-        // this.scopeService.getScope();
-        // changed for https requirement of gh-pages... our api is http.
-        // .subscribe(res=> this.storeHelper.update('scope', res));
-
+        if(this.authService.isAuthorized()) {
+            this.router.navigate(['home']);
+        }
     }
 
     logout() {

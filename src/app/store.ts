@@ -9,7 +9,9 @@ export interface State {
 }
 
 const defaultState: State = {
-    user: {},
+    user: {
+        loggedIn: false
+    },
     scope: {},
     clients: []
 }

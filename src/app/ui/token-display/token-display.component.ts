@@ -29,8 +29,11 @@ export class TokenDisplay implements OnInit {
   ) {/** constructor body **/ }
 
   ngOnInit() {
+    if (this.authService.isAuthorized()) {
+      this.router.navigate(['home']);
+    }
     // Get and set JWT on init
-    console.log('ngOnInit running JWTKEY: ', this.JWTKEY, ' HUBTOKENURL: ', this.HUBTOKENURL);
+    // console.log('ngOnInit running JWTKEY: ', this.JWTKEY, ' HUBTOKENURL: ', this.HUBTOKENURL);
     this.getToken();
   }
 
@@ -38,16 +41,16 @@ export class TokenDisplay implements OnInit {
     this.apiService.get(this.HUBTOKENURL)
       .subscribe(res => {
         let resBody = JSON.parse(res._body);
-        console.log('get token res: ', resBody);
+        // console.log('get token res: ', resBody);
         // console.log('res tokens: ', JSON.parse(res._body));
-        this.storeHelper.update('user', { tokens: resBody });
+        this.storeHelper.update('user', { tokens: resBody, loggedIn: true });
         this.authService.setJwt(resBody.accessToken, this.JWTKEY)
           .then(localTokens => {
-            this.authService.setJwt(resBody.refreshToken, this.JWTREFRESH).then(()=> {
+            this.authService.setJwt(resBody.refreshToken, this.JWTREFRESH).then(() => {
               this.router.navigate(['/home']);
             })
-            // .then(jwt=> console.log('jwt: ', jwt))
-            .catch(err => console.log(err))
+              // .then(jwt=> console.log('jwt: ', jwt))
+              .catch(err => console.log(err))
           })
           .catch(err => console.log(err))
       })

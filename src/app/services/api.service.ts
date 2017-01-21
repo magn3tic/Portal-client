@@ -11,7 +11,7 @@ export class ApiService {
     headers: Headers = new Headers({
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        Authorization: window.localStorage['hubspot_token']
+        Authorization: 'Bearer ' + window.localStorage.getItem('hubspot_token')
     });
 
     api_url: string = CONFIG.API_URL;
@@ -42,9 +42,9 @@ export class ApiService {
             .map(this.checkForError)
             .catch(err => Observable.throw(err))
             .map(res => {
-                console.log('ApiService.get res: ', res);
+                // console.log('ApiService.get res: ', res);
                 if(res.status >= 200 && res.status < 300) {
-                    console.log('res.status ok: ', res.status);
+                    // console.log('res.status ok: ', res.status);
                     return res;
                 } else {
                   return this.getJson;
@@ -53,7 +53,7 @@ export class ApiService {
     }
 
     post(path: string, body?: any): Observable<any> {
-        return this.http.post(encodeURI(`${this.api_url}${path}`), body, { headers: this.headers })
+        return this.http.post(encodeURI(`${path}`), body, { headers: this.headers })
             .map(this.checkForError)
             .catch(err => Observable.throw(err))
             .map(this.getJson)

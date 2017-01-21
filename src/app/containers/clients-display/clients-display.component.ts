@@ -1,28 +1,28 @@
 import {Component, OnInit} from '@angular/core';
-import { ApiService, StoreHelper, AuthService, ClientsService } from '../../services'
+import { ApiService, StoreHelper, AuthService, ClientsService, HubSpotAPIService } from '../../services'
 import { Store } from '../../store';
+import * as _ from 'lodash';
 declare var CONFIG: any;
-var _ = require('lodash');
 
 @Component({
   selector: 'clients-display',
   styles: [require('./clients-display.component.css')],
   template: require('./clients-display.component.html')
 })
+
 export class ClientsDisplay implements OnInit{
 
-  constructor(private clientsService: ClientsService, private apiService: ApiService, private storeHelper: StoreHelper, private authService: AuthService, private store: Store) {
+  constructor(private clientsService: ClientsService, private apiService: ApiService, private storeHelper: StoreHelper, private authService: AuthService, private store: Store, private hubspotAPIService: HubSpotAPIService) {}
 
-  }
-  clients;
-  input:any;
-  
+  HUBAPI: string = CONFIG.hubspot.APIURL;
+  HUBCONTACTS: string = CONFIG.hubspot.endpoints.allContacts;
+
   ngOnInit() {
     this.getClients();
   }
 
   getClients() {
-    this.clients = this.store.getState()['clients'][0];
-    console.log('in clients display this.clients: ', this.clients);
+    this.hubspotAPIService.hubSpotAPICall(this.HUBCONTACTS)
+    .subscribe(res => console.log('getClients() res: ', res));
   }
 }

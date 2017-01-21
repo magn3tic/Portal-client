@@ -11,13 +11,18 @@ declare var CONFIG;
 export class HubSpotAPIService {
   headers: Headers = new Headers({
         'Content-Type': 'application/json',
-        Accept: 'application/json'
+        Accept: 'application/json',
+        Authorization: `Bearer ${window.localStorage.getItem('hubspot_token')}`
     });
   
   companiesAPI: string = CONFIG.hubspot.endpoints.getCompanies;
   magHttpsProxy: string = CONFIG.magneticProxy;
-  hubspotAPIEndpoint: string = CONFIG.hubspot.APIURL
+  // hubspotAPI: string = CONFIG.hubspot.APIURL
+  hubspotAPI: string = 'https://api.hubapi.com/';
+  HUBSPOTPROXY: string = 'https://3af9c93a.ngrok.io/hubAPI';
   hubspotAPIKey: string = CONFIG.hubspot.APIKEY;
+  // hubContacts: string = CONFIG.hubspot.allContacts;
+  hubContacts: string = 'contacts/v1/lists/all/contacts/all/';
   constructor(private apiService: ApiService, private storeHelper: StoreHelper, private store: Store, private http: Http) {}
 
   private getJson(response: Response) {
@@ -41,23 +46,24 @@ export class HubSpotAPIService {
     if(log) {
       console.log('HubSpotAPI.service.ts hubSpotAPICall called with typeOfCall: ', typeOfCall);
     }
+    console.log('body: ', body);
     let reqBody = body;
     let nonOptionsQuery = {
       endpoint: reqBody
     }
-    let reqOptions = options;
+
     let optionsQuery = {
       endpoint: reqBody,
-      options: reqOptions
+      options
     }
-    return this.http.post(`${this.magHttpsProxy}`, (reqOptions && reqOptions.length > 0) ? JSON.stringify(optionsQuery) : JSON.stringify(nonOptionsQuery), { headers: this.headers })
+    return this.apiService.post(`${this.HUBSPOTPROXY}`, body)
       .map(this.checkForError)
       .catch(err => Observable.throw(err))
       .map(this.getJson)
   }
 
-  getCompanies() {
-    return this.http.get(this.magHttpsProxy);
-  }
+  // getCompanies() {
+  //   return this.http.get();
+  // }
 
 }

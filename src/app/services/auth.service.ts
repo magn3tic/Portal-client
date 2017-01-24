@@ -13,9 +13,9 @@ export class AuthService implements CanActivate {
     // JWTKEY: string = CONFIG.hubspot.JWTKEY;
     JWTKEY: string = 'hubspot_token';
     // HUBAUTHAPI: string = CONFIG.hubspot.HUBAUTHAPI;
-    HUBAUTHAPI: string = 'https://3af9c93a.ngrok.io/hubAuth';
-    HUBSPOTPROXY: string = 'https://3af9c93a.ngrok.io/hubAPI';
-    HUBJWTPURGE: string = 'https://3af9c93a.ngrok.io/hubLogout';
+    HUBAUTHAPI: string = 'https://18e70e65.ngrok.io/hubAuth';
+    HUBSPOTPROXY: string = 'https://18e70e65.ngrok.io/hubAPI';
+    HUBJWTPURGE: string = 'https://18e70e65.ngrok.io/hubLogout';
     HUBTOKEN: string = null;
     constructor(
         private router: Router,

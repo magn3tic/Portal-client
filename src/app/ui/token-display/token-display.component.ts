@@ -18,7 +18,7 @@ export class TokenDisplay implements OnInit {
   JWTKEY: string = 'hubspot_token';
   JWTREFRESH: string = 'refresh_token';
   // HUBTOKENURL: string = CONFIG.hubspot.HUBTOKENURL;
-  HUBTOKENURL: string = 'https://3af9c93a.ngrok.io/hubToken';
+  HUBTOKENURL: string = 'https://18e70e65.ngrok.io/hubToken';
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -54,10 +54,6 @@ export class TokenDisplay implements OnInit {
           })
           .catch(err => console.log(err))
       })
-
-    // .map(token => this.storeHelper.add('user-acccess-jwt', token['accessToken']))
-    // .do(token => this.storeHelper.add('user-refresh-jwt', token['refreshToken']));
-    // .map(token => this.storeHelper.update('user-refresh-jwt', token.refreshToken));
   }
 
 };

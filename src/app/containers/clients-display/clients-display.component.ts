@@ -16,13 +16,17 @@ export class ClientsDisplay implements OnInit{
 
   HUBAPI: string = CONFIG.hubspot.APIURL;
   HUBCONTACTS: string = CONFIG.hubspot.endpoints.allContacts;
-
+  clients: Array<Object> = [];
   ngOnInit() {
     this.getClients();
   }
 
   getClients() {
     this.hubspotAPIService.hubSpotAPICall(this.HUBCONTACTS)
-    .subscribe(res => console.log('getClients() res: ', res));
+    .subscribe(res => {
+      this.storeHelper.update('clients', res)
+      this.clients = this.store.getState().clients;
+      console.log('this.clients: ', this.clients);
+    });
   }
 }

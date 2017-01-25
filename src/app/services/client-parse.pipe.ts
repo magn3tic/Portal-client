@@ -11,12 +11,12 @@ export class ClientParsePipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer, private storeHelper: StoreHelper, private store: Store) {}
   client: Object;
   transform(html: string) {
-    this.client = (this.store.getState()['activeClient']) ? this.store.getState()['activeClient'][0] : swal('No Client!', 'omg', 'error');
+    this.client = (this.store.getState()['activeClient']) ? this.store.getState()['activeClient'] : swal('No Client!', 'omg', 'error');
     console.log('in html parse pipe, client is: ', this.client); 
     let subItem = _.replace(
       html, 
       "%%client%%",
-      `${this.client['properties']['name']['value']}` 
+      `${this.client['properties']['company']['value']}`
       );
     return this.sanitizer.bypassSecurityTrustHtml(subItem);
   }

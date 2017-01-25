@@ -6,6 +6,8 @@ export interface State {
     user: Object;
     scope: Object;
     clients: Array<any>;
+    activeClient: Object;
+    deals: Array<any>;
 }
 
 const defaultState: State = {
@@ -13,7 +15,9 @@ const defaultState: State = {
         loggedIn: false
     },
     scope: {},
-    clients: []
+    clients: [],
+    activeClient: {},
+    deals: []
 }
 
 const _store = new BehaviorSubject<State>(defaultState);

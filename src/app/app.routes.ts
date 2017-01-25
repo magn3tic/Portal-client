@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { Home, ClientDetails, PageNotFound, TokenDisplay } from './ui';
-import { Main, Auth, UserProfile, ScopeDisplay, ClientsDisplay } from './containers';
+import { Main, Auth, UserProfile, ScopeDisplay, ClientsDisplay, DealsDisplay } from './containers';
 import { AuthService, IsSuper, ClientsService } from './services';
 
 export const rootRouterConfig: Routes = [
@@ -14,7 +14,7 @@ export const rootRouterConfig: Routes = [
         component: Home
       },
       {
-        path: 'scope/:companyId',
+        path: 'scope',
         component: ScopeDisplay
       },
       {
@@ -27,7 +27,12 @@ export const rootRouterConfig: Routes = [
         // canActivate: [ClientsService]
       },
       {
-        path: 'clients/:companyId',
+        path: 'deals',
+        component: DealsDisplay,
+        // canActivate: [ClientsService]
+      },
+      {
+        path: 'clients/:client',
         component: ClientDetails
       }
     ]

@@ -1,0 +1,20 @@
+<h1>Deals</h1>
+<p># of deals: {{deals.length}}</p>
+<input type="text" [(ngModel)]="input" />
+<!--<div *ngFor="let client of deals; let i = index; | searchFilterPipe:input">-->
+<div *ngFor="let deal of deals; let i = index;">
+  <div class="media">
+    {{i + 1}}
+    <!--<img *ngIf="deals['identity-profiles'][0]['identities'][0].value" class="media-object" alt="Generic placeholder image" gravatar
+      [email]="deals['identity-profiles'][0]['identities'][0].value" [size]="150">-->
+    <div class="media-body">
+      <h5 (click)="getDeal(deal.dealId)" *ngIf="deal.dealId" class="mt-0">
+        {{deal.dealId}}
+      </h5>
+      <a [routerLink]="[deals]">
+        <h5 (click)="selectDeal(deal)">View More</h5>
+      </a>
+      <!--<p><a [href]="deal['profile-url']" target="_blank">Hubspot Profile</a></p>-->
+    </div>
+  </div>
+</div>

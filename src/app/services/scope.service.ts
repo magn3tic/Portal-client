@@ -54,13 +54,17 @@ export class ScopeService {
             .subscribe(res => console.log('server response: ', res))
     }
 
-    getScope() : Observable<any> {
+    getScope() : Promise<any> {
         console.log('in get scope api being used is: ', this.newGHPagesAPI_URL);
+        console.log('in getscope this.scope: ', this.scope);
+        
+        
         // changed for https requirement of gh-pages... our api is http.
-        return this.http.get(this.newGHPagesAPI_URL + '?o', {headers: this.headers})
-            .map(this.checkForError)
-            .catch(err => Observable.throw(err))
-            .map(this.getJson)
+        // return this.http.get(this.newGHPagesAPI_URL + '?o', {headers: this.headers})
+        //     .map(this.checkForError)
+        //     .catch(err => Observable.throw(err))
+        //     .map(this.getJson)
+        return Promise.resolve(this.scope);
     }
 
     cleanScope(rawScope, next) {

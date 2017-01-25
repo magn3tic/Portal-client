@@ -1,0 +1,1 @@
+export {DealsDisplay} from './deals-display.component';

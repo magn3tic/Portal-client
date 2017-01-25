@@ -22,19 +22,16 @@ export class ClientDetails implements OnInit{
   client: Object;
   
   ngOnInit() {
-    this.clients = this.store.getState()['clients'];
-    this.sub = this.route.params.subscribe(params => {
-       this.id = params['companyId']; // (+) converts string 'id' to a number
-        this.findClient(this.id);
-    });
+    this.client = this.store.getState()['activeClient'];
+    console.log('active client: ', this.client);
   }
 
-  findClient(companyID) {
-    let self = this;
-  //get client through route params
-  this.client = (companyID) ? _.find(this.clients[0], {companyId: parseInt(companyID)}) : self.router.navigate(['clients'])
-  console.log('this.client: ', this.client);
-  }
+  // findClient(companyID) {
+  //   let self = this;
+  // //get client through route params
+  // this.client = (companyID) ? _.find(this.clients[0], {companyId: parseInt(companyID)}) : self.router.navigate(['clients'])
+  // console.log('this.client: ', this.client);
+  // }
 
   goBack(): void {
       this.location.back();

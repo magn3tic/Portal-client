@@ -18,7 +18,13 @@ export class ClientsDisplay implements OnInit{
   HUBCONTACTS: string = CONFIG.hubspot.endpoints.allContacts;
   clients: Array<Object> = [];
   ngOnInit() {
-    this.getClients();
+    console.log('clients.length at ng init: ', this.store.getState().clients.length);
+    // Check store for clients before making api call
+    if(this.store.getState().clients.length < 1) {
+      this.getClients();
+    } else {
+      this.getClientsFromStore();
+    }
   }
 
   getClients() {
@@ -28,5 +34,15 @@ export class ClientsDisplay implements OnInit{
       this.clients = this.store.getState().clients;
       console.log('this.clients: ', this.clients);
     });
+  }
+
+  getClientsFromStore() {
+    console.log('clients already in store. getting them from store: ');
+    this.clients = this.store.getState().clients;
+  }
+
+  selectClient(client) {
+    console.log('selected client', client);
+    this.storeHelper.update('activeClient', client);
   }
 }

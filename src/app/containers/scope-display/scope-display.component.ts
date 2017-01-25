@@ -50,39 +50,30 @@ export class ScopeDisplay {
     }
 
     ngOnInit() {
-        this.setScope();
-        this.clients = this.store.getState().clients;
-        this.sub = this.route.params.subscribe(params => {
-            this.id = params['companyId']; // (+) converts string 'id' to a number
-            this.findClient(this.id);
+        this.setScope()
+        .then(scopeObject => {
+            this.scope = scopeObject
+            console.log('scope-display nginit this.scope: ', this.scope);
         });
+        // this.clients = this.store.getState().clients;
+        // this.sub = this.route.params.subscribe(params => {
+        //     this.id = params['companyId']; // (+) converts string 'id' to a number
+        //     this.findClient(this.id);
+        // });
+        this.client = this.store.getState()['activeClient'];
+        console.log('scope-display nginit this.client: ', this.client);
     }
 
-    findClient(companyID) {
-        let self = this;
-        //get client through route params
-        this.client = (companyID) ? _.find(this.clients[0], { companyId: parseInt(companyID) }) : self.router.navigate(['clients'])
-        if(!this.store.getState['activeClient']) {
-            this.storeHelper.add('activeClient', this.client);
-        } else {
-            this.storeHelper.update('activeClient', this.client);
-        }
-    }
-
-    private setScope() {
+    private setScope(): Promise <any> {
         var self = this;
-        this.scopeService.getScope()
-            // changed for https requirement of gh-pages... our api is http.
-            .subscribe((res) => {
-                this.scopeService.cleanScope(res, function (res) {
-                    if(!self.store.getState()['scope']) {
-                        self.storeHelper.add('scope', res);
-                    } else {
-                        self.storeHelper.update('scope', res);
-                    }
-                    self.scope = self.store.getState()['scope'];
-                    console.log('self.scope: ', self.scope);
-                })
+        return this.scopeService.getScope()
+            .then(scopeObject => {
+                if(scopeObject) {
+                    console.log('scopeObject in setScope: ', scopeObject);
+                    return Promise.resolve(scopeObject);
+                } else {
+                    return Promise.reject('no scopeObject returned from scopeService.getScope()');
+                }
             });
     }
 

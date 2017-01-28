@@ -18,7 +18,7 @@ export class TokenDisplay implements OnInit {
   JWTKEY: string = 'hubspot_token';
   JWTREFRESH: string = 'refresh_token';
   // HUBTOKENURL: string = CONFIG.hubspot.HUBTOKENURL;
-  HUBTOKENURL: string = 'https://18e70e65.ngrok.io/hubToken';
+  HUBTOKENURL: string = 'https://2b574bf1.ngrok.io/hubToken';
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -30,29 +30,45 @@ export class TokenDisplay implements OnInit {
 
   ngOnInit() {
     if (this.authService.isAuthorized()) {
-      this.router.navigate(['home']);
+      this.router.navigate(['profile']);
     }
     // Get and set JWT on init
     // console.log('ngOnInit running JWTKEY: ', this.JWTKEY, ' HUBTOKENURL: ', this.HUBTOKENURL);
-    this.getToken();
+    this.getToken()
+    .then(token => this.setUser(JSON.stringify({token})))
+    .catch(err => console.log('getToken err: ', err))
   }
 
   getToken() {
-    this.apiService.get(this.HUBTOKENURL)
-      .subscribe(res => {
-        let resBody = JSON.parse(res._body);
-        // console.log('get token res: ', resBody);
-        // console.log('res tokens: ', JSON.parse(res._body));
-        this.storeHelper.update('user', { tokens: resBody, loggedIn: true });
-        this.authService.setJwt(resBody.accessToken, this.JWTKEY)
-          .then(localTokens => {
-            this.authService.setJwt(resBody.refreshToken, this.JWTREFRESH).then(() => {
-              this.router.navigate(['/home']);
+
+    return new Promise((resolve, reject) => {
+      this.apiService.get(this.HUBTOKENURL)
+        .subscribe(res => {
+          let resBody = JSON.parse(res._body);
+          // console.log('get token res: ', resBody);
+          // console.log('res tokens: ', JSON.parse(res._body));
+          this.authService.setJwt(resBody.accessToken, this.JWTKEY)
+            .then(localTokens => {
+              this.authService.setJwt(resBody.refreshToken, this.JWTREFRESH).then(() => {
+                resolve(resBody.accessToken)
+                this.router.navigate(['/profile']);
+              })
+                // .then(jwt=> console.log('jwt: ', jwt))
+                .catch(err => {
+                console.log(err)
+                reject(err)
+              })
             })
-              // .then(jwt=> console.log('jwt: ', jwt))
-              .catch(err => console.log(err))
-          })
-          .catch(err => console.log(err))
+            .catch(err => console.log(err))
+        })
+      })
+  }
+
+  setUser(token) {
+    this.authService.getUser(token)
+        .subscribe(user => {
+          let userObj = JSON.parse(user);
+          this.storeHelper.update('user', {data: userObj, loggedIn: true})
       })
   }
 

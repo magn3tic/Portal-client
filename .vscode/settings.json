@@ -1,5 +1,6 @@
 // Place your settings in this file to overwrite default and user settings.
 {
     "editor.wrappingColumn": 0,
-    "typescript.check.workspaceVersion": false
-}
+    "typescript.check.workspaceVersion": false,
+    "vsicons.presets.angular": true
+  }

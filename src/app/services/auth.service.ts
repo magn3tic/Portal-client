@@ -13,9 +13,10 @@ export class AuthService implements CanActivate {
     // JWTKEY: string = CONFIG.hubspot.JWTKEY;
     JWTKEY: string = 'hubspot_token';
     // HUBAUTHAPI: string = CONFIG.hubspot.HUBAUTHAPI;
-    HUBAUTHAPI: string = 'https://18e70e65.ngrok.io/hubAuth';
-    HUBSPOTPROXY: string = 'https://18e70e65.ngrok.io/hubAPI';
-    HUBJWTPURGE: string = 'https://18e70e65.ngrok.io/hubLogout';
+    HUBAUTHAPI: string = 'https://2b574bf1.ngrok.io/hubAuth';
+    HUBSPOTPROXY: string = 'https://2b574bf1.ngrok.io/hubAPI';
+    HUBJWTPURGE: string = 'https://2b574bf1.ngrok.io/hubLogout';
+    HUBME: string = 'https://2b574bf1.ngrok.io/hubMe';
     HUBTOKEN: string = null;
     constructor(
         private router: Router,
@@ -81,11 +82,21 @@ export class AuthService implements CanActivate {
             .catch(err => console.log('error in promise.all: ', err))
     }
 
-    // Set relevent user information to localStorage to submit author credentials with new scopes
+    // Set relevent user information (access_token and refresh_token) to localStorage to submit author credentials with new scopes
     setUser(path) {
         return this.apiService.post(`/${path}`)
             .do(res => this.setJwt(res.token))
             .map(res => res.data);
+    }
+
+    // Get user information (hubspot user object) from hubspot. Different from setUser.
+    getUser(token) {
+        console.log('get user called with token: ', token);
+        return this.apiService.post(this.HUBME, token)
+            .do(res => {
+                console.log('getUser res: ', res)
+            })
+            .map(res => res)
     }
 
     authenticate() {

@@ -17,6 +17,7 @@ export class ClientsDisplay implements OnInit{
   HUBAPI: string = CONFIG.hubspot.APIURL;
   HUBCONTACTS: string = CONFIG.hubspot.endpoints.allContacts;
   clients: Array<Object> = [];
+  stringFilter: Object = '';
   ngOnInit() {
     console.log('clients.length at ng init: ', this.store.getState().clients.length);
     // Check store for clients before making api call

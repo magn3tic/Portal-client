@@ -19,10 +19,11 @@ export class HubSpotAPIService {
   magHttpsProxy: string = CONFIG.magneticProxy;
   // hubspotAPI: string = CONFIG.hubspot.APIURL
   hubspotAPI: string = 'https://api.hubapi.com/';
-  HUBSPOTPROXY: string = 'https://18e70e65.ngrok.io/hubAPI';
-  CONTACTSPROXY: string = 'https://18e70e65.ngrok.io/hubContacts';
-  HUBDEALS: string = 'https://18e70e65.ngrok.io/hubDeals';
-  HUBDEAL: string = 'https://18e70e65.ngrok.io/hubDeal';
+  HUBSPOTPROXY: string = 'https://2b574bf1.ngrok.io/hubAPI';
+  CONTACTSPROXY: string = 'https://2b574bf1.ngrok.io/hubContacts';
+  HUBDEALS: string = 'https://2b574bf1.ngrok.io/hubDeals';
+  HUBDEAL: string = 'https://2b574bf1.ngrok.io/hubDeal';
+  HUBCOMPANIES: string = 'https://2b574bf1.ngrok.io/hubCompanies';
   hubspotAPIKey: string = CONFIG.hubspot.APIKEY;
   // hubContacts: string = CONFIG.hubspot.allContacts;
   hubContacts: string = 'contacts/v1/lists/all/contacts/all/';
@@ -78,14 +79,35 @@ export class HubSpotAPIService {
       .map((dealsObj) => _.flatten(dealsObj.deals))
   }
 
+
   hubspotDealCall(body: any, options?: Object) {
     return this.http.post(this.HUBDEAL + '/' + body, this.headers)
       .map(res => JSON.parse(res['_body']))
-      // .map((rawDealsObj) => {
-      //   console.log('rawDealsObj: ', rawDealsObj);
-      //   return rawDealsObj[0];
-      // })
-      // .map((dealsObj) => _.flatten(dealsObj.deals))
+    // .map((rawDealsObj) => {
+    //   console.log('rawDealsObj: ', rawDealsObj);
+    //   return rawDealsObj[0];
+    // })
+    // .map((dealsObj) => _.flatten(dealsObj.deals))
   }
 
+  hubSpotCompaniesCall(body: any, options?: Object) {
+
+    if (options) {
+
+    }
+
+    return this.http.post(this.HUBCOMPANIES, this.headers)
+      .map(res => JSON.parse(res['_body']))
+      .map((companiesData) => {
+        let tempCompaniesArr = [];
+        const flatten = arr => arr.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
+        _.forEach(companiesData, (val, key) => {
+          tempCompaniesArr.push(val.companies)
+        })
+        tempCompaniesArr = flatten(tempCompaniesArr);
+        // console.log('tempCompaniesArr: ', tempCompaniesArr);
+        // this.storeHelper.update('companies', tempCompaniesArr);
+        return companiesData;
+      })
+  }
 }

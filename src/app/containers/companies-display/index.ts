@@ -1,0 +1,1 @@
+export {CompaniesDisplay} from './companies-display.component';

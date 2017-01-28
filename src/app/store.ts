@@ -8,16 +8,20 @@ export interface State {
     clients: Array<any>;
     activeClient: Object;
     deals: Array<any>;
+    companies: Array<any>;
 }
 
 const defaultState: State = {
     user: {
-        loggedIn: false
+        loggedIn: false,
+        tokens: {},
+        data: {}
     },
     scope: {},
     clients: [],
     activeClient: {},
-    deals: []
+    deals: [],
+    companies: []
 }
 
 const _store = new BehaviorSubject<State>(defaultState);

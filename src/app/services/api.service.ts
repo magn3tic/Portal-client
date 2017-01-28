@@ -53,6 +53,7 @@ export class ApiService {
     }
 
     post(path: string, body?: any): Observable<any> {
+        console.log('ApiService.post path: ', path, ' body: ', body);
         return this.http.post(encodeURI(`${path}`), body, { headers: this.headers })
             .map(this.checkForError)
             .catch(err => Observable.throw(err))

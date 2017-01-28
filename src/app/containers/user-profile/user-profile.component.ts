@@ -16,6 +16,7 @@ export class UserProfile implements OnInit {
     // This endpoint is what validates and returns a user via JWT
     token_endpoint: string = 'auth/token';
     me: any;
+    email: string = '';
     endpoint: string = 'users';
     super: boolean;
     clients: Array<any>;
@@ -27,25 +28,17 @@ export class UserProfile implements OnInit {
         if(!this.me) {
             console.log('this.me is empty');
         } else {
-            this.getMyClients(this.me.email);
+            this.getMyClients(this.me.user);
         }
     }
 
     getMe() {
-        // console.log('in profile ts this.store.getState().user: ', this.store.getState());
-        this.store.getState().user
-        if(!this.store.getState().user['email']) {
-            console.log('getstate.user is empty!');
-            this.authService.setUser(this.token_endpoint)
-            .subscribe(res=>this.storeHelper.update('user', res))
-        } else {
-            return this.store.getState().user;
-        }
+        return this.store.getState().user['data'];
     }
 
-    getMyClients(me) {
-        return this.clients = this.myClients.getClients(me);
-        // console.log('in profile this.clients: ', this.clients);
+    getMyClients(userEmail) {
+        console.log('in profile this.clients: ', this.store.getState().clients);
+        return this.store.getState().clients;
     }
 
     goBack(): void {

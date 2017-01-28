@@ -1,19 +1,17 @@
 <div class="col-md-6">
     <div class="card card-user">
-        <div class="image">
-            <img src="assets/img/background.jpg" alt="...">
-        </div>
+            <div class="image">
+            </div>
         <div class="content">
             <div class="author">
-                <img class="avatar border-white" src="assets/img/faces/face-2.jpg" alt="...">
-                <h4 class="title">{{me.email}}<br>
-                    <a href="#"><small>{{me.email}}</small></a>
+                <h4 class="title">{{me.user}}<br>
+                <img *ngIf="me.user" class="media-object" alt="Generic placeholder image" gravatar
+        [email]="me.user" [size]="515">
+                    <a href="#"><small>{{me.user}}</small></a>
                 </h4>
             </div>
             <p class="description text-center">
-                <!--<pre>
-                    {{me}}
-                </pre>-->
+                
             </p>
         </div>
         <hr>

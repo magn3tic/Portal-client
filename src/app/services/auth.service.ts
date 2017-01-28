@@ -13,10 +13,10 @@ export class AuthService implements CanActivate {
     // JWTKEY: string = CONFIG.hubspot.JWTKEY;
     JWTKEY: string = 'hubspot_token';
     // HUBAUTHAPI: string = CONFIG.hubspot.HUBAUTHAPI;
-    HUBAUTHAPI: string = 'https://2b574bf1.ngrok.io/hubAuth';
-    HUBSPOTPROXY: string = 'https://2b574bf1.ngrok.io/hubAPI';
-    HUBJWTPURGE: string = 'https://2b574bf1.ngrok.io/hubLogout';
-    HUBME: string = 'https://2b574bf1.ngrok.io/hubMe';
+    HUBAUTHAPI: string = 'https://c1aabba0.ngrok.io/hubAuth';
+    HUBSPOTPROXY: string = 'https://c1aabba0.ngrok.io/hubAPI';
+    HUBJWTPURGE: string = 'https://c1aabba0.ngrok.io/hubLogout';
+    HUBME: string = 'https://c1aabba0.ngrok.io/hubMe';
     HUBTOKEN: string = null;
     constructor(
         private router: Router,

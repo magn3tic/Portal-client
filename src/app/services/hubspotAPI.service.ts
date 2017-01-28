@@ -19,11 +19,11 @@ export class HubSpotAPIService {
   magHttpsProxy: string = CONFIG.magneticProxy;
   // hubspotAPI: string = CONFIG.hubspot.APIURL
   hubspotAPI: string = 'https://api.hubapi.com/';
-  HUBSPOTPROXY: string = 'https://2b574bf1.ngrok.io/hubAPI';
-  CONTACTSPROXY: string = 'https://2b574bf1.ngrok.io/hubContacts';
-  HUBDEALS: string = 'https://2b574bf1.ngrok.io/hubDeals';
-  HUBDEAL: string = 'https://2b574bf1.ngrok.io/hubDeal';
-  HUBCOMPANIES: string = 'https://2b574bf1.ngrok.io/hubCompanies';
+  HUBSPOTPROXY: string = 'https://c1aabba0.ngrok.io/hubAPI';
+  CONTACTSPROXY: string = 'https://c1aabba0.ngrok.io/hubContacts';
+  HUBDEALS: string = 'https://c1aabba0.ngrok.io/hubDeals';
+  HUBDEAL: string = 'https://c1aabba0.ngrok.io/hubDeal';
+  HUBCOMPANIES: string = 'https://c1aabba0.ngrok.io/hubCompanies';
   hubspotAPIKey: string = CONFIG.hubspot.APIKEY;
   // hubContacts: string = CONFIG.hubspot.allContacts;
   hubContacts: string = 'contacts/v1/lists/all/contacts/all/';

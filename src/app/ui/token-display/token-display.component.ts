@@ -18,7 +18,7 @@ export class TokenDisplay implements OnInit {
   JWTKEY: string = 'hubspot_token';
   JWTREFRESH: string = 'refresh_token';
   // HUBTOKENURL: string = CONFIG.hubspot.HUBTOKENURL;
-  HUBTOKENURL: string = 'https://2b574bf1.ngrok.io/hubToken';
+  HUBTOKENURL: string = 'https://c1aabba0.ngrok.io/hubToken';
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,

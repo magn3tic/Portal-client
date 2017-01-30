@@ -50,6 +50,6 @@ export class CompaniesDisplay implements OnInit{
 
   selectCompany(company) {
     console.log('selected company', company);
-    this.storeHelper.update('activecompany', company);
+    this.storeHelper.update('activeCompany', company);
   }
 }

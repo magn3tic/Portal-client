@@ -9,29 +9,22 @@ var _ = require('lodash');
 declare var swal;
 
 @Component({
-  selector: 'client-details',
-  styles: [require('./client-details.component.css')],
-  template: require('./client-details.component.html')
+  selector: 'company-details',
+  styles: [require('./company-details.component.css')],
+  template: require('./company-details.component.html')
 })
-export class ClientDetails implements OnInit{
+export class CompanyDetails implements OnInit{
 
   constructor(private location: Location, private router: Router, private route: ActivatedRoute, private apiService: ApiService, private storeHelper: StoreHelper, private authService: AuthService, private store: Store) {}
   id: number;
   private sub: any;
-  clients: Array<any>;
-  client: Object;
+  companies: Array<any>;
+  company: Object;
   
   ngOnInit() {
-    this.client = this.store.getState()['activeClient'];
-    console.log('active client: ', this.client);
+    this.company = this.store.getState()['activeCompany'];
+    console.log('active company: ', this.company);
   }
-
-  // findClient(companyID) {
-  //   let self = this;
-  // //get client through route params
-  // this.client = (companyID) ? _.find(this.clients[0], {companyId: parseInt(companyID)}) : self.router.navigate(['clients'])
-  // console.log('this.client: ', this.client);
-  // }
 
   goBack(): void {
       this.location.back();

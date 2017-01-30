@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { Home, ClientDetails, PageNotFound, TokenDisplay } from './ui';
+import { Home, CompanyDetails, PageNotFound, TokenDisplay } from './ui';
 import { Main, Auth, UserProfile, ScopeDisplay, ClientsDisplay, DealsDisplay, CompaniesDisplay } from './containers';
 import { AuthService, IsSuper, ClientsService } from './services';
 
@@ -32,8 +32,8 @@ export const rootRouterConfig: Routes = [
         // canActivate: [ClientsService]
       },
       {
-        path: 'clients/:client',
-        component: ClientDetails
+        path: 'company',
+        component: CompanyDetails
       },
       {
         path: 'companies',

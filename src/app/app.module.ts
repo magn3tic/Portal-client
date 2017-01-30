@@ -13,12 +13,12 @@ import {Ng2FilterPipeModule} from 'ng2-filter-pipe';
 // Experimental End
 
 import {providers} from './index';
-import {Test, PageNotFound, Home, ClientDetails, TokenDisplay} from './ui';
+import {Test, PageNotFound, Home, CompanyDetails, TokenDisplay} from './ui';
 import {Main, Auth, UserProfile, ScopeDisplay, ClientsDisplay, DealsDisplay, CompaniesDisplay} from './containers';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
 @NgModule({
-  declarations: [Test, PageNotFound, AppComponent, Home, ClientDetails, TokenDisplay, Main, Auth, UserProfile, ScopeDisplay, ClientsDisplay, CompaniesDisplay, DealsDisplay, KeysPipe, ValuesPipe, QuantityParsePipe, ClientParsePipe, SearchFilterPipe, Gravatar],
+  declarations: [Test, PageNotFound, AppComponent, Home, CompanyDetails, TokenDisplay, Main, Auth, UserProfile, ScopeDisplay, ClientsDisplay, CompaniesDisplay, DealsDisplay, KeysPipe, ValuesPipe, QuantityParsePipe, ClientParsePipe, SearchFilterPipe, Gravatar],
   imports     : [BrowserModule, FormsModule, HttpModule, RouterModule.forRoot(rootRouterConfig), ReactiveFormsModule, Ng2FilterPipeModule],
   providers   : [ApiService, MyClients, ClientsService, HubSpotAPIService, ...providers, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap   : [AppComponent]

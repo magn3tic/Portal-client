@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <h1 class="text-center">Client: {{client.properties.firstname.value}}</h1>
+  <h1 *ngIf="company" class="text-center">Company: {{company.properties.name.value}}</h1>
   <div id="result-container" class="col-md-6">
     <h1 class="text-center">Result Scope</h1>
     <div *ngFor="let phase of scope">

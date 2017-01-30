@@ -1,14 +1,16 @@
 <h1>Companies</h1>
 <p># of companies: {{companies.length}}</p>
 <input type="text" [(ngModel)]="input" />
-<!--<div *ngFor="let client of companies; let i = index; | searchFilterPipe:input">-->
-<div *ngFor="let company of companies; let i = index;">
+<div *ngFor="let company of companies | searchFilterPipe:input">
+<!--<div *ngFor="let company of companies; let i = index;">-->
   <div class="media">
     <div class="media-body">
       <h4 *ngIf="company.properties.name" class="media-heading">{{company.properties.name.value}}</h4>
-      <h5 *ngIf="company.properties.phone" class="media-heading">Phone: {{company.properties.phone.value}}</h5>
-      <a [routerLink]="[companies]">
-        <h5 (click)="selectCompany(company)">View More</h5>
+      <div *ngIf="company.properties.phone" class="media-heading">
+        <h5>Phone: <span><small>{{company.properties.phone.value}}</small></span></h5>
+      </div>
+      <a (click)="selectCompany(company)" [routerLink]="['/company']">
+        <h5>View More</h5>
       </a>
     </div>
   </div>

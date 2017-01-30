@@ -40,8 +40,8 @@ export class ScopeDisplay {
     host: string = this.api_url;
     id: number;
     scope: Object;
-    clients: Array<Object>;
-    client: Object;
+    companies: Array<Object>;
+    company: Object;
     private sub: any;
 
     public scopeResult: Array<any> = [];
@@ -54,14 +54,9 @@ export class ScopeDisplay {
         .then(scopeObject => {
             this.scope = scopeObject
             console.log('scope-display nginit this.scope: ', this.scope);
+            this.company = this.store.getState()['activeCompany'];
+            console.log('scope-display nginit this.company: ', this.company);
         });
-        // this.clients = this.store.getState().clients;
-        // this.sub = this.route.params.subscribe(params => {
-        //     this.id = params['companyId']; // (+) converts string 'id' to a number
-        //     this.findClient(this.id);
-        // });
-        this.client = this.store.getState()['activeClient'];
-        console.log('scope-display nginit this.client: ', this.client);
     }
 
     private setScope(): Promise <any> {
@@ -104,7 +99,7 @@ export class ScopeDisplay {
                     'success'
                 );
                 self.scopeResult = [];
-                self.scope['client'] = self.client;
+                self.scope['company'] = self.company;
                 return self.scopeService.createScope('/clients', self.store.getState()['activeClient']['_id'], { scope: self.scope, data: self.scope['client'] });
             }, function (dismiss) {
                 // dismiss can be 'cancel', 'overlay',

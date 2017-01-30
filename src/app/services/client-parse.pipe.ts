@@ -9,14 +9,14 @@ declare var swal;
 
 export class ClientParsePipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer, private storeHelper: StoreHelper, private store: Store) {}
-  client: Object;
+  company: Object;
   transform(html: string) {
-    this.client = (this.store.getState()['activeClient']) ? this.store.getState()['activeClient'] : swal('No Client!', 'omg', 'error');
-    console.log('in html parse pipe, client is: ', this.client); 
+    this.company = (this.store.getState()['activeCompany']) ? this.store.getState()['activeCompany'] : swal('No company!', 'omg', 'error');
+    console.log('in html parse pipe, company is: ', this.company); 
     let subItem = _.replace(
       html, 
       "%%client%%",
-      `${this.client['properties']['company']['value']}`
+      `${this.company['properties']['name']['value']}`
       );
     return this.sanitizer.bypassSecurityTrustHtml(subItem);
   }

@@ -1,0 +1,8 @@
+<div>
+  <section class="details-container">
+    <h3 *ngIf="company.properties">{{company.properties.name.value}}</h3>
+    <h4 *ngIf="company.properties.website" class="media-heading">Website: <a href="{{company.properties.website.value}}" target="_blank">{{company.properties.website.value}}</a></h4>
+  </section>
+  <a class="btn btn-success" [routerLink]="['/scope']">Create Scope</a>
+  <button class="btn btn-primary" (click)="goBack()">Back</button>
+</div>

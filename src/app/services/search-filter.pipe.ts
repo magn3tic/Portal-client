@@ -5,6 +5,6 @@ var _ = require('lodash');
 export class SearchFilterPipe implements PipeTransform {
   transform(items: any[], args: any[]): any {
     // console.log('SearchFilterPipe items: ', items, ' args: ', args);      
-    return _.filter(items, client => client.properties.name.value.toLowerCase().indexOf(args) ? false : client.properties.name.value);
+    return _.filter(items, company => company.properties.name.value.toLowerCase().indexOf(args) ? false : company.properties.name.value);
   }
 }

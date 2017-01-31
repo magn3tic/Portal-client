@@ -24,6 +24,7 @@ export class ApiService {
 
     private checkForError(response: Response): Response {
         console.log('checkForError');
+        console.log('response in checkForError: ', response);
         if (response.status >= 200 && response.status < 300) {
             return response
         } else {

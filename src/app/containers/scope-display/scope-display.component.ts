@@ -51,19 +51,19 @@ export class ScopeDisplay {
 
     ngOnInit() {
         this.setScope()
-        .then(scopeObject => {
-            this.scope = scopeObject
-            console.log('scope-display nginit this.scope: ', this.scope);
-            this.company = this.store.getState()['activeCompany'];
-            console.log('scope-display nginit this.company: ', this.company);
-        });
+            .then(scopeObject => {
+                this.scope = scopeObject
+                console.log('scope-display nginit this.scope: ', this.scope);
+                this.company = this.store.getState()['activeCompany'];
+                console.log('scope-display nginit this.company: ', this.company);
+            });
     }
 
-    private setScope(): Promise <any> {
+    private setScope(): Promise<any> {
         var self = this;
         return this.scopeService.getScope()
             .then(scopeObject => {
-                if(scopeObject) {
+                if (scopeObject) {
                     console.log('scopeObject in setScope: ', scopeObject);
                     return Promise.resolve(scopeObject);
                 } else {
@@ -93,14 +93,18 @@ export class ScopeDisplay {
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: 'Yes, save it'
             }).then(function () {
-                swal(
-                    'Saved!',
-                    'Relax... Your Scope has been saved',
-                    'success'
-                );
                 self.scopeResult = [];
-                self.scope['company'] = self.company;
-                return self.scopeService.createScope('/clients', self.store.getState()['activeClient']['_id'], { scope: self.scope, data: self.scope['client'] });
+                // scopeService.createScope returns a promise
+                return self.scopeService.createScope(self.scope, self.company)
+                    .then(res => {
+                        console.log('success res: ', res);
+                        swal(
+                            'Saved!',
+                            'Relax... Your Scope has been saved',
+                            'success'
+                        );
+                    })
+                    .catch(err => console.log('createScope failed err: ', err))
             }, function (dismiss) {
                 // dismiss can be 'cancel', 'overlay',
                 // 'close', and 'timer'

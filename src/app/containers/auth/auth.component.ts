@@ -25,14 +25,17 @@ export class Auth implements OnInit {
 
   ngOnInit() {
     if (this.authService.isAuthorized()) {
-      this.router.navigate(['home']);
+      console.log('this.authService.isAuthorized(): ', this.authService.isAuthorized());
     }
   }
 
 
   authenticate() {
     this.authService.authenticate()
-      .then(token => console.log('authservice.authenticate promise returned: ', token))
+      .then(token => {
+        console.log('authservice.authenticate promise returned: ', token)
+        this.router.navigate(['home']);
+      })
       .catch(err => console.log('auth promise rejection: ', err))
   }
 }; 

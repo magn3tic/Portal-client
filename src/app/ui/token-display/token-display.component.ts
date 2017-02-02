@@ -25,10 +25,10 @@ export class TokenDisplay implements OnInit {
   HUBTOKENURL: string = 'https://c1aabba0.ngrok.io/hubToken';
   userEmail: string = '';
   headers: Headers = new Headers({
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + window.localStorage.getItem(this.JWTKEY)
-    });
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer ' + window.localStorage.getItem(this.JWTKEY)
+  });
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -40,54 +40,42 @@ export class TokenDisplay implements OnInit {
   ) {/** constructor body **/ }
 
   ngOnInit() {
-    if (this.authService.isAuthorized()) {
-      this.router.navigate(['profile']);
-    }
     // Get and set JWT on init
-    // console.log('ngOnInit running JWTKEY: ', this.JWTKEY, ' HUBTOKENURL: ', this.HUBTOKENURL);
+    // console.log('ngInit user in state: ', this.store.getState().user);
+    // if(this.authService.isAuthorized()) {
+
+    // }
+
     this.getToken()
-    .then(token => this.setUser(JSON.stringify({token})))
-    .catch(err => console.log('getToken err: ', err))
   }
 
   getToken() {
-
-    return new Promise((resolve, reject) => {
       this.apiService.get(this.HUBTOKENURL)
         .subscribe(res => {
           let resBody = JSON.parse(res._body);
           // console.log('get token res: ', resBody);
           // console.log('res tokens: ', JSON.parse(res._body));
-          this.authService.setJwt(resBody.accessToken, this.JWTKEY)
-            .then(localTokens => {
-              this.authService.setJwt(resBody.refreshToken, this.JWTREFRESH).then(() => {
-                resolve(resBody.accessToken)
-                this.router.navigate(['/profile']);
-              })
-                // .then(jwt=> console.log('jwt: ', jwt))
-                .catch(err => {
-                console.log(err)
-                reject(err)
-              })
-            })
-            .catch(err => console.log(err))
+          this.authService.setJwt(resBody.accessToken)
+          this.setUser(resBody.accessToken);
         })
-      })
   }
 
   setUser(token) {
     this.authService.getUser(token)
-        .subscribe(user => {
-          let userObj = JSON.parse(user);
-          this.storeHelper.update('user', {data: userObj, loggedIn: true})
-          console.log('user email: ', this.store.getState().user['data']['user']);
-          this.getUserHubspotContact(this.store.getState().user['data']['user']);
+      .subscribe(user => {
+        let hubspotUserObject = JSON.parse(user);
+        this.getUserHubspotContact(hubspotUserObject);
       })
   }
 
-  getUserHubspotContact(userEmail) {
-    this.apiService.post(this.EXPRESSPROXYCONTACT, {email: userEmail, authorization: 'Bearer ' + window.localStorage.getItem(this.JWTKEY)})
-    .subscribe(res => console.log('apiService for hubspot contact res: ', res));
+  getUserHubspotContact(hubspotUserObject) {
+    console.log('hubspotUserObject: ', hubspotUserObject);
+    this.apiService.post(this.EXPRESSPROXYCONTACT, { email: hubspotUserObject['user'], authorization: 'Bearer ' + window.localStorage.getItem(this.JWTKEY) })
+      .subscribe(hubspotUserContactInfo => {
+        console.log('apiService hubspotUserContactInfo: ', hubspotUserContactInfo)
+        this.storeHelper.update('user', { data: hubspotUserObject, contactInfo: hubspotUserContactInfo, loggedIn: true })
+        this.router.navigate(['profile']);
+      });
   }
 
 };

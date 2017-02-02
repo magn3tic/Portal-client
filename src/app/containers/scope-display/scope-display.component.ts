@@ -61,15 +61,19 @@ export class ScopeDisplay {
 
     private setScope(): Promise<any> {
         var self = this;
-        return this.scopeService.getScope()
-            .then(scopeObject => {
-                if (scopeObject) {
-                    console.log('scopeObject in setScope: ', scopeObject);
-                    return Promise.resolve(scopeObject);
-                } else {
-                    return Promise.reject('no scopeObject returned from scopeService.getScope()');
-                }
-            });
+        if(!this.store.getState().activeScope){
+            return this.scopeService.getScope()
+                .then(scopeObject => {
+                    if (scopeObject) {
+                        console.log('scopeObject in setScope: ', scopeObject);
+                        return Promise.resolve(scopeObject);
+                    } else {
+                        return Promise.reject('no scopeObject returned from scopeService.getScope()');
+                    }
+                });
+        } else {
+            return Promise.resolve(this.store.getState().activeScope);
+        }
     }
 
     public saveScope() {
@@ -96,15 +100,15 @@ export class ScopeDisplay {
                 self.scopeResult = [];
                 // scopeService.createScope returns a promise
                 return self.scopeService.createScope(self.scope, self.company)
-                    .then(res => {
-                        console.log('success res: ', res);
-                        swal(
-                            'Saved!',
-                            'Relax... Your Scope has been saved',
-                            'success'
-                        );
-                    })
-                    .catch(err => console.log('createScope failed err: ', err))
+                    // .then(res => {
+                    //     console.log('success res: ', res);
+                    //     swal(
+                    //         'Saved!',
+                    //         'Relax... Your Scope has been saved',
+                    //         'success'
+                    //     );
+                    // })
+                    // .catch(err => console.log('createScope failed err: ', err))
             }, function (dismiss) {
                 // dismiss can be 'cancel', 'overlay',
                 // 'close', and 'timer'

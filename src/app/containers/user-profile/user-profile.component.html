@@ -1,17 +1,16 @@
 <div class="col-md-6">
     <div class="card card-user">
-            <div class="image">
-            </div>
+        <div class="image">
+        </div>
         <div class="content">
             <div class="author">
                 <h4 class="title">{{me.user}}<br>
-                <img *ngIf="me.user" class="media-object" alt="Generic placeholder image" gravatar
-        [email]="me.user" [size]="515">
+                    <img *ngIf="me.user" class="media-object" alt="Generic placeholder image" gravatar [email]="me.user" [size]="515">
                     <a href="#"><small>{{me.user}}</small></a>
                 </h4>
             </div>
             <p class="description text-center">
-                
+
             </p>
         </div>
         <hr>
@@ -20,9 +19,14 @@
 <div class="col-md-6">
     <div class="card">
         <div class="content">
-            <h4>My Clients</h4>
-            <div *ngFor="let client of clients">
-                <h5><a [routerLink]="['/clients', client.data._id]">{{client.data.name}}</a></h5>
+            <h4>Scopes</h4>
+            <div *ngFor="let scope of scopes; let i = index;">
+                <section *ngIf="scope.company" class="company">
+                    <h1 *ngIf="scope.company.properties.name">{{scope.company.properties.name.value}}</h1>
+                    <a (click)="selectCompany(scope.company, scope.scope)" [routerLink]="['/company']">
+                        <h5>View More</h5>
+                    </a>
+                </section>
             </div>
         </div>
     </div>

@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import {Location} from '@angular/common';
-import { ApiService, StoreHelper, AuthService } from '../../services'
+import { Location } from '@angular/common';
+import { ApiService, StoreHelper, AuthService, ScopeService } from '../../services'
 import { Store } from '../../store';
 declare var CONFIG: any;
 var _ = require('lodash');
@@ -13,20 +13,38 @@ declare var swal;
   styles: [require('./company-details.component.css')],
   template: require('./company-details.component.html')
 })
-export class CompanyDetails implements OnInit{
+export class CompanyDetails implements OnInit {
 
-  constructor(private location: Location, private router: Router, private route: ActivatedRoute, private apiService: ApiService, private storeHelper: StoreHelper, private authService: AuthService, private store: Store) {}
+  constructor(
+    private location: Location, 
+    private router: Router, 
+    private route: ActivatedRoute, 
+    private apiService: ApiService, 
+    private storeHelper: StoreHelper, 
+    private authService: AuthService, 
+    private store: Store,
+    private scopeService: ScopeService
+    ) { }
   id: number;
   private sub: any;
   companies: Array<any>;
   company: Object;
-  
+
   ngOnInit() {
     this.company = this.store.getState()['activeCompany'];
     console.log('active company: ', this.company);
   }
 
   goBack(): void {
-      this.location.back();
-    }
+    this.location.back();
+  }
+
+  newScope() {
+    this.scopeService.getScope()
+    .then(scope => {
+      console.log('getScope resolved: ', scope);
+      this.router.navigate(['/scope']);
+    })
+    .catch(err => console.log('err in this.scopeService.getScope(): ', err))
+  }
 }

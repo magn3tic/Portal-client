@@ -41,8 +41,8 @@ export const rootRouterConfig: Routes = [
       }
     ]
   },
-  { path: 'token', component: TokenDisplay},
-  { path: 'auth', component: Auth},
-  { path: '**', component: Auth }
+  { path: 'token', component: TokenDisplay },
+  { path: 'auth', component: Auth },
+  { path: '**', redirectTo: 'auth' },
 ];
 

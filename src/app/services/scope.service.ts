@@ -52,11 +52,15 @@ export class ScopeService {
         console.log('scope in createScope: ', scope);
         console.log('company in createScope: ', company);
         const userEmail = this.store.getState().user['data']['user'];
+        const activeCompany = this.store.getState().activeCompany;
         const scopeObject = this.store.getState().activeScope;
+        const currentScopesArray = this.store.getState().user['contactInfo']['properties']['scopes']['value'];
+        
         let body = JSON.stringify(
             {
                 email: userEmail,
-                scope: scopeObject
+                scopes: this.updateScopesOnContact(JSON.parse(currentScopesArray), {company: activeCompany, scope: scopeObject})
+
             }
         );
 
@@ -71,17 +75,25 @@ export class ScopeService {
         })
     }
 
+    updateScopesOnContact(currentScopesArray, newScopeObject: Object) {
+        console.log('currentScopesArray is array?: ', Array.isArray(currentScopesArray));
+        console.log('currentScopesArray: ', currentScopesArray);
+        let tempScopesArr = currentScopesArray;
+        tempScopesArr.push(newScopeObject);
+        console.log('tempScopesArr: ', tempScopesArr);
+        return tempScopesArr;
+    }
+
     getScope(): Promise<any> {
-        console.log('in get scope api being used is: ', this.newGHPagesAPI_URL);
         console.log('in getscope this.scope: ', this.scope);
         this.storeHelper.update('activeScope', this.scope);
         return Promise.resolve(this.store.getState().activeScope);
     }
 
-    cleanScope(rawScope, next) {
-        console.log('in cleanScope rawScope is: ', rawScope)
-        let result;
-        result = _.omit(rawScope, ['_type']);
-        return next(rawScope);
-    }
+    // cleanScope(rawScope, next) {
+    //     console.log('in cleanScope rawScope is: ', rawScope)
+    //     let result;
+    //     result = _.omit(rawScope, ['_type']);
+    //     return next(rawScope);
+    // }
 }

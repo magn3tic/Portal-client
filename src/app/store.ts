@@ -9,6 +9,7 @@ export interface State {
     clients: Array<any>;
     activeClient: Object;
     deals: Array<any>;
+    activeCompany: Object;
     companies: Array<any>;
 }
 
@@ -23,6 +24,7 @@ const defaultState: State = {
     clients: [],
     activeClient: {},
     deals: [],
+    activeCompany: {},
     companies: []
 }
 

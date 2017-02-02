@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthService, MyClients, ApiService, StoreHelper, ClientsService } from '../../services'; // removed socket service temporarily until debugged
 import { Router } from '@angular/router';
-import {Location} from '@angular/common';
-import {Store} from '../../store';
+import { Location } from '@angular/common';
+import { Store } from '../../store';
+import * as _ from 'lodash';
 
 declare var swal: any;
 
@@ -13,35 +14,57 @@ declare var swal: any;
 })
 
 export class UserProfile implements OnInit {
-    // This endpoint is what validates and returns a user via JWT
-    token_endpoint: string = 'auth/token';
     me: any;
-    email: string = '';
-    endpoint: string = 'users';
-    super: boolean;
-    clients: Array<any>;
-    constructor(private location: Location, private clientsService: ClientsService, private router: Router, private myClients: MyClients, private authService: AuthService, private apiService: ApiService, private store: Store, private storeHelper: StoreHelper) { }
+    scopes: any;
+    deletePropertiesArray: Array<any>;
+    constructor(private location: Location, private clientsService: ClientsService, private router: Router, private myClients: MyClients, private authService: AuthService, private apiService: ApiService, private store: Store, private storeHelper: StoreHelper) { this.me = this.getMe(); }
 
     ngOnInit() {
-        this.me = this.getMe();
         console.log('this.me: ', this.me);
-        if(!this.me) {
+        let tempScopesArr = JSON.parse(this.me.contactInfo.properties.scopes.value);
+        this.scopes = _.sortBy(tempScopesArr, (sObj) => {
+            return sObj['company'].properties.name.value;
+        }, ['desc']);
+        console.log('tempScopesArr: ', tempScopesArr);
+        console.log('this.scopes: ', this.scopes);
+
+        if (!this.me) {
             console.log('this.me is empty');
-        } else {
-            this.getMyClients(this.me.user);
         }
+        // this.deleteProps(contactKeys);
     }
 
     getMe() {
-        return this.store.getState().user['data'];
-    }
-
-    getMyClients(userEmail) {
-        console.log('in profile this.clients: ', this.store.getState().clients);
-        return this.store.getState().clients;
+        return this.store.getState().user;
     }
 
     goBack(): void {
-      this.location.back();
+        this.location.back();
+    }
+
+    /**
+     * Delete properties on a contact.
+     * Created this function to remove accidentally created scope properties
+     * @constructor
+     * @param {Array}  properties - contactKeys the keys of properties on contactProps.
+     */
+    deleteProps(properties: Array<String>) {
+        const contactProps = this.me.contactInfo.properties;
+        const contactKeys = Object.keys(contactProps);
+        this.deletePropertiesArray = _.filter(properties, (key) => {
+            return key.startsWith('scope');
+        })
+        console.log('scopeArray: ', this.deletePropertiesArray);
+        if (this.deletePropertiesArray.length > 1) {
+            return this.apiService.post('https://c1aabba0.ngrok.io/hubDeleteProps', this.deletePropertiesArray)
+                .subscribe(res => console.log('delete response: ', res));
+        }
+    }
+
+    selectCompany(company, scope) {
+        console.log('selected company', company);
+        console.log('activeScope ', scope);
+        this.storeHelper.update('activeCompany', company);
+        this.storeHelper.update('activeScope', scope);
     }
 }

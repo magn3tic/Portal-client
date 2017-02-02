@@ -12,6 +12,7 @@ declare var swal: any;
 export class AuthService implements CanActivate {
     // JWTKEY: string = CONFIG.hubspot.JWTKEY;
     JWTKEY: string = 'hubspot_token';
+    JWT: string = localStorage.getItem(this.JWTKEY);
     // HUBAUTHAPI: string = CONFIG.hubspot.HUBAUTHAPI;
     HUBAUTHAPI: string = 'https://c1aabba0.ngrok.io/hubAuth';
     HUBSPOTPROXY: string = 'https://c1aabba0.ngrok.io/hubAPI';
@@ -24,19 +25,27 @@ export class AuthService implements CanActivate {
         private storeHelper: StoreHelper,
         private store: Store,
         private http: Http
-    ) {/** constructor body **/ }
+    ) {
+        /** constructor body **/
+        const token = localStorage.getItem(this.JWTKEY)
 
-    setJwt(jwt: string, key?: string) {
-        let jwt_key = (key) ? key : this.JWTKEY;
-        return new Promise((resolve, reject) => {
-            window.localStorage.setItem(jwt_key, jwt);
-            if (window.localStorage.getItem(jwt_key)) {
-                this.apiService.setHeaders({ Authorization: `Bearer ${jwt[jwt_key]}` });
-                resolve(jwt)
-            } else {
-                reject('no jwt_key in localStorage')
-            }
-        })
+        if (token) {
+            this.setJwt(token);
+            console.log('token is true: ', token);
+        } else {
+            this.authenticate()
+                .then(token => console.log('authservice constructor authenticate call returned: ', token))
+                .catch(err => console.log('authservice constructor authenticate call error ', err));
+        }
+    }
+
+    setJwt(jwt: string) {
+        console.log('set jwt called and jwt: ', jwt);
+        if (window.localStorage.getItem(this.JWTKEY)) {
+            this.apiService.setHeaders({ Authorization: `Bearer ${jwt}` });
+        } else {
+            window.localStorage.setItem(this.JWTKEY, jwt)
+        }
     }
 
     clearServerToken() {
@@ -77,9 +86,15 @@ export class AuthService implements CanActivate {
         return Promise.all([this.clearLocalStorage(), this.clearServerToken()])
             .then(res => {
                 console.log('successful signout res: ', res);
-                this.router.navigate(['/']);
+                this.router.navigate(['auth']);
             })
-            .catch(err => console.log('error in promise.all: ', err))
+            .catch(err => {
+                console.log('error in promise.all: ', err)
+                if (!localStorage.getItem(this.JWTKEY)) {
+                    console.log('tryed to signout but localStorage already empty, should now redirect to auth');
+                    this.router.navigate(['auth']);
+                }
+            })
     }
 
     // Set relevent user information (access_token and refresh_token) to localStorage to submit author credentials with new scopes
@@ -92,7 +107,7 @@ export class AuthService implements CanActivate {
     // Get user information (hubspot user object) from hubspot. Different from setUser.
     getUser(token) {
         console.log('get user called with token: ', token);
-        return this.apiService.post(this.HUBME, token)
+        return this.apiService.post(this.HUBME)
             .do(res => {
                 console.log('getUser res: ', res)
             })
@@ -104,7 +119,7 @@ export class AuthService implements CanActivate {
         let result = new Promise((resolve, reject) => {
             if (window.localStorage.getItem(this.JWTKEY)) {
                 resolve(window.localStorage.getItem(this.JWTKEY))
-            } else if (window.localStorage.getItem(this.JWTKEY).length < 1) {
+            } else if (!window.localStorage.getItem(this.JWTKEY)) {
                 this.apiService.get(this.HUBAUTHAPI)
                     .map((res) => {
                         console.log('AuthService.authenticate conditional no hubspot_token in localStorage. apiService.get(HUBAUTHAPI) res: ', res);
@@ -118,29 +133,33 @@ export class AuthService implements CanActivate {
         return result;
     }
 
-
     isAuthorized(): boolean {
-        let userIsAuth;
-        switch (window.localStorage.getItem('hubspot_token')) {
-            case null:
-                userIsAuth = false;
-                break;
-            case 'undefined':
-                userIsAuth = false;
-            default:
-                userIsAuth = true;
-                break;
+        console.log('isAuthorized() this.JWT: ', this.JWT);
+        if (!this.JWT) {
+            console.log('no JWT in localStorage');
+            this.JWT = localStorage.getItem(this.JWTKEY);
         }
-        return userIsAuth;
+        return Boolean(this.JWT);
     }
 
     canActivate(): boolean {
-        const isAuth = this.isAuthorized();
-        console.log('canActivate isAuth check: ', isAuth);
+        // console.log('can activate called');
+        // if (localStorage.getItem('hubspot_token')) {
+        //     this.router.navigate(['/profile']);
+        //     return true
+        // }
+        // console.log('canActivate false');
+        // this.router.navigate(['/auth']);
+        // return false
+        const canActivate = this.isAuthorized();
+        this.onCanActivate(canActivate);
+        return canActivate;
+    }
 
-        if (!isAuth) {
-            this.router.navigate(['', 'auth'])
+    onCanActivate(canActivate: boolean) {
+        console.log('onCanActivate ran: ', canActivate);
+        if (!canActivate) {
+            this.router.navigate(['', 'auth']);
         }
-        return isAuth;
     }
 }

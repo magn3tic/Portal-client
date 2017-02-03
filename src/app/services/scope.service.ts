@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ApiService, StoreHelper } from './index';
 import { Observable } from 'rxjs';
 import { Store } from '../store';
+import { Hashids } from 'ng2-hashids';
 import 'rxjs/Rx';
 
 declare var CONFIG: any;
@@ -18,7 +19,9 @@ export class ScopeService {
     });
     magAPI_URL: string = 'https://dev.magne.tc/scope-api/v1/';
     newGHPagesAPI_URL: string = CONFIG.scopeAPI;
-    hubFormEndpoint: string = 'http://dev.magne.tc/api/hubspot/submit-scope.php';
+    // Change to CONFIG
+    hubFormPurgeEndpoint: string = 'https://c1aabba0.ngrok.io/hubFormsPurge';
+    hubFormUpdateEndpoint: string = 'https://c1aabba0.ngrok.io/hubFormsUpdate';
 
     scope = CONFIG.scope;
 
@@ -32,7 +35,7 @@ export class ScopeService {
     }
 
     private getJson(response: Response) {
-        return response.json();
+        return decodeURI(response.json());
     }
 
     private checkForError(response: Response): Response {
@@ -48,31 +51,51 @@ export class ScopeService {
         }
     }
 
+    purgeScopes() {
+        const userEmail = this.store.getState().user['data']['user'];
+        let body = JSON.stringify(
+            {
+                email: userEmail
+            }
+        );
+        console.log('sent: ', body, ' to: ', this.hubFormPurgeEndpoint);
+        return new Promise((resolve, reject) => {
+            // Async operation to save scope as property on company. Resolve if successful, Reject if unsuccessful.
+            this.apiService.post(this.hubFormPurgeEndpoint, body)
+                .subscribe(res => {
+                    console.log('res: ', res)
+                })
+        })
+    }
+
     createScope(scope: Object, company: Object) {
         console.log('scope in createScope: ', scope);
         console.log('company in createScope: ', company);
         const userEmail = this.store.getState().user['data']['user'];
         const activeCompany = this.store.getState().activeCompany;
         const scopeObject = this.store.getState().activeScope;
-        const currentScopesArray = this.store.getState().user['contactInfo']['properties']['scopes']['value'];
-        
+        let currentScopesArray = decodeURI(this.store.getState().user['contactInfo']['properties']['scopes']['value']);
         let body = JSON.stringify(
             {
                 email: userEmail,
-                scopes: this.updateScopesOnContact(JSON.parse(currentScopesArray), {company: activeCompany, scope: scopeObject})
+                scopes: this.updateScopesOnContact(JSON.parse(currentScopesArray), { meta: this.createMetaInfo({ company: activeCompany }), company: activeCompany, scope: scopeObject }),
 
             }
         );
-
-
         console.log('data sent: ', body);
-        return new Promise((resolve, reject) => {
-            // Async operation to save scope as property on company. Resolve if successful, Reject if unsuccessful.
-            this.http.post(this.hubFormEndpoint, body, this.headers)
-                .subscribe(res => {
-                    console.log('res: ', res)
-                })
+        // Async operation to save scope as property on company. Resolve if successful, Reject if unsuccessful.
+        this.apiService.post(this.hubFormUpdateEndpoint, body)
+            .subscribe(res => {
+                console.log('res: ', decodeURI(res))
+            })
+    }
+
+    removeScope(hashId) {
+        const currentScopesArray = this.store.getState().user['contactInfo']['properties']['scopes']['value'];
+        const newScopesArray = _.reject(currentScopesArray, (scopeObj) => {
+            return scopeObj.meta.id;
         })
+        return newScopesArray;
     }
 
     updateScopesOnContact(currentScopesArray, newScopeObject: Object) {
@@ -90,10 +113,18 @@ export class ScopeService {
         return Promise.resolve(this.store.getState().activeScope);
     }
 
-    // cleanScope(rawScope, next) {
-    //     console.log('in cleanScope rawScope is: ', rawScope)
-    //     let result;
-    //     result = _.omit(rawScope, ['_type']);
-    //     return next(rawScope);
-    // }
+    createMetaInfo(company) {
+        const companyId = company.company.companyId;
+        const hashids = new Hashids('', 15);
+        const timeStamp = Date.now();
+        const newId = hashids.encode(companyId, timeStamp);
+        return {
+            id: newId
+        };
+    }
+
+    decodeMetaInfo(hashId) {
+        const hashids = new Hashids('', 15);
+        return hashids.decode(hashId);
+    }
 }

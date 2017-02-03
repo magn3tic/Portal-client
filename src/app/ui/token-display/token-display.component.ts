@@ -37,27 +37,21 @@ export class TokenDisplay implements OnInit {
     private http: Http,
     private storeHelper: StoreHelper,
     private store: Store
-  ) {/** constructor body **/ }
-
-  ngOnInit() {
-    // Get and set JWT on init
-    // console.log('ngInit user in state: ', this.store.getState().user);
-    // if(this.authService.isAuthorized()) {
-
-    // }
-
+  ) {/** constructor body **/
     this.getToken()
   }
 
+  ngOnInit() {
+  }
+
   getToken() {
-      this.apiService.get(this.HUBTOKENURL)
-        .subscribe(res => {
-          let resBody = JSON.parse(res._body);
-          // console.log('get token res: ', resBody);
-          // console.log('res tokens: ', JSON.parse(res._body));
-          this.authService.setJwt(resBody.accessToken)
-          this.setUser(resBody.accessToken);
-        })
+    this.apiService.get(this.HUBTOKENURL)
+      .subscribe(res => {
+        let resBody = JSON.parse(res._body);
+        console.log('get token res: ', resBody);
+        this.authService.setJwt(resBody.accessToken)
+        this.setUser(resBody.accessToken);
+      })
   }
 
   setUser(token) {

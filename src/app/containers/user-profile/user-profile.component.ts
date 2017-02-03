@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AuthService, MyClients, ApiService, StoreHelper, ClientsService } from '../../services'; // removed socket service temporarily until debugged
+import { AuthService, MyClients, ApiService, StoreHelper, ClientsService, ScopeService } from '../../services'; // removed socket service temporarily until debugged
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Store } from '../../store';
@@ -17,16 +17,39 @@ export class UserProfile implements OnInit {
     me: any;
     scopes: any;
     deletePropertiesArray: Array<any>;
-    constructor(private location: Location, private clientsService: ClientsService, private router: Router, private myClients: MyClients, private authService: AuthService, private apiService: ApiService, private store: Store, private storeHelper: StoreHelper) { this.me = this.getMe(); }
+    JWTKEY: string = 'hubspot_token';
+    constructor(
+        private location: Location,
+        private clientsService: ClientsService,
+        private router: Router,
+        private myClients: MyClients,
+        private authService: AuthService,
+        private apiService: ApiService,
+        private store: Store,
+        private storeHelper: StoreHelper,
+        private scopeService: ScopeService
+    ) {
+        this.me = this.getMe();
+    }
 
     ngOnInit() {
         console.log('this.me: ', this.me);
-        let tempScopesArr = JSON.parse(this.me.contactInfo.properties.scopes.value);
-        this.scopes = _.sortBy(tempScopesArr, (sObj) => {
-            return sObj['company'].properties.name.value;
-        }, ['desc']);
+        // if (this.me.contactInfo.properties.scopes.value.indexOf('o') === 0) {
+        //     console.log('malformed json');
+        // }
+        let tempScopesArr = JSON.parse(decodeURI(this.me.contactInfo.properties.scopes.value));
         console.log('tempScopesArr: ', tempScopesArr);
-        console.log('this.scopes: ', this.scopes);
+        if (!tempScopesArr.length) {
+            // console.log('!JSON.parse(this.me.contactInfo.properties.scopes.value).length: ', JSON.parse(this.me.contactInfo.properties.scopes.value).length);
+            return this.scopes = tempScopesArr;
+        } else {
+            console.log('error before setting tempScopesArr');
+            this.scopes = _.sortBy(tempScopesArr, (sObj) => {
+                return sObj['company'].properties.name.value;
+            }, ['desc']);
+            console.log('tempScopesArr: ', tempScopesArr);
+            console.log('this.scopes: ', this.scopes);
+        }
 
         if (!this.me) {
             console.log('this.me is empty');
@@ -66,5 +89,17 @@ export class UserProfile implements OnInit {
         console.log('activeScope ', scope);
         this.storeHelper.update('activeCompany', company);
         this.storeHelper.update('activeScope', scope);
+    }
+
+    purgeScopes() {
+        return this.scopeService.purgeScopes()
+            .then(res => {
+                this.updateScopes();
+            })
+            .catch(err => console.log('this.scopeService.purgeScopes() error: ', err));
+    }
+
+    updateScopes() {
+        this.authService.getUser(localStorage.getItem(this.JWTKEY));
     }
 }

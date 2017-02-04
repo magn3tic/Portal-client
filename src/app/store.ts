@@ -5,6 +5,7 @@ import 'rxjs/Rx';
 export interface State {
     user: Object;
     scope: Object;
+    scopes: Array<Object>;
     activeScope: Object;
     clients: Array<any>;
     activeClient: Object;
@@ -20,6 +21,7 @@ const defaultState: State = {
         data: {}
     },
     scope: {},
+    scopes: [],
     activeScope: {},
     clients: [],
     activeClient: {},

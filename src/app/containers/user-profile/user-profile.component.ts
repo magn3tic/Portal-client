@@ -43,6 +43,7 @@ export class UserProfile implements OnInit {
             // console.log('!JSON.parse(this.me.contactInfo.properties.scopes.value).length: ', JSON.parse(this.me.contactInfo.properties.scopes.value).length);
             return this.scopes = tempScopesArr;
         } else {
+            this.storeHelper.update('scopes', tempScopesArr);
             console.log('error before setting tempScopesArr');
             this.scopes = _
             .chain(tempScopesArr)

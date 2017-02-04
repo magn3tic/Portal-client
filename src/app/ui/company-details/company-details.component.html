@@ -1,5 +1,16 @@
 <div>
-  <section *ngIf="company" class="details-container">
+  <section *ngIf="isScopes" class="details-container">
+    <div *ngFor="let scope of scopes" class="scopes-container">
+      <h3 *ngIf="scope.company.properties">{{scope.company.properties.name.value}}</h3>
+      <h4 *ngIf="scope.company.properties.website" class="media-heading">Website: <a href="{{scope.company.properties.website.value}}" target="_blank">{{scope.company.properties.website.value}}</a></h4>
+      <div class="button-container">
+        <a class="btn btn-warning" [routerLink]="['/scope']">Update Scope</a>
+        <button class="btn btn-success" (click)="newScope()">New Scope</button>
+        <button class="btn btn-primary" (click)="goBack()">Back</button>
+      </div>
+    </div>
+  </section>
+  <section *ngIf="!isScopes" class="details-container">
     <h3 *ngIf="company.properties">{{company.properties.name.value}}</h3>
     <h4 *ngIf="company.properties.website" class="media-heading">Website: <a href="{{company.properties.website.value}}" target="_blank">{{company.properties.website.value}}</a></h4>
     <div class="button-container">

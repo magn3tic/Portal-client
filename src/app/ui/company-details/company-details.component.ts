@@ -29,10 +29,15 @@ export class CompanyDetails implements OnInit {
   private sub: any;
   companies: Array<any>;
   company: Object;
+  scopes: Array<Object>;
 
   ngOnInit() {
     this.company = this.store.getState()['activeCompany'];
-    console.log('active company: ', this.company);
+    this.scopes = _.filter(this.store.getState().scopes, (company)=> {
+      return company['company']['companyId'] === this.company['companyId'];
+    });
+    console.log('this.company: ', this.company);
+    console.log('this.scopes: ', this.store.getState().scopes);
   }
 
   goBack(): void {

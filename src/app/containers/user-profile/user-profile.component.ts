@@ -44,9 +44,11 @@ export class UserProfile implements OnInit {
             return this.scopes = tempScopesArr;
         } else {
             console.log('error before setting tempScopesArr');
-            this.scopes = _.sortBy(tempScopesArr, (sObj) => {
-                return sObj['company'].properties.name.value;
-            }, ['desc']);
+            this.scopes = _
+            .chain(tempScopesArr)
+            .uniqBy('company.properties.name.value')
+            .sortBy(['company', 'value'])
+            .value()
             console.log('tempScopesArr: ', tempScopesArr);
             console.log('this.scopes: ', this.scopes);
         }

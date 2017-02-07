@@ -16,7 +16,7 @@ export class CompaniesDisplay implements OnInit{
 
   HUBAPI: string = CONFIG.hubspot.APIURL;
   // HUBDEALS: string = CONFIG.hubspot.endpoints.allContacts;
-  HUBCOMPANIES: string = 'https://c1aabba0.ngrok.io/hubCompanies';
+  HUBCOMPANIES: string = 'https://b2c78a56.ngrok.io/hubCompanies';
   companies: Array<Object> = [];
   ngOnInit() {
     // console.log('companies.length at ng init: ', this.store.getState().companies.length);

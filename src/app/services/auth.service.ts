@@ -14,10 +14,10 @@ export class AuthService implements CanActivate {
     JWTKEY: string = 'hubspot_token';
     JWT: string = localStorage.getItem(this.JWTKEY);
     // HUBAUTHAPI: string = CONFIG.hubspot.HUBAUTHAPI;
-    HUBAUTHAPI: string = 'https://c1aabba0.ngrok.io/hubAuth';
-    HUBSPOTPROXY: string = 'https://c1aabba0.ngrok.io/hubAPI';
-    HUBJWTPURGE: string = 'https://c1aabba0.ngrok.io/hubLogout';
-    HUBME: string = 'https://c1aabba0.ngrok.io/hubMe';
+    HUBAUTHAPI: string = 'https://b2c78a56.ngrok.io/hubAuth';
+    HUBSPOTPROXY: string = 'https://b2c78a56.ngrok.io/hubAPI';
+    HUBJWTPURGE: string = 'https://b2c78a56.ngrok.io/hubLogout';
+    HUBME: string = 'https://b2c78a56.ngrok.io/hubMe';
     HUBTOKEN: string = null;
     constructor(
         private router: Router,
@@ -40,11 +40,12 @@ export class AuthService implements CanActivate {
     }
 
     setJwt(jwt: string) {
-        console.log('set jwt called and jwt: ', jwt);
+        console.log('set jwt called and jwt: ', jwt, ' headers: ', this);
         if (window.localStorage.getItem(this.JWTKEY)) {
             this.apiService.setHeaders({ Authorization: `Bearer ${jwt}` });
         } else {
             window.localStorage.setItem(this.JWTKEY, jwt)
+            this.apiService.setHeaders({ Authorization: `Bearer ${jwt}` });
         }
     }
 
@@ -143,14 +144,6 @@ export class AuthService implements CanActivate {
     }
 
     canActivate(): boolean {
-        // console.log('can activate called');
-        // if (localStorage.getItem('hubspot_token')) {
-        //     this.router.navigate(['/profile']);
-        //     return true
-        // }
-        // console.log('canActivate false');
-        // this.router.navigate(['/auth']);
-        // return false
         const canActivate = this.isAuthorized();
         this.onCanActivate(canActivate);
         return canActivate;

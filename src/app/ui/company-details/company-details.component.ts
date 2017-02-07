@@ -30,14 +30,20 @@ export class CompanyDetails implements OnInit {
   companies: Array<any>;
   company: Object;
   scopes: Array<Object>;
+  isScopes: Boolean;
 
   ngOnInit() {
     this.company = this.store.getState()['activeCompany'];
     this.scopes = _.filter(this.store.getState().scopes, (company)=> {
       return company['company']['companyId'] === this.company['companyId'];
     });
+    if(this.scopes.length) {
+      this.isScopes = true;
+    } else {
+      this.isScopes = false;
+    }
     console.log('this.company: ', this.company);
-    console.log('this.scopes: ', this.store.getState().scopes);
+    console.log('this.scopes: ', this.scopes);
   }
 
   goBack(): void {
@@ -51,5 +57,10 @@ export class CompanyDetails implements OnInit {
       this.router.navigate(['/scope']);
     })
     .catch(err => console.log('err in this.scopeService.getScope(): ', err))
+  }
+
+  removeScope(companyHash) {
+    console.log('removeScope called hash: ', companyHash);
+    return this.scopeService.removeScope(companyHash);
   }
 }

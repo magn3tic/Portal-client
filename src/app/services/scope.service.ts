@@ -20,8 +20,8 @@ export class ScopeService {
     magAPI_URL: string = 'https://dev.magne.tc/scope-api/v1/';
     newGHPagesAPI_URL: string = CONFIG.scopeAPI;
     // Change to CONFIG
-    hubFormPurgeEndpoint: string = 'https://c1aabba0.ngrok.io/hubFormsPurge';
-    hubFormUpdateEndpoint: string = 'https://c1aabba0.ngrok.io/hubFormsUpdate';
+    hubFormPurgeEndpoint: string = 'https://b2c78a56.ngrok.io/hubFormsPurge';
+    hubFormUpdateEndpoint: string = 'https://b2c78a56.ngrok.io/hubFormsUpdate';
 
     scope = CONFIG.scope;
 
@@ -74,11 +74,17 @@ export class ScopeService {
         const userEmail = this.store.getState().user['data']['user'];
         const activeCompany = this.store.getState().activeCompany;
         const scopeObject = this.store.getState().activeScope;
+        const scopeDate = new Date().toDateString();
         let currentScopesArray = decodeURI(this.store.getState().user['contactInfo']['properties']['scopes']['value']);
         let body = JSON.stringify(
             {
                 email: userEmail,
-                scopes: this.updateScopesOnContact(JSON.parse(currentScopesArray), { meta: this.createMetaInfo({ company: activeCompany }), company: activeCompany, scope: scopeObject }),
+                scopes: this.updateScopesOnContact(JSON.parse(currentScopesArray), 
+                { 
+                    meta: this.createMetaInfo({company: activeCompany}), 
+                    company: activeCompany, 
+                    scope: scopeObject 
+                }),
 
             }
         );
@@ -91,20 +97,38 @@ export class ScopeService {
     }
 
     removeScope(hashId) {
-        const currentScopesArray = this.store.getState().user['contactInfo']['properties']['scopes']['value'];
+        const currentScopesArray = JSON.parse(decodeURI(this.store.getState().user['contactInfo']['properties']['scopes']['value']));
+        console.log('scopeService.removeScope called hashId: ', hashId, ' currentScopesArray: ', currentScopesArray);
         const newScopesArray = _.reject(currentScopesArray, (scopeObj) => {
-            return scopeObj.meta.id;
+            return scopeObj.meta.id === hashId;
         })
-        return newScopesArray;
+        console.log('before removing selected scope, currentScopesArray: ', currentScopesArray);
+        console.log('removeScope in scope service called, sending newScopesArray to updateScopesOnContact(newScopesArray): ', newScopesArray);
+        return this.updateScopesOnContact(newScopesArray);
     }
 
-    updateScopesOnContact(currentScopesArray, newScopeObject: Object) {
+    updateScopesOnContact(currentScopesArray, newScopeObject?: Object) {
+        const userEmail = this.store.getState().user['data']['user'];
         console.log('currentScopesArray is array?: ', Array.isArray(currentScopesArray));
-        console.log('currentScopesArray: ', currentScopesArray);
-        let tempScopesArr = currentScopesArray;
-        tempScopesArr.push(newScopeObject);
-        console.log('tempScopesArr: ', tempScopesArr);
-        return tempScopesArr;
+        if(newScopeObject) {
+            let tempScopesArr = currentScopesArray;
+            tempScopesArr.push(newScopeObject);
+            console.log('tempScopesArr: ', tempScopesArr);
+            console.log('currentScopesArray: ', currentScopesArray);
+            return tempScopesArr;
+        } else if(!newScopeObject) {
+            console.log('no newScope object passed to updateScopesOnContact currentScopesArray: ', currentScopesArray);
+
+            const body = JSON.stringify({
+                email: userEmail,
+                scopes: currentScopesArray
+            })
+
+            this.apiService.post(this.hubFormUpdateEndpoint, body)
+            .subscribe(res => {
+                console.log('res: ', decodeURI(res))
+            })
+        }
     }
 
     getScope(): Promise<any> {
@@ -115,11 +139,16 @@ export class ScopeService {
 
     createMetaInfo(company) {
         const companyId = company.company.companyId;
+        const companyName = company.company.properties.name.value;
         const hashids = new Hashids('', 15);
-        const timeStamp = Date.now();
-        const newId = hashids.encode(companyId, timeStamp);
+        const humanTimeStamp = new Date().toDateString();
+        const rawTimeStamp = Date.now();
+        const newId = hashids.encode(companyId, rawTimeStamp);
         return {
-            id: newId
+            id: newId,
+            companyName,
+            humanTimeStamp,
+            rawTimeStamp
         };
     }
 

@@ -18754,8 +18754,8 @@ webpackJsonp([1],[
 	        // JWTKEY: string = CONFIG.hubspot.JWTKEY;
 	        this.JWTKEY = 'hubspot_token';
 	        // HUBAUTHAPI: string = CONFIG.hubspot.HUBAUTHAPI;
-	        this.HUBAUTHAPI = 'https://c1aabba0.ngrok.io/hubAuth';
-	        this.HUBJWTPURGE = 'https://c1aabba0.ngrok.io/hubLogout';
+	        this.HUBAUTHAPI = 'https://b2c78a56.ngrok.io/hubAuth';
+	        this.HUBJWTPURGE = 'https://b2c78a56.ngrok.io/hubLogout';
 	        this.HUBTOKEN = null;
 	    }
 	    AuthService.prototype.setJwt = function (jwt, key) {
@@ -26339,7 +26339,7 @@ webpackJsonp([1],[
 	        this.authService = authService;
 	        // This initiates a Oauth 2.0 connection via passport.js
 	        // hubAuthAPI: string = CONFIG.hubspot.HUBAUTHAPI; // Hide this in config vars
-	        this.hubAuthAPI = 'https://c1aabba0.ngrok.io/hubAuth';
+	        this.hubAuthAPI = 'https://b2c78a56.ngrok.io/hubAuth';
 	        console.log('hubauthapi: ', this.hubAuthAPI);
 	    }
 	    Auth.prototype.authenticate = function () {
@@ -27521,7 +27521,7 @@ webpackJsonp([1],[
 	        this.JWTKEY = 'hubspot_token';
 	        this.JWTREFRESH = 'refresh_token';
 	        // HUBTOKENURL: string = CONFIG.hubspot.HUBTOKENURL;
-	        this.HUBTOKENURL = 'https://c1aabba0.ngrok.io/hubToken';
+	        this.HUBTOKENURL = 'https://b2c78a56.ngrok.io/hubToken';
 	    }
 	    TokenDisplay.prototype.ngOnInit = function () {
 	        // Get and set JWT on init

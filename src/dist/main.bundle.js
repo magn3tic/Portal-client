@@ -3,10 +3,10 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var platform_browser_dynamic_1 = __webpack_require__(128);
-	var app_module_1 = __webpack_require__(207);
-	var store_1 = __webpack_require__(21);
-	var services = __webpack_require__(15);
+	var platform_browser_dynamic_1 = __webpack_require__(127);
+	var app_module_1 = __webpack_require__(210);
+	var store_1 = __webpack_require__(16);
+	var services = __webpack_require__(13);
 	var mapValuesToArray = function (obj) { return Object.keys(obj).map(function (key) { return obj[key]; }); };
 	exports.providers = [
 	    store_1.Store
@@ -29,48 +29,43 @@ webpackJsonp([1],[
 /* 10 */,
 /* 11 */,
 /* 12 */,
-/* 13 */,
-/* 14 */,
-/* 15 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var api_service_1 = __webpack_require__(220);
+	var api_service_1 = __webpack_require__(227);
 	exports.ApiService = api_service_1.ApiService;
-	var store_helper_service_1 = __webpack_require__(228);
+	var store_helper_service_1 = __webpack_require__(235);
 	exports.StoreHelper = store_helper_service_1.StoreHelper;
-	var auth_service_1 = __webpack_require__(131);
+	var auth_service_1 = __webpack_require__(132);
 	exports.AuthService = auth_service_1.AuthService;
-	var scope_service_1 = __webpack_require__(226);
+	var scope_service_1 = __webpack_require__(233);
 	exports.ScopeService = scope_service_1.ScopeService;
 	// export {SocketService} from './socket.service';
-	var is_super_service_1 = __webpack_require__(222);
+	var is_super_service_1 = __webpack_require__(229);
 	exports.IsSuper = is_super_service_1.IsSuper;
-	var values_pipe_1 = __webpack_require__(229);
+	var values_pipe_1 = __webpack_require__(236);
 	exports.ValuesPipe = values_pipe_1.ValuesPipe;
-	var keys_pipe_1 = __webpack_require__(223);
+	var keys_pipe_1 = __webpack_require__(230);
 	exports.KeysPipe = keys_pipe_1.KeysPipe;
-	var client_parse_pipe_1 = __webpack_require__(221);
+	var client_parse_pipe_1 = __webpack_require__(228);
 	exports.ClientParsePipe = client_parse_pipe_1.ClientParsePipe;
-	var quantity_parse_pipe_1 = __webpack_require__(225);
+	var quantity_parse_pipe_1 = __webpack_require__(232);
 	exports.QuantityParsePipe = quantity_parse_pipe_1.QuantityParsePipe;
-	var search_filter_pipe_1 = __webpack_require__(227);
+	var search_filter_pipe_1 = __webpack_require__(234);
 	exports.SearchFilterPipe = search_filter_pipe_1.SearchFilterPipe;
-	var my_clients_1 = __webpack_require__(224);
+	var my_clients_1 = __webpack_require__(231);
 	exports.MyClients = my_clients_1.MyClients;
-	var clients_service_1 = __webpack_require__(132);
+	var clients_service_1 = __webpack_require__(133);
 	exports.ClientsService = clients_service_1.ClientsService;
-	var hubspotAPI_service_1 = __webpack_require__(133);
+	var hubspotAPI_service_1 = __webpack_require__(134);
 	exports.HubSpotAPIService = hubspotAPI_service_1.HubSpotAPIService;
 	
 
 /***/ },
-/* 16 */,
-/* 17 */,
-/* 18 */,
-/* 19 */,
-/* 20 */,
-/* 21 */
+/* 14 */,
+/* 15 */,
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -85,11 +80,21 @@ webpackJsonp([1],[
 	};
 	var BehaviorSubject_1 = __webpack_require__(87);
 	var core_1 = __webpack_require__(4);
-	__webpack_require__(58);
+	__webpack_require__(70);
 	var defaultState = {
-	    user: {},
+	    user: {
+	        loggedIn: false,
+	        tokens: {},
+	        data: {}
+	    },
 	    scope: {},
-	    clients: []
+	    scopes: [],
+	    activeScope: {},
+	    clients: [],
+	    activeClient: {},
+	    deals: [],
+	    activeCompany: {},
+	    companies: []
 	};
 	var _store = new BehaviorSubject_1.BehaviorSubject(defaultState);
 	var Store = (function () {
@@ -118,6 +123,11 @@ webpackJsonp([1],[
 	
 
 /***/ },
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */,
+/* 21 */,
 /* 22 */,
 /* 23 */,
 /* 24 */,
@@ -17070,7 +17080,7 @@ webpackJsonp([1],[
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(700)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(709)(module)))
 
 /***/ },
 /* 26 */
@@ -17114,7 +17124,61 @@ webpackJsonp([1],[
 /* 55 */,
 /* 56 */,
 /* 57 */,
-/* 58 */
+/* 58 */,
+/* 59 */,
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var MulticastObservable_1 = __webpack_require__(175);
+	var ConnectableObservable_1 = __webpack_require__(116);
+	/**
+	 * Returns an Observable that emits the results of invoking a specified selector on items
+	 * emitted by a ConnectableObservable that shares a single subscription to the underlying stream.
+	 *
+	 * <img src="./img/multicast.png" width="100%">
+	 *
+	 * @param {Function|Subject} Factory function to create an intermediate subject through
+	 * which the source sequence's elements will be multicast to the selector function
+	 * or Subject to push source elements into.
+	 * @param {Function} Optional selector function that can use the multicasted source stream
+	 * as many times as needed, without causing multiple subscriptions to the source stream.
+	 * Subscribers to the given source will receive all notifications of the source from the
+	 * time of the subscription forward.
+	 * @return {Observable} an Observable that emits the results of invoking the selector
+	 * on the items emitted by a `ConnectableObservable` that shares a single subscription to
+	 * the underlying stream.
+	 * @method multicast
+	 * @owner Observable
+	 */
+	function multicast(subjectOrSubjectFactory, selector) {
+	    var subjectFactory;
+	    if (typeof subjectOrSubjectFactory === 'function') {
+	        subjectFactory = subjectOrSubjectFactory;
+	    }
+	    else {
+	        subjectFactory = function subjectFactory() {
+	            return subjectOrSubjectFactory;
+	        };
+	    }
+	    return !selector ?
+	        new ConnectableObservable_1.ConnectableObservable(this, subjectFactory) :
+	        new MulticastObservable_1.MulticastObservable(this, subjectFactory, selector);
+	}
+	exports.multicast = multicast;
+	//# sourceMappingURL=multicast.js.map
+
+/***/ },
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17122,92 +17186,84 @@ webpackJsonp([1],[
 	// Subject imported before Observable to bypass circular dependency issue since
 	// Subject extends Observable and Observable references Subject in it's
 	// definition
-	var Subject_1 = __webpack_require__(13);
+	var Subject_1 = __webpack_require__(14);
 	exports.Subject = Subject_1.Subject;
 	/* tslint:enable:no-unused-variable */
 	var Observable_1 = __webpack_require__(1);
 	exports.Observable = Observable_1.Observable;
 	// statics
 	/* tslint:disable:no-use-before-declare */
-	__webpack_require__(424);
-	__webpack_require__(425);
-	__webpack_require__(426);
-	__webpack_require__(427);
-	__webpack_require__(428);
-	__webpack_require__(431);
 	__webpack_require__(432);
 	__webpack_require__(433);
 	__webpack_require__(434);
 	__webpack_require__(435);
 	__webpack_require__(436);
-	__webpack_require__(437);
-	__webpack_require__(438);
 	__webpack_require__(439);
 	__webpack_require__(440);
-	__webpack_require__(445);
 	__webpack_require__(441);
 	__webpack_require__(442);
 	__webpack_require__(443);
 	__webpack_require__(444);
+	__webpack_require__(445);
 	__webpack_require__(446);
-	__webpack_require__(449);
 	__webpack_require__(447);
 	__webpack_require__(448);
-	__webpack_require__(450);
-	//dom
-	__webpack_require__(429);
-	__webpack_require__(430);
-	//operators
 	__webpack_require__(453);
+	__webpack_require__(449);
+	__webpack_require__(450);
+	__webpack_require__(451);
+	__webpack_require__(452);
 	__webpack_require__(454);
+	__webpack_require__(457);
 	__webpack_require__(455);
 	__webpack_require__(456);
-	__webpack_require__(457);
 	__webpack_require__(458);
-	__webpack_require__(459);
-	__webpack_require__(460);
+	//dom
+	__webpack_require__(437);
+	__webpack_require__(438);
+	//operators
 	__webpack_require__(461);
 	__webpack_require__(462);
 	__webpack_require__(463);
 	__webpack_require__(464);
 	__webpack_require__(465);
 	__webpack_require__(466);
-	__webpack_require__(472);
 	__webpack_require__(467);
 	__webpack_require__(468);
 	__webpack_require__(469);
 	__webpack_require__(470);
 	__webpack_require__(471);
+	__webpack_require__(472);
 	__webpack_require__(473);
 	__webpack_require__(474);
+	__webpack_require__(480);
 	__webpack_require__(475);
 	__webpack_require__(476);
 	__webpack_require__(477);
-	__webpack_require__(480);
+	__webpack_require__(478);
+	__webpack_require__(479);
 	__webpack_require__(481);
 	__webpack_require__(482);
-	__webpack_require__(478);
 	__webpack_require__(483);
 	__webpack_require__(484);
 	__webpack_require__(485);
-	__webpack_require__(486);
-	__webpack_require__(487);
 	__webpack_require__(488);
 	__webpack_require__(489);
 	__webpack_require__(490);
-	__webpack_require__(451);
-	__webpack_require__(452);
+	__webpack_require__(486);
 	__webpack_require__(491);
 	__webpack_require__(492);
-	__webpack_require__(479);
 	__webpack_require__(493);
 	__webpack_require__(494);
 	__webpack_require__(495);
 	__webpack_require__(496);
 	__webpack_require__(497);
 	__webpack_require__(498);
+	__webpack_require__(459);
+	__webpack_require__(460);
 	__webpack_require__(499);
 	__webpack_require__(500);
+	__webpack_require__(487);
 	__webpack_require__(501);
 	__webpack_require__(502);
 	__webpack_require__(503);
@@ -17218,16 +17274,16 @@ webpackJsonp([1],[
 	__webpack_require__(508);
 	__webpack_require__(509);
 	__webpack_require__(510);
-	__webpack_require__(512);
 	__webpack_require__(511);
+	__webpack_require__(512);
 	__webpack_require__(513);
 	__webpack_require__(514);
 	__webpack_require__(515);
 	__webpack_require__(516);
 	__webpack_require__(517);
 	__webpack_require__(518);
-	__webpack_require__(519);
 	__webpack_require__(520);
+	__webpack_require__(519);
 	__webpack_require__(521);
 	__webpack_require__(522);
 	__webpack_require__(523);
@@ -17260,8 +17316,16 @@ webpackJsonp([1],[
 	__webpack_require__(550);
 	__webpack_require__(551);
 	__webpack_require__(552);
+	__webpack_require__(553);
+	__webpack_require__(554);
+	__webpack_require__(555);
+	__webpack_require__(556);
+	__webpack_require__(557);
+	__webpack_require__(558);
+	__webpack_require__(559);
+	__webpack_require__(560);
 	/* tslint:disable:no-unused-variable */
-	var Subscription_1 = __webpack_require__(17);
+	var Subscription_1 = __webpack_require__(19);
 	exports.Subscription = Subscription_1.Subscription;
 	var Subscriber_1 = __webpack_require__(3);
 	exports.Subscriber = Subscriber_1.Subscriber;
@@ -17271,36 +17335,36 @@ webpackJsonp([1],[
 	exports.ReplaySubject = ReplaySubject_1.ReplaySubject;
 	var BehaviorSubject_1 = __webpack_require__(87);
 	exports.BehaviorSubject = BehaviorSubject_1.BehaviorSubject;
-	var MulticastObservable_1 = __webpack_require__(174);
+	var MulticastObservable_1 = __webpack_require__(175);
 	exports.MulticastObservable = MulticastObservable_1.MulticastObservable;
-	var ConnectableObservable_1 = __webpack_require__(117);
+	var ConnectableObservable_1 = __webpack_require__(116);
 	exports.ConnectableObservable = ConnectableObservable_1.ConnectableObservable;
-	var Notification_1 = __webpack_require__(70);
+	var Notification_1 = __webpack_require__(69);
 	exports.Notification = Notification_1.Notification;
 	var EmptyError_1 = __webpack_require__(75);
 	exports.EmptyError = EmptyError_1.EmptyError;
 	var ArgumentOutOfRangeError_1 = __webpack_require__(93);
 	exports.ArgumentOutOfRangeError = ArgumentOutOfRangeError_1.ArgumentOutOfRangeError;
-	var ObjectUnsubscribedError_1 = __webpack_require__(125);
+	var ObjectUnsubscribedError_1 = __webpack_require__(124);
 	exports.ObjectUnsubscribedError = ObjectUnsubscribedError_1.ObjectUnsubscribedError;
-	var UnsubscriptionError_1 = __webpack_require__(200);
+	var UnsubscriptionError_1 = __webpack_require__(201);
 	exports.UnsubscriptionError = UnsubscriptionError_1.UnsubscriptionError;
-	var timeInterval_1 = __webpack_require__(192);
+	var timeInterval_1 = __webpack_require__(193);
 	exports.TimeInterval = timeInterval_1.TimeInterval;
-	var timestamp_1 = __webpack_require__(193);
+	var timestamp_1 = __webpack_require__(194);
 	exports.Timestamp = timestamp_1.Timestamp;
-	var TestScheduler_1 = __webpack_require__(680);
+	var TestScheduler_1 = __webpack_require__(688);
 	exports.TestScheduler = TestScheduler_1.TestScheduler;
-	var VirtualTimeScheduler_1 = __webpack_require__(195);
+	var VirtualTimeScheduler_1 = __webpack_require__(196);
 	exports.VirtualTimeScheduler = VirtualTimeScheduler_1.VirtualTimeScheduler;
-	var AjaxObservable_1 = __webpack_require__(176);
+	var AjaxObservable_1 = __webpack_require__(177);
 	exports.AjaxResponse = AjaxObservable_1.AjaxResponse;
 	exports.AjaxError = AjaxObservable_1.AjaxError;
 	exports.AjaxTimeoutError = AjaxObservable_1.AjaxTimeoutError;
-	var asap_1 = __webpack_require__(196);
+	var asap_1 = __webpack_require__(197);
 	var async_1 = __webpack_require__(26);
-	var queue_1 = __webpack_require__(197);
-	var animationFrame_1 = __webpack_require__(677);
+	var queue_1 = __webpack_require__(198);
+	var animationFrame_1 = __webpack_require__(685);
 	var rxSubscriber_1 = __webpack_require__(92);
 	var iterator_1 = __webpack_require__(74);
 	var observable_1 = __webpack_require__(91);
@@ -17347,60 +17411,6 @@ webpackJsonp([1],[
 	//# sourceMappingURL=Rx.js.map
 
 /***/ },
-/* 59 */,
-/* 60 */,
-/* 61 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var MulticastObservable_1 = __webpack_require__(174);
-	var ConnectableObservable_1 = __webpack_require__(117);
-	/**
-	 * Returns an Observable that emits the results of invoking a specified selector on items
-	 * emitted by a ConnectableObservable that shares a single subscription to the underlying stream.
-	 *
-	 * <img src="./img/multicast.png" width="100%">
-	 *
-	 * @param {Function|Subject} Factory function to create an intermediate subject through
-	 * which the source sequence's elements will be multicast to the selector function
-	 * or Subject to push source elements into.
-	 * @param {Function} Optional selector function that can use the multicasted source stream
-	 * as many times as needed, without causing multiple subscriptions to the source stream.
-	 * Subscribers to the given source will receive all notifications of the source from the
-	 * time of the subscription forward.
-	 * @return {Observable} an Observable that emits the results of invoking the selector
-	 * on the items emitted by a `ConnectableObservable` that shares a single subscription to
-	 * the underlying stream.
-	 * @method multicast
-	 * @owner Observable
-	 */
-	function multicast(subjectOrSubjectFactory, selector) {
-	    var subjectFactory;
-	    if (typeof subjectOrSubjectFactory === 'function') {
-	        subjectFactory = subjectOrSubjectFactory;
-	    }
-	    else {
-	        subjectFactory = function subjectFactory() {
-	            return subjectOrSubjectFactory;
-	        };
-	    }
-	    return !selector ?
-	        new ConnectableObservable_1.ConnectableObservable(this, subjectFactory) :
-	        new MulticastObservable_1.MulticastObservable(this, subjectFactory, selector);
-	}
-	exports.multicast = multicast;
-	//# sourceMappingURL=multicast.js.map
-
-/***/ },
-/* 62 */,
-/* 63 */,
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */,
 /* 71 */,
 /* 72 */
 /***/ function(module, exports, __webpack_require__) {
@@ -17412,7 +17422,7 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var root_1 = __webpack_require__(23);
-	var Action_1 = __webpack_require__(670);
+	var Action_1 = __webpack_require__(678);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @ignore
@@ -17558,7 +17568,7 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Scheduler_1 = __webpack_require__(422);
+	var Scheduler_1 = __webpack_require__(430);
 	var AsyncScheduler = (function (_super) {
 	    __extends(AsyncScheduler, _super);
 	    function AsyncScheduler() {
@@ -17626,8 +17636,8 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(13);
-	var Subscription_1 = __webpack_require__(17);
+	var Subject_1 = __webpack_require__(14);
+	var Subscription_1 = __webpack_require__(19);
 	/**
 	 * @class AsyncSubject<T>
 	 */
@@ -17680,9 +17690,9 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(13);
-	var queue_1 = __webpack_require__(197);
-	var observeOn_1 = __webpack_require__(123);
+	var Subject_1 = __webpack_require__(14);
+	var queue_1 = __webpack_require__(198);
+	var observeOn_1 = __webpack_require__(122);
 	/**
 	 * @class ReplaySubject<T>
 	 */
@@ -17828,162 +17838,15 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var dragula = __webpack_require__(170);
-	var core_1 = __webpack_require__(4);
-	var DragulaService = (function () {
-	    function DragulaService() {
-	        this.cancel = new core_1.EventEmitter();
-	        this.cloned = new core_1.EventEmitter();
-	        this.drag = new core_1.EventEmitter();
-	        this.dragend = new core_1.EventEmitter();
-	        this.drop = new core_1.EventEmitter();
-	        this.out = new core_1.EventEmitter();
-	        this.over = new core_1.EventEmitter();
-	        this.remove = new core_1.EventEmitter();
-	        this.shadow = new core_1.EventEmitter();
-	        this.dropModel = new core_1.EventEmitter();
-	        this.removeModel = new core_1.EventEmitter();
-	        this.events = [
-	            'cancel',
-	            'cloned',
-	            'drag',
-	            'dragend',
-	            'drop',
-	            'out',
-	            'over',
-	            'remove',
-	            'shadow',
-	            'dropModel',
-	            'removeModel'
-	        ];
-	        this.bags = [];
-	    }
-	    DragulaService.prototype.add = function (name, drake) {
-	        var bag = this.find(name);
-	        if (bag) {
-	            throw new Error('Bag named: "' + name + '" already exists.');
-	        }
-	        bag = {
-	            name: name,
-	            drake: drake
-	        };
-	        this.bags.push(bag);
-	        if (drake.models) {
-	            this.handleModels(name, drake);
-	        }
-	        if (!bag.initEvents) {
-	            this.setupEvents(bag);
-	        }
-	        return bag;
-	    };
-	    DragulaService.prototype.find = function (name) {
-	        for (var i = 0; i < this.bags.length; i++) {
-	            if (this.bags[i].name === name) {
-	                return this.bags[i];
-	            }
-	        }
-	    };
-	    DragulaService.prototype.destroy = function (name) {
-	        var bag = this.find(name);
-	        var i = this.bags.indexOf(bag);
-	        this.bags.splice(i, 1);
-	        bag.drake.destroy();
-	    };
-	    DragulaService.prototype.setOptions = function (name, options) {
-	        var bag = this.add(name, dragula(options));
-	        this.handleModels(name, bag.drake);
-	    };
-	    DragulaService.prototype.handleModels = function (name, drake) {
-	        var _this = this;
-	        var dragElm;
-	        var dragIndex;
-	        var dropIndex;
-	        var sourceModel;
-	        drake.on('remove', function (el, source) {
-	            if (!drake.models) {
-	                return;
-	            }
-	            sourceModel = drake.models[drake.containers.indexOf(source)];
-	            sourceModel.splice(dragIndex, 1);
-	            // console.log('REMOVE');
-	            // console.log(sourceModel);
-	            _this.removeModel.emit([name, el, source]);
-	        });
-	        drake.on('drag', function (el, source) {
-	            dragElm = el;
-	            dragIndex = _this.domIndexOf(el, source);
-	        });
-	        drake.on('drop', function (dropElm, target, source) {
-	            if (!drake.models || !target) {
-	                return;
-	            }
-	            dropIndex = _this.domIndexOf(dropElm, target);
-	            sourceModel = drake.models[drake.containers.indexOf(source)];
-	            // console.log('DROP');
-	            // console.log(sourceModel);
-	            if (target === source) {
-	                sourceModel.splice(dropIndex, 0, sourceModel.splice(dragIndex, 1)[0]);
-	            }
-	            else {
-	                var notCopy = dragElm === dropElm;
-	                var targetModel = drake.models[drake.containers.indexOf(target)];
-	                var dropElmModel = notCopy ? sourceModel[dragIndex] : JSON.parse(JSON.stringify(sourceModel[dragIndex]));
-	                if (notCopy) {
-	                    sourceModel.splice(dragIndex, 1);
-	                }
-	                targetModel.splice(dropIndex, 0, dropElmModel);
-	                target.removeChild(dropElm); // element must be removed for ngFor to apply correctly
-	            }
-	            _this.dropModel.emit([name, dropElm, target, source]);
-	        });
-	    };
-	    DragulaService.prototype.setupEvents = function (bag) {
-	        bag.initEvents = true;
-	        var that = this;
-	        var emitter = function (type) {
-	            function replicate() {
-	                var args = Array.prototype.slice.call(arguments);
-	                that[type].emit([bag.name].concat(args));
-	            }
-	            bag.drake.on(type, replicate);
-	        };
-	        this.events.forEach(emitter);
-	    };
-	    DragulaService.prototype.domIndexOf = function (child, parent) {
-	        return Array.prototype.indexOf.call(parent.children, child);
-	    };
-	    DragulaService = __decorate([
-	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [])
-	    ], DragulaService);
-	    return DragulaService;
-	}());
-	exports.DragulaService = DragulaService;
-
-
-/***/ },
-/* 117 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(13);
+	var Subject_1 = __webpack_require__(14);
 	var Observable_1 = __webpack_require__(1);
 	var Subscriber_1 = __webpack_require__(3);
-	var Subscription_1 = __webpack_require__(17);
+	var Subscription_1 = __webpack_require__(19);
 	/**
 	 * @class ConnectableObservable<T>
 	 */
@@ -18130,9 +17993,9 @@ webpackJsonp([1],[
 	//# sourceMappingURL=ConnectableObservable.js.map
 
 /***/ },
+/* 117 */,
 /* 118 */,
-/* 119 */,
-/* 120 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18284,7 +18147,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=combineLatest.js.map
 
 /***/ },
-/* 121 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18397,9 +18260,9 @@ webpackJsonp([1],[
 	//# sourceMappingURL=concat.js.map
 
 /***/ },
+/* 121 */,
 /* 122 */,
-/* 123 */,
-/* 124 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18658,9 +18521,9 @@ webpackJsonp([1],[
 	//# sourceMappingURL=zip.js.map
 
 /***/ },
+/* 124 */,
 /* 125 */,
-/* 126 */,
-/* 127 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18677,8 +18540,52 @@ webpackJsonp([1],[
 	//# sourceMappingURL=isNumeric.js.map
 
 /***/ },
-/* 128 */,
+/* 127 */,
+/* 128 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	__export(__webpack_require__(209));
+	__export(__webpack_require__(208));
+	
+
+/***/ },
 /* 129 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(4);
+	var _1 = __webpack_require__(128);
+	var HashidsDecode = (function () {
+	    function HashidsDecode() {
+	    }
+	    HashidsDecode.prototype.transform = function (value, salt, alphabet, minLength) {
+	        var hashids = new _1.Hashids(salt, minLength, alphabet);
+	        return hashids.decode(value);
+	    };
+	    return HashidsDecode;
+	}());
+	HashidsDecode = __decorate([
+	    core_1.Pipe({ name: 'hashidsDecode' }),
+	    __metadata("design:paramtypes", [])
+	], HashidsDecode);
+	exports.HashidsDecode = HashidsDecode;
+	
+
+/***/ },
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18700,7 +18607,7 @@ webpackJsonp([1],[
 	AppComponent = __decorate([
 	    core_1.Component({
 	        selector: 'app',
-	        template: __webpack_require__(409)
+	        template: __webpack_require__(415)
 	    }),
 	    __metadata("design:paramtypes", [])
 	], AppComponent);
@@ -18708,24 +18615,28 @@ webpackJsonp([1],[
 	
 
 /***/ },
-/* 130 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var main_1 = __webpack_require__(213);
+	var main_1 = __webpack_require__(220);
 	exports.Main = main_1.Main;
-	var auth_1 = __webpack_require__(210);
+	var auth_1 = __webpack_require__(213);
 	exports.Auth = auth_1.Auth;
-	var user_profile_1 = __webpack_require__(217);
+	var user_profile_1 = __webpack_require__(224);
 	exports.UserProfile = user_profile_1.UserProfile;
-	var scope_display_1 = __webpack_require__(215);
+	var scope_display_1 = __webpack_require__(222);
 	exports.ScopeDisplay = scope_display_1.ScopeDisplay;
-	var clients_display_1 = __webpack_require__(212);
+	var clients_display_1 = __webpack_require__(215);
 	exports.ClientsDisplay = clients_display_1.ClientsDisplay;
+	var deals_display_1 = __webpack_require__(219);
+	exports.DealsDisplay = deals_display_1.DealsDisplay;
+	var companies_display_1 = __webpack_require__(217);
+	exports.CompaniesDisplay = companies_display_1.CompaniesDisplay;
 	
 
 /***/ },
-/* 131 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18740,10 +18651,10 @@ webpackJsonp([1],[
 	};
 	var core_1 = __webpack_require__(4);
 	var http_1 = __webpack_require__(49);
-	var router_1 = __webpack_require__(19);
-	var index_1 = __webpack_require__(15);
-	var store_1 = __webpack_require__(21);
-	__webpack_require__(58);
+	var router_1 = __webpack_require__(17);
+	var index_1 = __webpack_require__(13);
+	var store_1 = __webpack_require__(16);
+	__webpack_require__(70);
 	var AuthService = (function () {
 	    function AuthService(router, apiService, storeHelper, store, http) {
 	        this.router = router;
@@ -18753,24 +18664,34 @@ webpackJsonp([1],[
 	        this.http = http;
 	        // JWTKEY: string = CONFIG.hubspot.JWTKEY;
 	        this.JWTKEY = 'hubspot_token';
+	        this.JWT = localStorage.getItem(this.JWTKEY);
 	        // HUBAUTHAPI: string = CONFIG.hubspot.HUBAUTHAPI;
 	        this.HUBAUTHAPI = 'https://b2c78a56.ngrok.io/hubAuth';
+	        this.HUBSPOTPROXY = 'https://b2c78a56.ngrok.io/hubAPI';
 	        this.HUBJWTPURGE = 'https://b2c78a56.ngrok.io/hubLogout';
+	        this.HUBME = 'https://b2c78a56.ngrok.io/hubMe';
 	        this.HUBTOKEN = null;
+	        /** constructor body **/
+	        var token = localStorage.getItem(this.JWTKEY);
+	        if (token) {
+	            this.setJwt(token);
+	            console.log('token is true: ', token);
+	        }
+	        else {
+	            this.authenticate()
+	                .then(function (token) { return console.log('authservice constructor authenticate call returned: ', token); })
+	                .catch(function (err) { return console.log('authservice constructor authenticate call error ', err); });
+	        }
 	    }
-	    AuthService.prototype.setJwt = function (jwt, key) {
-	        var _this = this;
-	        var jwt_key = (key) ? key : this.JWTKEY;
-	        return new Promise(function (resolve, reject) {
-	            window.localStorage.setItem(jwt_key, jwt);
-	            if (window.localStorage.getItem(jwt_key)) {
-	                _this.apiService.setHeaders({ Authorization: "Bearer " + jwt[jwt_key] });
-	                resolve(jwt);
-	            }
-	            else {
-	                reject('no jwt_key in localStorage');
-	            }
-	        });
+	    AuthService.prototype.setJwt = function (jwt) {
+	        console.log('set jwt called and jwt: ', jwt, ' headers: ', this);
+	        if (window.localStorage.getItem(this.JWTKEY)) {
+	            this.apiService.setHeaders({ Authorization: "Bearer " + jwt });
+	        }
+	        else {
+	            window.localStorage.setItem(this.JWTKEY, jwt);
+	            this.apiService.setHeaders({ Authorization: "Bearer " + jwt });
+	        }
 	    };
 	    AuthService.prototype.clearServerToken = function () {
 	        var _this = this;
@@ -18812,18 +18733,31 @@ webpackJsonp([1],[
 	        return Promise.all([this.clearLocalStorage(), this.clearServerToken()])
 	            .then(function (res) {
 	            console.log('successful signout res: ', res);
-	            _this.router.navigate(['/']);
+	            _this.router.navigate(['auth']);
 	        })
-	            .catch(function (err) { return console.log('error in promise.all: ', err); })
-	            .catch(function (err) { return console.log(err); });
+	            .catch(function (err) {
+	            console.log('error in promise.all: ', err);
+	            if (!localStorage.getItem(_this.JWTKEY)) {
+	                console.log('tryed to signout but localStorage already empty, should now redirect to auth');
+	                _this.router.navigate(['auth']);
+	            }
+	        });
 	    };
-	    // Set relevent user information to localStorage to submit author credentials with new scopes
+	    // Set relevent user information (access_token and refresh_token) to localStorage to submit author credentials with new scopes
 	    AuthService.prototype.setUser = function (path) {
 	        var _this = this;
 	        return this.apiService.post("/" + path)
 	            .do(function (res) { return _this.setJwt(res.token); })
-	            .do(function (res) { return _this.storeHelper.update('user', res.data); })
 	            .map(function (res) { return res.data; });
+	    };
+	    // Get user information (hubspot user object) from hubspot. Different from setUser.
+	    AuthService.prototype.getUser = function (token) {
+	        console.log('get user called with token: ', token);
+	        return this.apiService.post(this.HUBME)
+	            .do(function (res) {
+	            console.log('getUser res: ', res);
+	        })
+	            .map(function (res) { return res; });
 	    };
 	    AuthService.prototype.authenticate = function () {
 	        var _this = this;
@@ -18832,7 +18766,7 @@ webpackJsonp([1],[
 	            if (window.localStorage.getItem(_this.JWTKEY)) {
 	                resolve(window.localStorage.getItem(_this.JWTKEY));
 	            }
-	            else if (window.localStorage.getItem(_this.JWTKEY).length < 1) {
+	            else if (!window.localStorage.getItem(_this.JWTKEY)) {
 	                _this.apiService.get(_this.HUBAUTHAPI)
 	                    .map(function (res) {
 	                    console.log('AuthService.authenticate conditional no hubspot_token in localStorage. apiService.get(HUBAUTHAPI) res: ', res);
@@ -18847,21 +18781,23 @@ webpackJsonp([1],[
 	        return result;
 	    };
 	    AuthService.prototype.isAuthorized = function () {
-	        return (window.localStorage.getItem(this.JWTKEY) == 'undefined' || window.localStorage.getItem(this.JWTKEY) == null) || !window.localStorage.getItem(this.JWTKEY).length ? false : true;
+	        console.log('isAuthorized() this.JWT: ', this.JWT);
+	        if (!this.JWT) {
+	            console.log('no JWT in localStorage');
+	            this.JWT = localStorage.getItem(this.JWTKEY);
+	        }
+	        return Boolean(this.JWT);
 	    };
 	    AuthService.prototype.canActivate = function () {
-	        var isAuth = this.isAuthorized();
-	        console.log('isAuth: ', isAuth);
-	        if (!isAuth) {
+	        var canActivate = this.isAuthorized();
+	        this.onCanActivate(canActivate);
+	        return canActivate;
+	    };
+	    AuthService.prototype.onCanActivate = function (canActivate) {
+	        console.log('onCanActivate ran: ', canActivate);
+	        if (!canActivate) {
 	            this.router.navigate(['', 'auth']);
 	        }
-	        return isAuth;
-	    };
-	    AuthService.prototype.userIsSuper = function () {
-	        return (this.store.getState().user['role'] === "super") ? true : false;
-	    };
-	    AuthService.prototype.userIsAdmin = function () {
-	        return (this.store.getState().user['role'] === "admin") ? true : false;
 	    };
 	    return AuthService;
 	}());
@@ -18871,83 +18807,6 @@ webpackJsonp([1],[
 	], AuthService);
 	exports.AuthService = AuthService;
 	var _a, _b, _c, _d, _e;
-
-
-/***/ },
-/* 132 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(4);
-	var router_1 = __webpack_require__(19);
-	var hubspotAPI_service_1 = __webpack_require__(133);
-	var index_1 = __webpack_require__(15);
-	var store_1 = __webpack_require__(21);
-	var _ = __webpack_require__(25);
-	var ClientsService /*implements CanActivate*/ = (function () {
-	    function ClientsService(hubspotAPIService, store, storeHelper, router) {
-	        this.hubspotAPIService = hubspotAPIService;
-	        this.store = store;
-	        this.storeHelper = storeHelper;
-	        this.router = router;
-	        this.hubspotGetCompanyURL = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.endpoints.getCompany;
-	        this.clientsAPI = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).endpoints.clientsAPI;
-	        this.magHttpsProxy = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).magneticProxy;
-	        this.hubspotAPIEndpoint = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.APIURL;
-	        this.hubspotAPIKey = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.APIKEY;
-	        this.tempCompanyArr = [];
-	    }
-	    ClientsService.prototype.canActivate = function () {
-	        var _this = this;
-	        var fetchingComplete = (this.store.getState().clients.length >= 1) ? true : false;
-	        console.log('canActivate: ', fetchingComplete);
-	        if (!fetchingComplete) {
-	            swal({
-	                title: 'Loading Client Data',
-	                text: "Please wait for it",
-	                type: 'error',
-	                confirmButtonText: 'OK',
-	                html: "\n          <h2>Basic Progress Bar</h2>\n          <div class=\"progress\">\n            <div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"70\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:90%\">\n              <span class=\"sr-only\">90% Complete</span>\n            </div>\n          </div>\n        "
-	            }).then(function () {
-	                swal({
-	                    title: 'Returning to Home',
-	                    text: 'Try returning later',
-	                    type: 'warning',
-	                    confirmButtonText: 'OK'
-	                }).then(function () {
-	                    _this.router.navigate(['']);
-	                });
-	            });
-	        }
-	        return fetchingComplete;
-	    };
-	    ClientsService.prototype.fetchCompanies = function () {
-	        var self = this;
-	        self.hubspotAPIService.getCompanies()
-	            .map(function (res) { return res.json(); })
-	            .subscribe(function (clients) {
-	            console.log('clients: ', clients);
-	            _.forEach(clients, function (client) { return self.tempCompanyArr.push(client); });
-	        });
-	        return self.storeHelper.add('clients', self.tempCompanyArr);
-	    };
-	    return ClientsService;
-	}());
-	ClientsService = __decorate([
-	    core_1.Injectable(),
-	    __metadata("design:paramtypes", [typeof (_a = typeof hubspotAPI_service_1.HubSpotAPIService !== "undefined" && hubspotAPI_service_1.HubSpotAPIService) === "function" && _a || Object, typeof (_b = typeof store_1.Store !== "undefined" && store_1.Store) === "function" && _b || Object, typeof (_c = typeof index_1.StoreHelper !== "undefined" && index_1.StoreHelper) === "function" && _c || Object, typeof (_d = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _d || Object])
-	], ClientsService);
-	exports.ClientsService = ClientsService; /*implements CanActivate*/
-	var _a, _b, _c, _d;
 
 
 /***/ },
@@ -18965,10 +18824,95 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
+	var router_1 = __webpack_require__(17);
+	var hubspotAPI_service_1 = __webpack_require__(134);
+	var index_1 = __webpack_require__(13);
+	var store_1 = __webpack_require__(16);
+	var _ = __webpack_require__(25);
+	var ClientsService /*implements CanActivate*/ = (function () {
+	    function ClientsService(hubspotAPIService, store, storeHelper, router) {
+	        this.hubspotAPIService = hubspotAPIService;
+	        this.store = store;
+	        this.storeHelper = storeHelper;
+	        this.router = router;
+	        this.hubspotGetCompanyURL = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.endpoints.getCompany;
+	        this.hubspotGetContacts = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.allContacts;
+	        this.clientsAPI = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).endpoints.clientsAPI;
+	        this.magHttpsProxy = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).magneticProxy;
+	        this.hubspotAPIEndpoint = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.APIURL;
+	        this.hubspotAPIKey = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.APIKEY;
+	        this.tempCompanyArr = [];
+	    }
+	    // canActivate(): boolean {
+	    //   const fetchingComplete = (this.store.getState().clients.length >= 1) ? true : false;
+	    //   console.log('canActivate: ', fetchingComplete);
+	    //   if (!fetchingComplete) {
+	    //     swal({
+	    //       title: 'Loading Client Data',
+	    //       text: "Please wait for it",
+	    //       type: 'error',
+	    //       confirmButtonText: 'OK',
+	    //       html: `
+	    //         <h2>Basic Progress Bar</h2>
+	    //         <div class="progress">
+	    //           <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:90%">
+	    //             <span class="sr-only">90% Complete</span>
+	    //           </div>
+	    //         </div>
+	    //       `
+	    //     }).then(() => {
+	    //         swal({
+	    //           title: 'Returning to Home',
+	    //           text: 'Try returning later',
+	    //           type: 'warning',
+	    //           confirmButtonText: 'OK'
+	    //         }).then(() => {
+	    //           this.router.navigate(['']);
+	    //         }) 
+	    //       })
+	    //   }
+	    //   return fetchingComplete;
+	    // }
+	    ClientsService.prototype.fetchCompanies = function () {
+	        var self = this;
+	        // self.hubspotAPIService.getCompanies()
+	        //   .map(res => res.json())
+	        //   .subscribe(clients => {
+	        //     console.log('clients: ', clients)
+	        //     _.forEach(clients, client => self.tempCompanyArr.push(client))
+	        //   });
+	        this.hubspotAPIService.hubSpotAPICall(this.hubspotGetContacts)
+	            .subscribe(function (res) { return console.log('this.hubspotAPIService.hubSpotAPICall(this.hubspotGetContacts) returned: ', res); });
+	        return self.storeHelper.add('clients', self.tempCompanyArr);
+	    };
+	    return ClientsService;
+	}());
+	ClientsService = __decorate([
+	    core_1.Injectable(),
+	    __metadata("design:paramtypes", [typeof (_a = typeof hubspotAPI_service_1.HubSpotAPIService !== "undefined" && hubspotAPI_service_1.HubSpotAPIService) === "function" && _a || Object, typeof (_b = typeof store_1.Store !== "undefined" && store_1.Store) === "function" && _b || Object, typeof (_c = typeof index_1.StoreHelper !== "undefined" && index_1.StoreHelper) === "function" && _c || Object, typeof (_d = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _d || Object])
+	], ClientsService);
+	exports.ClientsService = ClientsService; /*implements CanActivate*/
+	var _a, _b, _c, _d;
+
+
+/***/ },
+/* 134 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(4);
 	var http_1 = __webpack_require__(49);
-	var index_1 = __webpack_require__(15);
-	var store_1 = __webpack_require__(21);
-	var rxjs_1 = __webpack_require__(58);
+	var index_1 = __webpack_require__(13);
+	var store_1 = __webpack_require__(16);
 	var _ = __webpack_require__(25);
 	var HubSpotAPIService = (function () {
 	    function HubSpotAPIService(apiService, storeHelper, store, http) {
@@ -18978,12 +18922,21 @@ webpackJsonp([1],[
 	        this.http = http;
 	        this.headers = new http_1.Headers({
 	            'Content-Type': 'application/json',
-	            Accept: 'application/json'
+	            Accept: 'application/json',
+	            Authorization: "Bearer " + window.localStorage.getItem('hubspot_token')
 	        });
 	        this.companiesAPI = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.endpoints.getCompanies;
 	        this.magHttpsProxy = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).magneticProxy;
-	        this.hubspotAPIEndpoint = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.APIURL;
+	        // hubspotAPI: string = CONFIG.hubspot.APIURL
+	        this.hubspotAPI = 'https://api.hubapi.com/';
+	        this.HUBSPOTPROXY = 'https://b2c78a56.ngrok.io/hubAPI';
+	        this.CONTACTSPROXY = 'https://b2c78a56.ngrok.io/hubContacts';
+	        this.HUBDEALS = 'https://b2c78a56.ngrok.io/hubDeals';
+	        this.HUBDEAL = 'https://b2c78a56.ngrok.io/hubDeal';
+	        this.HUBCOMPANIES = 'https://b2c78a56.ngrok.io/hubCompanies';
 	        this.hubspotAPIKey = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.APIKEY;
+	        // hubContacts: string = CONFIG.hubspot.allContacts;
+	        this.hubContacts = 'contacts/v1/lists/all/contacts/all/';
 	    }
 	    HubSpotAPIService.prototype.getJson = function (response) {
 	        return response.json();
@@ -19000,26 +18953,56 @@ webpackJsonp([1],[
 	            throw error;
 	        }
 	    };
-	    HubSpotAPIService.prototype.hubSpotAPICall = function (body, typeOfCall, options, log) {
-	        if (log) {
-	            console.log('HubSpotAPI.service.ts hubSpotAPICall called with typeOfCall: ', typeOfCall);
+	    HubSpotAPIService.prototype.hubSpotAPICall = function (body, options) {
+	        if (options) {
 	        }
-	        var reqBody = body;
-	        var nonOptionsQuery = {
-	            endpoint: reqBody
-	        };
-	        var reqOptions = options;
-	        var optionsQuery = {
-	            endpoint: reqBody,
-	            options: reqOptions
-	        };
-	        return this.http.post("" + this.magHttpsProxy, (reqOptions && reqOptions.length > 0) ? JSON.stringify(optionsQuery) : JSON.stringify(nonOptionsQuery), { headers: this.headers })
-	            .map(this.checkForError)
-	            .catch(function (err) { return rxjs_1.Observable.throw(err); })
-	            .map(this.getJson);
+	        return this.http.post(this.CONTACTSPROXY, this.headers)
+	            .map(function (res) { return JSON.parse(res['_body']); })
+	            .map(function (rawContactsObj) {
+	            var tempObj = { contacts: [] };
+	            _.forEach(rawContactsObj, function (val) {
+	                tempObj['contacts'].push(val.contacts);
+	            });
+	            return tempObj;
+	        })
+	            .map(function (contactsObj) { return _.flatten(contactsObj.contacts); });
 	    };
-	    HubSpotAPIService.prototype.getCompanies = function () {
-	        return this.http.get(this.magHttpsProxy);
+	    HubSpotAPIService.prototype.hubSpotDealsCall = function (body, options) {
+	        if (options) {
+	        }
+	        return this.http.post(this.HUBDEALS, this.headers)
+	            .map(function (res) { return JSON.parse(res['_body']); })
+	            .map(function (rawDealsObj) {
+	            console.log('rawDealsObj: ', rawDealsObj);
+	            return rawDealsObj[0];
+	        })
+	            .map(function (dealsObj) { return _.flatten(dealsObj.deals); });
+	    };
+	    HubSpotAPIService.prototype.hubspotDealCall = function (body, options) {
+	        return this.http.post(this.HUBDEAL + '/' + body, this.headers)
+	            .map(function (res) { return JSON.parse(res['_body']); });
+	        // .map((rawDealsObj) => {
+	        //   console.log('rawDealsObj: ', rawDealsObj);
+	        //   return rawDealsObj[0];
+	        // })
+	        // .map((dealsObj) => _.flatten(dealsObj.deals))
+	    };
+	    HubSpotAPIService.prototype.hubSpotCompaniesCall = function (body, options) {
+	        if (options) {
+	        }
+	        return this.http.post(this.HUBCOMPANIES, this.headers)
+	            .map(function (res) { return JSON.parse(res['_body']); })
+	            .map(function (companiesData) {
+	            var tempCompaniesArr = [];
+	            var flatten = function (arr) { return arr.reduce(function (a, b) { return a.concat(Array.isArray(b) ? flatten(b) : b); }, []); };
+	            _.forEach(companiesData, function (val, key) {
+	                tempCompaniesArr.push(val.companies);
+	            });
+	            tempCompaniesArr = flatten(tempCompaniesArr);
+	            // console.log('tempCompaniesArr: ', tempCompaniesArr);
+	            // this.storeHelper.update('companies', tempCompaniesArr);
+	            return companiesData;
+	        });
 	    };
 	    return HubSpotAPIService;
 	}());
@@ -19032,25 +19015,62 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 134 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var home_1 = __webpack_require__(233);
+	var home_1 = __webpack_require__(240);
 	exports.Home = home_1.Home;
-	var test_1 = __webpack_require__(236);
+	var test_1 = __webpack_require__(243);
 	exports.Test = test_1.Test;
-	var pageNotFound_1 = __webpack_require__(234);
+	var pageNotFound_1 = __webpack_require__(241);
 	exports.PageNotFound = pageNotFound_1.PageNotFound;
-	var client_details_1 = __webpack_require__(231);
-	exports.ClientDetails = client_details_1.ClientDetails;
-	var token_display_1 = __webpack_require__(238);
+	var company_details_1 = __webpack_require__(238);
+	exports.CompanyDetails = company_details_1.CompanyDetails;
+	var token_display_1 = __webpack_require__(245);
 	exports.TokenDisplay = token_display_1.TokenDisplay;
 	
 
 /***/ },
-/* 135 */,
-/* 136 */,
+/* 136 */
+/***/ function(module, exports) {
+
+	var charenc = {
+	  // UTF-8 encoding
+	  utf8: {
+	    // Convert a string to a byte array
+	    stringToBytes: function(str) {
+	      return charenc.bin.stringToBytes(unescape(encodeURIComponent(str)));
+	    },
+
+	    // Convert a byte array to a string
+	    bytesToString: function(bytes) {
+	      return decodeURIComponent(escape(charenc.bin.bytesToString(bytes)));
+	    }
+	  },
+
+	  // Binary encoding
+	  bin: {
+	    // Convert a string to a byte array
+	    stringToBytes: function(str) {
+	      for (var bytes = [], i = 0; i < str.length; i++)
+	        bytes.push(str.charCodeAt(i) & 0xFF);
+	      return bytes;
+	    },
+
+	    // Convert a byte array to a string
+	    bytesToString: function(bytes) {
+	      for (var str = [], i = 0; i < bytes.length; i++)
+	        str.push(String.fromCharCode(bytes[i]));
+	      return str.join('');
+	    }
+	  }
+	};
+
+	module.exports = charenc;
+
+
+/***/ },
 /* 137 */,
 /* 138 */,
 /* 139 */,
@@ -19084,622 +19104,9 @@ webpackJsonp([1],[
 /* 167 */,
 /* 168 */,
 /* 169 */,
-/* 170 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
-
-	var emitter = __webpack_require__(241);
-	var crossvent = __webpack_require__(402);
-	var classes = __webpack_require__(405);
-	var doc = document;
-	var documentElement = doc.documentElement;
-
-	function dragula (initialContainers, options) {
-	  var len = arguments.length;
-	  if (len === 1 && Array.isArray(initialContainers) === false) {
-	    options = initialContainers;
-	    initialContainers = [];
-	  }
-	  var _mirror; // mirror image
-	  var _source; // source container
-	  var _item; // item being dragged
-	  var _offsetX; // reference x
-	  var _offsetY; // reference y
-	  var _moveX; // reference move x
-	  var _moveY; // reference move y
-	  var _initialSibling; // reference sibling when grabbed
-	  var _currentSibling; // reference sibling now
-	  var _copy; // item used for copying
-	  var _renderTimer; // timer for setTimeout renderMirrorImage
-	  var _lastDropTarget = null; // last container item was over
-	  var _grabbed; // holds mousedown context until first mousemove
-
-	  var o = options || {};
-	  if (o.moves === void 0) { o.moves = always; }
-	  if (o.accepts === void 0) { o.accepts = always; }
-	  if (o.invalid === void 0) { o.invalid = invalidTarget; }
-	  if (o.containers === void 0) { o.containers = initialContainers || []; }
-	  if (o.isContainer === void 0) { o.isContainer = never; }
-	  if (o.copy === void 0) { o.copy = false; }
-	  if (o.copySortSource === void 0) { o.copySortSource = false; }
-	  if (o.revertOnSpill === void 0) { o.revertOnSpill = false; }
-	  if (o.removeOnSpill === void 0) { o.removeOnSpill = false; }
-	  if (o.direction === void 0) { o.direction = 'vertical'; }
-	  if (o.ignoreInputTextSelection === void 0) { o.ignoreInputTextSelection = true; }
-	  if (o.mirrorContainer === void 0) { o.mirrorContainer = doc.body; }
-
-	  var drake = emitter({
-	    containers: o.containers,
-	    start: manualStart,
-	    end: end,
-	    cancel: cancel,
-	    remove: remove,
-	    destroy: destroy,
-	    canMove: canMove,
-	    dragging: false
-	  });
-
-	  if (o.removeOnSpill === true) {
-	    drake.on('over', spillOver).on('out', spillOut);
-	  }
-
-	  events();
-
-	  return drake;
-
-	  function isContainer (el) {
-	    return drake.containers.indexOf(el) !== -1 || o.isContainer(el);
-	  }
-
-	  function events (remove) {
-	    var op = remove ? 'remove' : 'add';
-	    touchy(documentElement, op, 'mousedown', grab);
-	    touchy(documentElement, op, 'mouseup', release);
-	  }
-
-	  function eventualMovements (remove) {
-	    var op = remove ? 'remove' : 'add';
-	    touchy(documentElement, op, 'mousemove', startBecauseMouseMoved);
-	  }
-
-	  function movements (remove) {
-	    var op = remove ? 'remove' : 'add';
-	    crossvent[op](documentElement, 'selectstart', preventGrabbed); // IE8
-	    crossvent[op](documentElement, 'click', preventGrabbed);
-	  }
-
-	  function destroy () {
-	    events(true);
-	    release({});
-	  }
-
-	  function preventGrabbed (e) {
-	    if (_grabbed) {
-	      e.preventDefault();
-	    }
-	  }
-
-	  function grab (e) {
-	    _moveX = e.clientX;
-	    _moveY = e.clientY;
-
-	    var ignore = whichMouseButton(e) !== 1 || e.metaKey || e.ctrlKey;
-	    if (ignore) {
-	      return; // we only care about honest-to-god left clicks and touch events
-	    }
-	    var item = e.target;
-	    var context = canStart(item);
-	    if (!context) {
-	      return;
-	    }
-	    _grabbed = context;
-	    eventualMovements();
-	    if (e.type === 'mousedown') {
-	      if (isInput(item)) { // see also: https://github.com/bevacqua/dragula/issues/208
-	        item.focus(); // fixes https://github.com/bevacqua/dragula/issues/176
-	      } else {
-	        e.preventDefault(); // fixes https://github.com/bevacqua/dragula/issues/155
-	      }
-	    }
-	  }
-
-	  function startBecauseMouseMoved (e) {
-	    if (!_grabbed) {
-	      return;
-	    }
-	    if (whichMouseButton(e) === 0) {
-	      release({});
-	      return; // when text is selected on an input and then dragged, mouseup doesn't fire. this is our only hope
-	    }
-	    // truthy check fixes #239, equality fixes #207
-	    if (e.clientX !== void 0 && e.clientX === _moveX && e.clientY !== void 0 && e.clientY === _moveY) {
-	      return;
-	    }
-	    if (o.ignoreInputTextSelection) {
-	      var clientX = getCoord('clientX', e);
-	      var clientY = getCoord('clientY', e);
-	      var elementBehindCursor = doc.elementFromPoint(clientX, clientY);
-	      if (isInput(elementBehindCursor)) {
-	        return;
-	      }
-	    }
-
-	    var grabbed = _grabbed; // call to end() unsets _grabbed
-	    eventualMovements(true);
-	    movements();
-	    end();
-	    start(grabbed);
-
-	    var offset = getOffset(_item);
-	    _offsetX = getCoord('pageX', e) - offset.left;
-	    _offsetY = getCoord('pageY', e) - offset.top;
-
-	    classes.add(_copy || _item, 'gu-transit');
-	    renderMirrorImage();
-	    drag(e);
-	  }
-
-	  function canStart (item) {
-	    if (drake.dragging && _mirror) {
-	      return;
-	    }
-	    if (isContainer(item)) {
-	      return; // don't drag container itself
-	    }
-	    var handle = item;
-	    while (getParent(item) && isContainer(getParent(item)) === false) {
-	      if (o.invalid(item, handle)) {
-	        return;
-	      }
-	      item = getParent(item); // drag target should be a top element
-	      if (!item) {
-	        return;
-	      }
-	    }
-	    var source = getParent(item);
-	    if (!source) {
-	      return;
-	    }
-	    if (o.invalid(item, handle)) {
-	      return;
-	    }
-
-	    var movable = o.moves(item, source, handle, nextEl(item));
-	    if (!movable) {
-	      return;
-	    }
-
-	    return {
-	      item: item,
-	      source: source
-	    };
-	  }
-
-	  function canMove (item) {
-	    return !!canStart(item);
-	  }
-
-	  function manualStart (item) {
-	    var context = canStart(item);
-	    if (context) {
-	      start(context);
-	    }
-	  }
-
-	  function start (context) {
-	    if (isCopy(context.item, context.source)) {
-	      _copy = context.item.cloneNode(true);
-	      drake.emit('cloned', _copy, context.item, 'copy');
-	    }
-
-	    _source = context.source;
-	    _item = context.item;
-	    _initialSibling = _currentSibling = nextEl(context.item);
-
-	    drake.dragging = true;
-	    drake.emit('drag', _item, _source);
-	  }
-
-	  function invalidTarget () {
-	    return false;
-	  }
-
-	  function end () {
-	    if (!drake.dragging) {
-	      return;
-	    }
-	    var item = _copy || _item;
-	    drop(item, getParent(item));
-	  }
-
-	  function ungrab () {
-	    _grabbed = false;
-	    eventualMovements(true);
-	    movements(true);
-	  }
-
-	  function release (e) {
-	    ungrab();
-
-	    if (!drake.dragging) {
-	      return;
-	    }
-	    var item = _copy || _item;
-	    var clientX = getCoord('clientX', e);
-	    var clientY = getCoord('clientY', e);
-	    var elementBehindCursor = getElementBehindPoint(_mirror, clientX, clientY);
-	    var dropTarget = findDropTarget(elementBehindCursor, clientX, clientY);
-	    if (dropTarget && ((_copy && o.copySortSource) || (!_copy || dropTarget !== _source))) {
-	      drop(item, dropTarget);
-	    } else if (o.removeOnSpill) {
-	      remove();
-	    } else {
-	      cancel();
-	    }
-	  }
-
-	  function drop (item, target) {
-	    var parent = getParent(item);
-	    if (_copy && o.copySortSource && target === _source) {
-	      parent.removeChild(_item);
-	    }
-	    if (isInitialPlacement(target)) {
-	      drake.emit('cancel', item, _source, _source);
-	    } else {
-	      drake.emit('drop', item, target, _source, _currentSibling);
-	    }
-	    cleanup();
-	  }
-
-	  function remove () {
-	    if (!drake.dragging) {
-	      return;
-	    }
-	    var item = _copy || _item;
-	    var parent = getParent(item);
-	    if (parent) {
-	      parent.removeChild(item);
-	    }
-	    drake.emit(_copy ? 'cancel' : 'remove', item, parent, _source);
-	    cleanup();
-	  }
-
-	  function cancel (revert) {
-	    if (!drake.dragging) {
-	      return;
-	    }
-	    var reverts = arguments.length > 0 ? revert : o.revertOnSpill;
-	    var item = _copy || _item;
-	    var parent = getParent(item);
-	    var initial = isInitialPlacement(parent);
-	    if (initial === false && reverts) {
-	      if (_copy) {
-	        if (parent) {
-	          parent.removeChild(_copy);
-	        }
-	      } else {
-	        _source.insertBefore(item, _initialSibling);
-	      }
-	    }
-	    if (initial || reverts) {
-	      drake.emit('cancel', item, _source, _source);
-	    } else {
-	      drake.emit('drop', item, parent, _source, _currentSibling);
-	    }
-	    cleanup();
-	  }
-
-	  function cleanup () {
-	    var item = _copy || _item;
-	    ungrab();
-	    removeMirrorImage();
-	    if (item) {
-	      classes.rm(item, 'gu-transit');
-	    }
-	    if (_renderTimer) {
-	      clearTimeout(_renderTimer);
-	    }
-	    drake.dragging = false;
-	    if (_lastDropTarget) {
-	      drake.emit('out', item, _lastDropTarget, _source);
-	    }
-	    drake.emit('dragend', item);
-	    _source = _item = _copy = _initialSibling = _currentSibling = _renderTimer = _lastDropTarget = null;
-	  }
-
-	  function isInitialPlacement (target, s) {
-	    var sibling;
-	    if (s !== void 0) {
-	      sibling = s;
-	    } else if (_mirror) {
-	      sibling = _currentSibling;
-	    } else {
-	      sibling = nextEl(_copy || _item);
-	    }
-	    return target === _source && sibling === _initialSibling;
-	  }
-
-	  function findDropTarget (elementBehindCursor, clientX, clientY) {
-	    var target = elementBehindCursor;
-	    while (target && !accepted()) {
-	      target = getParent(target);
-	    }
-	    return target;
-
-	    function accepted () {
-	      var droppable = isContainer(target);
-	      if (droppable === false) {
-	        return false;
-	      }
-
-	      var immediate = getImmediateChild(target, elementBehindCursor);
-	      var reference = getReference(target, immediate, clientX, clientY);
-	      var initial = isInitialPlacement(target, reference);
-	      if (initial) {
-	        return true; // should always be able to drop it right back where it was
-	      }
-	      return o.accepts(_item, target, _source, reference);
-	    }
-	  }
-
-	  function drag (e) {
-	    if (!_mirror) {
-	      return;
-	    }
-	    e.preventDefault();
-
-	    var clientX = getCoord('clientX', e);
-	    var clientY = getCoord('clientY', e);
-	    var x = clientX - _offsetX;
-	    var y = clientY - _offsetY;
-
-	    _mirror.style.left = x + 'px';
-	    _mirror.style.top = y + 'px';
-
-	    var item = _copy || _item;
-	    var elementBehindCursor = getElementBehindPoint(_mirror, clientX, clientY);
-	    var dropTarget = findDropTarget(elementBehindCursor, clientX, clientY);
-	    var changed = dropTarget !== null && dropTarget !== _lastDropTarget;
-	    if (changed || dropTarget === null) {
-	      out();
-	      _lastDropTarget = dropTarget;
-	      over();
-	    }
-	    var parent = getParent(item);
-	    if (dropTarget === _source && _copy && !o.copySortSource) {
-	      if (parent) {
-	        parent.removeChild(item);
-	      }
-	      return;
-	    }
-	    var reference;
-	    var immediate = getImmediateChild(dropTarget, elementBehindCursor);
-	    if (immediate !== null) {
-	      reference = getReference(dropTarget, immediate, clientX, clientY);
-	    } else if (o.revertOnSpill === true && !_copy) {
-	      reference = _initialSibling;
-	      dropTarget = _source;
-	    } else {
-	      if (_copy && parent) {
-	        parent.removeChild(item);
-	      }
-	      return;
-	    }
-	    if (
-	      (reference === null && changed) ||
-	      reference !== item &&
-	      reference !== nextEl(item)
-	    ) {
-	      _currentSibling = reference;
-	      dropTarget.insertBefore(item, reference);
-	      drake.emit('shadow', item, dropTarget, _source);
-	    }
-	    function moved (type) { drake.emit(type, item, _lastDropTarget, _source); }
-	    function over () { if (changed) { moved('over'); } }
-	    function out () { if (_lastDropTarget) { moved('out'); } }
-	  }
-
-	  function spillOver (el) {
-	    classes.rm(el, 'gu-hide');
-	  }
-
-	  function spillOut (el) {
-	    if (drake.dragging) { classes.add(el, 'gu-hide'); }
-	  }
-
-	  function renderMirrorImage () {
-	    if (_mirror) {
-	      return;
-	    }
-	    var rect = _item.getBoundingClientRect();
-	    _mirror = _item.cloneNode(true);
-	    _mirror.style.width = getRectWidth(rect) + 'px';
-	    _mirror.style.height = getRectHeight(rect) + 'px';
-	    classes.rm(_mirror, 'gu-transit');
-	    classes.add(_mirror, 'gu-mirror');
-	    o.mirrorContainer.appendChild(_mirror);
-	    touchy(documentElement, 'add', 'mousemove', drag);
-	    classes.add(o.mirrorContainer, 'gu-unselectable');
-	    drake.emit('cloned', _mirror, _item, 'mirror');
-	  }
-
-	  function removeMirrorImage () {
-	    if (_mirror) {
-	      classes.rm(o.mirrorContainer, 'gu-unselectable');
-	      touchy(documentElement, 'remove', 'mousemove', drag);
-	      getParent(_mirror).removeChild(_mirror);
-	      _mirror = null;
-	    }
-	  }
-
-	  function getImmediateChild (dropTarget, target) {
-	    var immediate = target;
-	    while (immediate !== dropTarget && getParent(immediate) !== dropTarget) {
-	      immediate = getParent(immediate);
-	    }
-	    if (immediate === documentElement) {
-	      return null;
-	    }
-	    return immediate;
-	  }
-
-	  function getReference (dropTarget, target, x, y) {
-	    var horizontal = o.direction === 'horizontal';
-	    var reference = target !== dropTarget ? inside() : outside();
-	    return reference;
-
-	    function outside () { // slower, but able to figure out any position
-	      var len = dropTarget.children.length;
-	      var i;
-	      var el;
-	      var rect;
-	      for (i = 0; i < len; i++) {
-	        el = dropTarget.children[i];
-	        rect = el.getBoundingClientRect();
-	        if (horizontal && (rect.left + rect.width / 2) > x) { return el; }
-	        if (!horizontal && (rect.top + rect.height / 2) > y) { return el; }
-	      }
-	      return null;
-	    }
-
-	    function inside () { // faster, but only available if dropped inside a child element
-	      var rect = target.getBoundingClientRect();
-	      if (horizontal) {
-	        return resolve(x > rect.left + getRectWidth(rect) / 2);
-	      }
-	      return resolve(y > rect.top + getRectHeight(rect) / 2);
-	    }
-
-	    function resolve (after) {
-	      return after ? nextEl(target) : target;
-	    }
-	  }
-
-	  function isCopy (item, container) {
-	    return typeof o.copy === 'boolean' ? o.copy : o.copy(item, container);
-	  }
-	}
-
-	function touchy (el, op, type, fn) {
-	  var touch = {
-	    mouseup: 'touchend',
-	    mousedown: 'touchstart',
-	    mousemove: 'touchmove'
-	  };
-	  var pointers = {
-	    mouseup: 'pointerup',
-	    mousedown: 'pointerdown',
-	    mousemove: 'pointermove'
-	  };
-	  var microsoft = {
-	    mouseup: 'MSPointerUp',
-	    mousedown: 'MSPointerDown',
-	    mousemove: 'MSPointerMove'
-	  };
-	  if (global.navigator.pointerEnabled) {
-	    crossvent[op](el, pointers[type], fn);
-	  } else if (global.navigator.msPointerEnabled) {
-	    crossvent[op](el, microsoft[type], fn);
-	  } else {
-	    crossvent[op](el, touch[type], fn);
-	    crossvent[op](el, type, fn);
-	  }
-	}
-
-	function whichMouseButton (e) {
-	  if (e.touches !== void 0) { return e.touches.length; }
-	  if (e.which !== void 0 && e.which !== 0) { return e.which; } // see https://github.com/bevacqua/dragula/issues/261
-	  if (e.buttons !== void 0) { return e.buttons; }
-	  var button = e.button;
-	  if (button !== void 0) { // see https://github.com/jquery/jquery/blob/99e8ff1baa7ae341e94bb89c3e84570c7c3ad9ea/src/event.js#L573-L575
-	    return button & 1 ? 1 : button & 2 ? 3 : (button & 4 ? 2 : 0);
-	  }
-	}
-
-	function getOffset (el) {
-	  var rect = el.getBoundingClientRect();
-	  return {
-	    left: rect.left + getScroll('scrollLeft', 'pageXOffset'),
-	    top: rect.top + getScroll('scrollTop', 'pageYOffset')
-	  };
-	}
-
-	function getScroll (scrollProp, offsetProp) {
-	  if (typeof global[offsetProp] !== 'undefined') {
-	    return global[offsetProp];
-	  }
-	  if (documentElement.clientHeight) {
-	    return documentElement[scrollProp];
-	  }
-	  return doc.body[scrollProp];
-	}
-
-	function getElementBehindPoint (point, x, y) {
-	  var p = point || {};
-	  var state = p.className;
-	  var el;
-	  p.className += ' gu-hide';
-	  el = doc.elementFromPoint(x, y);
-	  p.className = state;
-	  return el;
-	}
-
-	function never () { return false; }
-	function always () { return true; }
-	function getRectWidth (rect) { return rect.width || (rect.right - rect.left); }
-	function getRectHeight (rect) { return rect.height || (rect.bottom - rect.top); }
-	function getParent (el) { return el.parentNode === doc ? null : el.parentNode; }
-	function isInput (el) { return el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || isEditable(el); }
-	function isEditable (el) {
-	  if (!el) { return false; } // no parents were editable
-	  if (el.contentEditable === 'false') { return false; } // stop the lookup
-	  if (el.contentEditable === 'true') { return true; } // found a contentEditable element in the chain
-	  return isEditable(getParent(el)); // contentEditable is set to 'inherit'
-	}
-
-	function nextEl (el) {
-	  return el.nextElementSibling || manually();
-	  function manually () {
-	    var sibling = el;
-	    do {
-	      sibling = sibling.nextSibling;
-	    } while (sibling && sibling.nodeType !== 1);
-	    return sibling;
-	  }
-	}
-
-	function getEventHost (e) {
-	  // on touchend event, we have to use `e.changedTouches`
-	  // see http://stackoverflow.com/questions/7192563/touchend-event-properties
-	  // see https://github.com/bevacqua/dragula/issues/34
-	  if (e.targetTouches && e.targetTouches.length) {
-	    return e.targetTouches[0];
-	  }
-	  if (e.changedTouches && e.changedTouches.length) {
-	    return e.changedTouches[0];
-	  }
-	  return e;
-	}
-
-	function getCoord (coord, e) {
-	  var host = getEventHost(e);
-	  var missMap = {
-	    pageX: 'clientX', // IE8
-	    pageY: 'clientY' // IE8
-	  };
-	  if (coord in missMap && !(coord in host) && missMap[coord] in host) {
-	    coord = missMap[coord];
-	  }
-	  return host[coord];
-	}
-
-	module.exports = dragula;
-
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 171 */
+/* 170 */,
+/* 171 */,
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -19760,92 +19167,117 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 172 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
+	/**
+	 * Created by vadimdez on 28/06/16.
+	 */
 	var core_1 = __webpack_require__(4);
-	var dragula_provider_1 = __webpack_require__(116);
-	var dragula = __webpack_require__(170);
-	var DragulaDirective = (function () {
-	    function DragulaDirective(el, dragulaService) {
-	        this.el = el;
-	        this.dragulaService = dragulaService;
-	        this.container = el.nativeElement;
+	var Ng2FilterPipe = (function () {
+	    function Ng2FilterPipe() {
 	    }
-	    DragulaDirective.prototype.ngOnInit = function () {
-	        var _this = this;
-	        // console.log(this.bag);
-	        var bag = this.dragulaService.find(this.bag);
-	        var checkModel = function () {
-	            if (_this.dragulaModel) {
-	                if (_this.drake.models) {
-	                    _this.drake.models.push(_this.dragulaModel);
-	                }
-	                else {
-	                    _this.drake.models = [_this.dragulaModel];
-	                }
-	            }
+	    Ng2FilterPipe.prototype.filterByString = function (filter) {
+	        if (filter) {
+	            filter = filter.toLowerCase();
+	        }
+	        return function (value) {
+	            return !filter || (value ? value.toLowerCase().indexOf(filter) !== -1 : false);
 	        };
-	        if (bag) {
-	            this.drake = bag.drake;
-	            checkModel();
-	            this.drake.containers.push(this.container);
-	        }
-	        else {
-	            this.drake = dragula({
-	                containers: [this.container]
-	            });
-	            checkModel();
-	            this.dragulaService.add(this.bag, this.drake);
-	        }
 	    };
-	    DragulaDirective.prototype.ngOnChanges = function (changes) {
-	        // console.log('dragula.directive: ngOnChanges');
-	        // console.log(changes);
-	        if (changes && changes['dragulaModel']) {
-	            if (this.drake) {
-	                if (this.drake.models) {
-	                    var modelIndex = this.drake.models.indexOf(changes['dragulaModel'].previousValue);
-	                    this.drake.models.splice(modelIndex, 1, changes['dragulaModel'].currentValue);
+	    Ng2FilterPipe.prototype.filterByBoolean = function (filter) {
+	        return function (value) {
+	            return Boolean(value) === filter;
+	        };
+	    };
+	    Ng2FilterPipe.prototype.filterByObject = function (filter) {
+	        var _this = this;
+	        return function (value) {
+	            for (var key in filter) {
+	                if (!value.hasOwnProperty(key) && !Object.getOwnPropertyDescriptor(Object.getPrototypeOf(value), key)) {
+	                    return false;
+	                }
+	                var val = _this.getValue(value[key]);
+	                var type = typeof filter[key];
+	                var isMatching = void 0;
+	                if (type === 'boolean') {
+	                    isMatching = _this.filterByBoolean(filter[key])(val);
+	                }
+	                else if (type === 'string') {
+	                    isMatching = _this.filterByString(filter[key])(val);
+	                }
+	                else if (type === 'object') {
+	                    isMatching = _this.filterByObject(filter[key])(val);
 	                }
 	                else {
-	                    this.drake.models = [changes['dragulaModel'].currentValue];
+	                    isMatching = _this.filterDefault(filter[key])(val);
+	                }
+	                if (!isMatching) {
+	                    return false;
 	                }
 	            }
-	        }
+	            return true;
+	        };
 	    };
-	    __decorate([
-	        core_1.Input('dragula'), 
-	        __metadata('design:type', String)
-	    ], DragulaDirective.prototype, "bag", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], DragulaDirective.prototype, "dragulaModel", void 0);
-	    DragulaDirective = __decorate([
-	        core_1.Directive({
-	            selector: '[dragula]'
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, dragula_provider_1.DragulaService])
-	    ], DragulaDirective);
-	    return DragulaDirective;
+	    /**
+	     * Checks function's value if type is function otherwise same value
+	     * @param value
+	     * @returns {any}
+	     */
+	    Ng2FilterPipe.prototype.getValue = function (value) {
+	        return typeof value === 'function' ? value() : value;
+	    };
+	    /**
+	     * Defatul filterDefault function
+	     *
+	     * @param filter
+	     * @returns {(value:any)=>boolean}
+	     */
+	    Ng2FilterPipe.prototype.filterDefault = function (filter) {
+	        return function (value) {
+	            return !filter || filter == value;
+	        };
+	    };
+	    Ng2FilterPipe.prototype.isNumber = function (value) {
+	        return !isNaN(parseInt(value, 10)) && isFinite(value);
+	    };
+	    Ng2FilterPipe.prototype.transform = function (array, filter) {
+	        var type = typeof filter;
+	        if (!array) {
+	            return array;
+	        }
+	        if (type === 'boolean') {
+	            return array.filter(this.filterByBoolean(filter));
+	        }
+	        if (type === 'string') {
+	            if (this.isNumber(filter)) {
+	                return array.filter(this.filterDefault(filter));
+	            }
+	            return array.filter(this.filterByString(filter));
+	        }
+	        if (type === 'object') {
+	            return array.filter(this.filterByObject(filter));
+	        }
+	        return array.filter(this.filterDefault(filter));
+	    };
+	    Ng2FilterPipe.decorators = [
+	        { type: core_1.Pipe, args: [{
+	                    name: 'filterBy',
+	                    pure: false
+	                },] },
+	        { type: core_1.Injectable },
+	    ];
+	    /** @nocollapse */
+	    Ng2FilterPipe.ctorParameters = [];
+	    return Ng2FilterPipe;
 	}());
-	exports.DragulaDirective = DragulaDirective;
-
+	exports.Ng2FilterPipe = Ng2FilterPipe;
+	//# sourceMappingURL=ng2-filter.pipe.js.map
 
 /***/ },
-/* 173 */,
-/* 174 */
+/* 174 */,
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19855,7 +19287,7 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(1);
-	var ConnectableObservable_1 = __webpack_require__(117);
+	var ConnectableObservable_1 = __webpack_require__(116);
 	var MulticastObservable = (function (_super) {
 	    __extends(MulticastObservable, _super);
 	    function MulticastObservable(source, subjectFactory, selector) {
@@ -19877,8 +19309,8 @@ webpackJsonp([1],[
 	//# sourceMappingURL=MulticastObservable.js.map
 
 /***/ },
-/* 175 */,
-/* 176 */
+/* 176 */,
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19888,8 +19320,8 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var root_1 = __webpack_require__(23);
-	var tryCatch_1 = __webpack_require__(20);
-	var errorObject_1 = __webpack_require__(18);
+	var tryCatch_1 = __webpack_require__(21);
+	var errorObject_1 = __webpack_require__(20);
 	var Observable_1 = __webpack_require__(1);
 	var Subscriber_1 = __webpack_require__(3);
 	var map_1 = __webpack_require__(89);
@@ -20276,11 +19708,11 @@ webpackJsonp([1],[
 	//# sourceMappingURL=AjaxObservable.js.map
 
 /***/ },
-/* 177 */,
 /* 178 */,
 /* 179 */,
 /* 180 */,
-/* 181 */
+/* 181 */,
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20368,7 +19800,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=distinct.js.map
 
 /***/ },
-/* 182 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20378,8 +19810,8 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(3);
-	var tryCatch_1 = __webpack_require__(20);
-	var errorObject_1 = __webpack_require__(18);
+	var tryCatch_1 = __webpack_require__(21);
+	var errorObject_1 = __webpack_require__(20);
 	/**
 	 * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
 	 * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
@@ -20450,8 +19882,8 @@ webpackJsonp([1],[
 	//# sourceMappingURL=distinctUntilChanged.js.map
 
 /***/ },
-/* 183 */,
-/* 184 */
+/* 184 */,
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20549,7 +19981,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=filter.js.map
 
 /***/ },
-/* 185 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20654,9 +20086,9 @@ webpackJsonp([1],[
 	//# sourceMappingURL=find.js.map
 
 /***/ },
-/* 186 */,
 /* 187 */,
-/* 188 */
+/* 188 */,
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20791,7 +20223,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=merge.js.map
 
 /***/ },
-/* 189 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20950,7 +20382,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=mergeMapTo.js.map
 
 /***/ },
-/* 190 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20959,7 +20391,7 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var FromObservable_1 = __webpack_require__(173);
+	var FromObservable_1 = __webpack_require__(174);
 	var isArray_1 = __webpack_require__(36);
 	var OuterSubscriber_1 = __webpack_require__(5);
 	var subscribeToResult_1 = __webpack_require__(6);
@@ -21030,7 +20462,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=onErrorResumeNext.js.map
 
 /***/ },
-/* 191 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21146,7 +20578,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=race.js.map
 
 /***/ },
-/* 192 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21210,7 +20642,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=timeInterval.js.map
 
 /***/ },
-/* 193 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21265,7 +20697,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=timestamp.js.map
 
 /***/ },
-/* 194 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21298,7 +20730,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=toPromise.js.map
 
 /***/ },
-/* 195 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21401,27 +20833,27 @@ webpackJsonp([1],[
 	//# sourceMappingURL=VirtualTimeScheduler.js.map
 
 /***/ },
-/* 196 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var AsapAction_1 = __webpack_require__(673);
-	var AsapScheduler_1 = __webpack_require__(674);
-	exports.asap = new AsapScheduler_1.AsapScheduler(AsapAction_1.AsapAction);
-	//# sourceMappingURL=asap.js.map
-
-/***/ },
 /* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var QueueAction_1 = __webpack_require__(675);
-	var QueueScheduler_1 = __webpack_require__(676);
+	var AsapAction_1 = __webpack_require__(681);
+	var AsapScheduler_1 = __webpack_require__(682);
+	exports.asap = new AsapScheduler_1.AsapScheduler(AsapAction_1.AsapAction);
+	//# sourceMappingURL=asap.js.map
+
+/***/ },
+/* 198 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var QueueAction_1 = __webpack_require__(683);
+	var QueueScheduler_1 = __webpack_require__(684);
 	exports.queue = new QueueScheduler_1.QueueScheduler(QueueAction_1.QueueAction);
 	//# sourceMappingURL=queue.js.map
 
 /***/ },
-/* 198 */
+/* 199 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -21437,11 +20869,11 @@ webpackJsonp([1],[
 	//# sourceMappingURL=SubscriptionLog.js.map
 
 /***/ },
-/* 199 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var SubscriptionLog_1 = __webpack_require__(198);
+	var SubscriptionLog_1 = __webpack_require__(199);
 	var SubscriptionLoggable = (function () {
 	    function SubscriptionLoggable() {
 	        this.subscriptions = [];
@@ -21461,8 +20893,8 @@ webpackJsonp([1],[
 	//# sourceMappingURL=SubscriptionLoggable.js.map
 
 /***/ },
-/* 200 */,
-/* 201 */
+/* 201 */,
+/* 202 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -21480,8 +20912,8 @@ webpackJsonp([1],[
 	//# sourceMappingURL=applyMixins.js.map
 
 /***/ },
-/* 202 */,
-/* 203 */
+/* 203 */,
+/* 204 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -21491,8 +20923,8 @@ webpackJsonp([1],[
 	//# sourceMappingURL=noop.js.map
 
 /***/ },
-/* 204 */,
-/* 205 */
+/* 205 */,
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -21501,7 +20933,7 @@ webpackJsonp([1],[
 	 * License: MIT
 	 */
 	(function (global, factory) {
-	     true ? factory(exports, __webpack_require__(4), __webpack_require__(194), __webpack_require__(13), __webpack_require__(1), __webpack_require__(119)) :
+	     true ? factory(exports, __webpack_require__(4), __webpack_require__(195), __webpack_require__(14), __webpack_require__(1), __webpack_require__(118)) :
 	    typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'rxjs/operator/toPromise', 'rxjs/Subject', 'rxjs/Observable', 'rxjs/observable/fromPromise'], factory) :
 	    (factory((global.ng = global.ng || {}, global.ng.forms = global.ng.forms || {}),global.ng.core,global.Rx.Observable.prototype,global.Rx,global.Rx,global.Rx.Observable));
 	}(this, function (exports,_angular_core,rxjs_operator_toPromise,rxjs_Subject,rxjs_Observable,rxjs_observable_fromPromise) { 'use strict';
@@ -26223,14 +25655,257 @@ webpackJsonp([1],[
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 206 */
-/***/ function(module, exports) {
+/* 207 */
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = function atoa (a, n) { return Array.prototype.slice.call(a, n); }
-
+	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	__export(__webpack_require__(128));
+	
 
 /***/ },
-/* 207 */
+/* 208 */
+/***/ function(module, exports) {
+
+	"use strict";
+	var Hashids = (function () {
+	    function Hashids(salt, minLength, alphabet) {
+	        if (salt === void 0) { salt = ''; }
+	        if (minLength === void 0) { minLength = 0; }
+	        if (alphabet === void 0) { alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'; }
+	        var _this = this;
+	        this._escapeRegExp = function (value) {
+	            return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+	        };
+	        this.encode = function () {
+	            var numbers = [];
+	            for (var _i = 0; _i < arguments.length; _i++) {
+	                numbers[_i - 0] = arguments[_i];
+	            }
+	            var ret = '';
+	            if (!numbers.length) {
+	                return ret;
+	            }
+	            if (numbers[0] && numbers[0].constructor === Array) {
+	                numbers = numbers[0];
+	                if (!numbers.length) {
+	                    return ret;
+	                }
+	            }
+	            for (var i = 0; i !== numbers.length; i++) {
+	                numbers[i] = parseInt(numbers[i], 10);
+	                if (numbers[i] >= 0) {
+	                    continue;
+	                }
+	                else {
+	                    return ret;
+	                }
+	            }
+	            return _this._encode(numbers);
+	        };
+	        this.decode = function (id) {
+	            var ret = [];
+	            if (!id || !id.length || typeof id !== 'string') {
+	                return ret;
+	            }
+	            return _this._decode(id, _this.alphabet);
+	        };
+	        this.encodeHex = function (hex) {
+	            var hexStr = hex.toString();
+	            if (!/^[0-9a-fA-F]+$/.test(hexStr)) {
+	                return '';
+	            }
+	            var numbers = hexStr.match(/[\w\W]{1,12}/g);
+	            var newNumbers = [];
+	            for (var i = 0; i !== numbers.length; i++) {
+	                newNumbers.push(parseInt('1' + numbers[i], 16));
+	            }
+	            return _this.encode.apply(_this, newNumbers);
+	        };
+	        this.decodeHex = function (id) {
+	            var ret = [];
+	            var numbers = _this.decode(id);
+	            for (var i = 0; i !== numbers.length; i++) {
+	                ret += (numbers[i]).toString(16).substr(1);
+	            }
+	            return ret;
+	        };
+	        this._encode = function (numbers) {
+	            var ret, alphabet = _this.alphabet, numbersIdInt = 0;
+	            for (var i = 0; i !== numbers.length; i++) {
+	                numbersIdInt += (numbers[i] % (i + 100));
+	            }
+	            ret = alphabet.charAt(numbersIdInt % alphabet.length);
+	            var lottery = ret;
+	            for (var i = 0; i !== numbers.length; i++) {
+	                var number = numbers[i];
+	                var buffer = lottery + _this.salt + alphabet;
+	                alphabet = _this._shuffle(alphabet, buffer.substr(0, alphabet.length));
+	                var last = _this._toAlphabet(number, alphabet);
+	                ret += last;
+	                if (i + 1 < numbers.length) {
+	                    number %= (last.charCodeAt(0) + i);
+	                    var sepsIndex = number % _this.seps.length;
+	                    ret += _this.seps.charAt(sepsIndex);
+	                }
+	            }
+	            if (ret.length < _this.minLength) {
+	                var guardIndex = (numbersIdInt + ret[0].charCodeAt(0)) % _this.guards.length;
+	                var guard = _this.guards[guardIndex];
+	                ret = guard + ret;
+	                if (ret.length < _this.minLength) {
+	                    guardIndex = (numbersIdInt + ret[2].charCodeAt(0)) % _this.guards.length;
+	                    guard = _this.guards[guardIndex];
+	                    ret += guard;
+	                }
+	            }
+	            var halfLength = parseInt((alphabet.length / 2).toString(), 10);
+	            while (ret.length < _this.minLength) {
+	                alphabet = _this._shuffle(alphabet, alphabet);
+	                ret = alphabet.substr(halfLength) + ret + alphabet.substr(0, halfLength);
+	                var excess = ret.length - _this.minLength;
+	                if (excess > 0) {
+	                    ret = ret.substr(excess / 2, _this.minLength);
+	                }
+	            }
+	            return ret;
+	        };
+	        this._decode = function (id, alphabet) {
+	            var ret = [], i = 0, r = new RegExp("[" + _this._escapeRegExp(_this.guards) + "]", 'g'), idBreakdown = id.replace(r, ' '), idArray = idBreakdown.split(' ');
+	            if (idArray.length === 3 || idArray.length === 2) {
+	                i = 1;
+	            }
+	            idBreakdown = idArray[i];
+	            if (typeof idBreakdown[0] !== 'undefined') {
+	                var lottery = idBreakdown[0];
+	                idBreakdown = idBreakdown.substr(1);
+	                r = new RegExp("[" + _this._escapeRegExp(_this.seps) + "]", 'g');
+	                idBreakdown = idBreakdown.replace(r, ' ');
+	                idArray = idBreakdown.split(' ');
+	                for (var j = 0; j !== idArray.length; j++) {
+	                    var subId = idArray[j];
+	                    var buffer = lottery + _this.salt + alphabet;
+	                    alphabet = _this._shuffle(alphabet, buffer.substr(0, alphabet.length));
+	                    ret.push(_this._fromAlphabet(subId, alphabet));
+	                }
+	                if (_this._encode(ret) !== id) {
+	                    ret = [];
+	                }
+	            }
+	            return ret;
+	        };
+	        this._shuffle = function (alphabet, salt) {
+	            var integer;
+	            if (!salt.length) {
+	                return alphabet;
+	            }
+	            for (var i = alphabet.length - 1, v = 0, p = 0, j = 0; i > 0; i--, v++) {
+	                v %= salt.length;
+	                p += integer = salt.charAt(v).charCodeAt(0);
+	                j = (integer + v + p) % i;
+	                var tmp = alphabet[j];
+	                alphabet = alphabet.substr(0, j) + alphabet.charAt(i) + alphabet.substr(j + 1);
+	                alphabet = alphabet.substr(0, i) + tmp + alphabet.substr(i + 1);
+	            }
+	            return alphabet;
+	        };
+	        this._toAlphabet = function (input, alphabet) {
+	            var id = '';
+	            do {
+	                id = alphabet.charAt(input % alphabet.length) + id;
+	                input = parseInt((input / alphabet.length).toString(), 10);
+	            } while (input);
+	            return id;
+	        };
+	        this._fromAlphabet = function (input, alphabet) {
+	            var number = 0;
+	            for (var i = 0; i < input.length; i++) {
+	                var pos = alphabet.indexOf(input[i]);
+	                number += pos * Math.pow(alphabet.length, input.length - i - 1);
+	            }
+	            return number;
+	        };
+	        var minAlphabetLength = 16;
+	        var sepDiv = 3.5;
+	        var guardDiv = 12;
+	        var errorAlphabetLength = 'error: alphabet must contain at least X unique characters';
+	        var errorAlphabetSpace = 'error: alphabet cannot contain spaces';
+	        var uniqueAlphabet = '', sepsLength, diff;
+	        /* alphabet vars */
+	        this.seps = 'cfhistuCFHISTU';
+	        this.minLength = parseInt(minLength.toString(), 10) > 0 ? minLength : 0;
+	        this.salt = (typeof salt === 'string') ? salt : '';
+	        if (typeof alphabet === 'string') {
+	            this.alphabet = alphabet;
+	        }
+	        for (var i = 0; i !== this.alphabet.length; i++) {
+	            if (uniqueAlphabet.indexOf(this.alphabet.charAt(i)) === -1) {
+	                uniqueAlphabet += this.alphabet.charAt(i);
+	            }
+	        }
+	        this.alphabet = uniqueAlphabet;
+	        if (this.alphabet.length < minAlphabetLength) {
+	            throw errorAlphabetLength.replace('X', minAlphabetLength.toString());
+	        }
+	        if (this.alphabet.search(' ') !== -1) {
+	            throw errorAlphabetSpace;
+	        }
+	        /*
+	            `this.seps` should contain only characters present in `this.alphabet`
+	            `this.alphabet` should not contains `this.seps`
+	        */
+	        for (var i = 0; i !== this.seps.length; i++) {
+	            var j = this.alphabet.indexOf(this.seps.charAt(i));
+	            if (j === -1) {
+	                this.seps = this.seps.substr(0, i) + ' ' + this.seps.substr(i + 1);
+	            }
+	            else {
+	                this.alphabet = this.alphabet.substr(0, j) + ' ' + this.alphabet.substr(j + 1);
+	            }
+	        }
+	        this.alphabet = this.alphabet.replace(/ /g, '');
+	        this.seps = this.seps.replace(/ /g, '');
+	        this.seps = this._shuffle(this.seps, this.salt);
+	        if (!this.seps.length || (this.alphabet.length / this.seps.length) > sepDiv) {
+	            sepsLength = Math.ceil(this.alphabet.length / sepDiv);
+	            if (sepsLength > this.seps.length) {
+	                diff = sepsLength - this.seps.length;
+	                this.seps += this.alphabet.substr(0, diff);
+	                this.alphabet = this.alphabet.substr(diff);
+	            }
+	        }
+	        this.alphabet = this._shuffle(this.alphabet, this.salt);
+	        var guardCount = Math.ceil(this.alphabet.length / guardDiv);
+	        if (this.alphabet.length < 3) {
+	            this.guards = this.seps.substr(0, guardCount);
+	            this.seps = this.seps.substr(guardCount);
+	        }
+	        else {
+	            this.guards = this.alphabet.substr(0, guardCount);
+	            this.alphabet = this.alphabet.substr(guardCount);
+	        }
+	    }
+	    return Hashids;
+	}());
+	exports.Hashids = Hashids;
+	
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	__export(__webpack_require__(129));
+	__export(__webpack_require__(129));
+	
+
+/***/ },
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26244,18 +25919,21 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
-	var router_1 = __webpack_require__(19);
-	var app_routes_1 = __webpack_require__(208);
-	var app_component_1 = __webpack_require__(129);
-	var services_1 = __webpack_require__(15);
-	var forms_1 = __webpack_require__(205);
+	var router_1 = __webpack_require__(17);
+	var app_routes_1 = __webpack_require__(211);
+	var app_component_1 = __webpack_require__(130);
+	var services_1 = __webpack_require__(13);
+	var forms_1 = __webpack_require__(206);
 	var platform_browser_1 = __webpack_require__(50);
 	var http_1 = __webpack_require__(49);
-	var index_1 = __webpack_require__(219);
-	var ui_1 = __webpack_require__(134);
-	var containers_1 = __webpack_require__(130);
-	var common_1 = __webpack_require__(62);
-	var ng2_dragula_1 = __webpack_require__(407);
+	// Experimental Start
+	var ng2_gravatar_directive_1 = __webpack_require__(413);
+	var ng2_filter_pipe_1 = __webpack_require__(411);
+	// Experimental End
+	var index_1 = __webpack_require__(226);
+	var ui_1 = __webpack_require__(135);
+	var containers_1 = __webpack_require__(131);
+	var common_1 = __webpack_require__(61);
 	var AppModule = (function () {
 	    function AppModule() {
 	    }
@@ -26263,9 +25941,46 @@ webpackJsonp([1],[
 	}());
 	AppModule = __decorate([
 	    core_1.NgModule({
-	        declarations: [ui_1.Test, ui_1.PageNotFound, app_component_1.AppComponent, ui_1.Home, ui_1.ClientDetails, ui_1.TokenDisplay, containers_1.Main, containers_1.Auth, containers_1.UserProfile, containers_1.ScopeDisplay, containers_1.ClientsDisplay, services_1.KeysPipe, services_1.ValuesPipe, services_1.QuantityParsePipe, services_1.ClientParsePipe, services_1.SearchFilterPipe],
-	        imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpModule, router_1.RouterModule.forRoot(app_routes_1.rootRouterConfig), ng2_dragula_1.DragulaModule, forms_1.ReactiveFormsModule],
-	        providers: [services_1.ApiService, services_1.MyClients, services_1.ClientsService, services_1.HubSpotAPIService].concat(index_1.providers, [{ provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy }]),
+	        declarations: [
+	            ui_1.Test,
+	            ui_1.PageNotFound,
+	            app_component_1.AppComponent,
+	            ui_1.Home,
+	            ui_1.CompanyDetails,
+	            ui_1.TokenDisplay,
+	            containers_1.Main,
+	            containers_1.Auth,
+	            containers_1.UserProfile,
+	            containers_1.ScopeDisplay,
+	            containers_1.ClientsDisplay,
+	            containers_1.CompaniesDisplay,
+	            containers_1.DealsDisplay,
+	            services_1.KeysPipe,
+	            services_1.ValuesPipe,
+	            services_1.QuantityParsePipe,
+	            services_1.ClientParsePipe,
+	            services_1.SearchFilterPipe,
+	            ng2_gravatar_directive_1.Gravatar
+	        ],
+	        imports: [
+	            platform_browser_1.BrowserModule,
+	            forms_1.FormsModule,
+	            http_1.HttpModule,
+	            router_1.RouterModule.forRoot(app_routes_1.rootRouterConfig),
+	            forms_1.ReactiveFormsModule,
+	            ng2_filter_pipe_1.Ng2FilterPipeModule
+	        ],
+	        providers: [
+	            services_1.ApiService,
+	            services_1.MyClients,
+	            services_1.ClientsService,
+	            services_1.HubSpotAPIService
+	        ].concat(index_1.providers, [
+	            {
+	                provide: common_1.LocationStrategy,
+	                useClass: common_1.HashLocationStrategy
+	            }
+	        ]),
 	        bootstrap: [app_component_1.AppComponent]
 	    }),
 	    __metadata("design:paramtypes", [])
@@ -26274,13 +25989,13 @@ webpackJsonp([1],[
 	
 
 /***/ },
-/* 208 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ui_1 = __webpack_require__(134);
-	var containers_1 = __webpack_require__(130);
-	var services_1 = __webpack_require__(15);
+	var ui_1 = __webpack_require__(135);
+	var containers_1 = __webpack_require__(131);
+	var services_1 = __webpack_require__(13);
 	exports.rootRouterConfig = [
 	    {
 	        path: '',
@@ -26292,7 +26007,7 @@ webpackJsonp([1],[
 	                component: ui_1.Home
 	            },
 	            {
-	                path: 'scope/:companyId',
+	                path: 'scope',
 	                component: containers_1.ScopeDisplay
 	            },
 	            {
@@ -26302,22 +26017,29 @@ webpackJsonp([1],[
 	            {
 	                path: 'clients',
 	                component: containers_1.ClientsDisplay,
-	                canActivate: [services_1.ClientsService]
 	            },
 	            {
-	                path: 'clients/:companyId',
-	                component: ui_1.ClientDetails
+	                path: 'deals',
+	                component: containers_1.DealsDisplay,
+	            },
+	            {
+	                path: 'company',
+	                component: ui_1.CompanyDetails
+	            },
+	            {
+	                path: 'companies',
+	                component: containers_1.CompaniesDisplay
 	            }
 	        ]
 	    },
 	    { path: 'token', component: ui_1.TokenDisplay },
 	    { path: 'auth', component: containers_1.Auth },
-	    { path: '**', component: containers_1.Auth }
+	    { path: '**', redirectTo: 'auth' },
 	];
 	
 
 /***/ },
-/* 209 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26331,8 +26053,8 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
-	var services_1 = __webpack_require__(15);
-	var router_1 = __webpack_require__(19);
+	var services_1 = __webpack_require__(13);
+	var router_1 = __webpack_require__(17);
 	var Auth = (function () {
 	    function Auth(router, authService) {
 	        this.router = router;
@@ -26340,12 +26062,20 @@ webpackJsonp([1],[
 	        // This initiates a Oauth 2.0 connection via passport.js
 	        // hubAuthAPI: string = CONFIG.hubspot.HUBAUTHAPI; // Hide this in config vars
 	        this.hubAuthAPI = 'https://b2c78a56.ngrok.io/hubAuth';
-	        console.log('hubauthapi: ', this.hubAuthAPI);
+	        // console.log('hubauthapi: ', this.hubAuthAPI);
 	    }
+	    Auth.prototype.ngOnInit = function () {
+	        if (this.authService.isAuthorized()) {
+	            console.log('this.authService.isAuthorized(): ', this.authService.isAuthorized());
+	        }
+	    };
 	    Auth.prototype.authenticate = function () {
-	        // window.localStorage.getItem((this.JWT_KEY) === 'null' || 'undefined' ? this.endpoint = this.localAuth : this.endpoint = this.tokenAuth;
+	        var _this = this;
 	        this.authService.authenticate()
-	            .then(function (token) { return console.log('authservice.authenticate promise returned: ', token); })
+	            .then(function (token) {
+	            console.log('authservice.authenticate promise returned: ', token);
+	            _this.router.navigate(['home']);
+	        })
 	            .catch(function (err) { return console.log('auth promise rejection: ', err); });
 	    };
 	    return Auth;
@@ -26354,7 +26084,7 @@ webpackJsonp([1],[
 	    core_1.Component({
 	        selector: 'auth-container',
 	        styles: ["\n    a:hover {\n        cursor: pointer;\n      }\n  "],
-	        template: __webpack_require__(410)
+	        template: __webpack_require__(416)
 	    }),
 	    __metadata("design:paramtypes", [typeof (_a = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _a || Object, typeof (_b = typeof services_1.AuthService !== "undefined" && services_1.AuthService) === "function" && _b || Object])
 	], Auth);
@@ -26364,77 +26094,12 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 210 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var auth_component_1 = __webpack_require__(209);
-	exports.Auth = auth_component_1.Auth;
-	
-
-/***/ },
-/* 211 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(4);
-	var services_1 = __webpack_require__(15);
-	var store_1 = __webpack_require__(21);
-	var _ = __webpack_require__(25);
-	var ClientsDisplay = (function () {
-	    function ClientsDisplay(clientsService, apiService, storeHelper, authService, store) {
-	        this.clientsService = clientsService;
-	        this.apiService = apiService;
-	        this.storeHelper = storeHelper;
-	        this.authService = authService;
-	        this.store = store;
-	    }
-	    ClientsDisplay.prototype.ngOnInit = function () {
-	        this.getClients();
-	    };
-	    ClientsDisplay.prototype.getClients = function () {
-	        this.clients = this.store.getState()['clients'][0];
-	        console.log('in clients display this.clients: ', this.clients);
-	    };
-	    return ClientsDisplay;
-	}());
-	ClientsDisplay = __decorate([
-	    core_1.Component({
-	        selector: 'clients-display',
-	        styles: [__webpack_require__(691)],
-	        template: __webpack_require__(411)
-	    }),
-	    __metadata("design:paramtypes", [typeof (_a = typeof services_1.ClientsService !== "undefined" && services_1.ClientsService) === "function" && _a || Object, typeof (_b = typeof services_1.ApiService !== "undefined" && services_1.ApiService) === "function" && _b || Object, typeof (_c = typeof services_1.StoreHelper !== "undefined" && services_1.StoreHelper) === "function" && _c || Object, typeof (_d = typeof services_1.AuthService !== "undefined" && services_1.AuthService) === "function" && _d || Object, typeof (_e = typeof store_1.Store !== "undefined" && store_1.Store) === "function" && _e || Object])
-	], ClientsDisplay);
-	exports.ClientsDisplay = ClientsDisplay;
-	var _a, _b, _c, _d, _e;
-
-
-/***/ },
-/* 212 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var clients_display_component_1 = __webpack_require__(211);
-	exports.ClientsDisplay = clients_display_component_1.ClientsDisplay;
-	
-
-/***/ },
 /* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var main_1 = __webpack_require__(214);
-	exports.Main = main_1.Main;
+	var auth_component_1 = __webpack_require__(212);
+	exports.Auth = auth_component_1.Auth;
 	
 
 /***/ },
@@ -26452,59 +26117,60 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
-	var services_1 = __webpack_require__(15);
-	var _ = __webpack_require__(25);
-	var Main = (function () {
-	    function Main(storeHelper, clientsService, authService, scopeService) {
-	        this.storeHelper = storeHelper;
+	var services_1 = __webpack_require__(13);
+	var store_1 = __webpack_require__(16);
+	var ClientsDisplay = (function () {
+	    function ClientsDisplay(clientsService, apiService, storeHelper, authService, store, hubspotAPIService) {
 	        this.clientsService = clientsService;
+	        this.apiService = apiService;
+	        this.storeHelper = storeHelper;
 	        this.authService = authService;
-	        this.scopeService = scopeService;
-	        this.magHttpsProxy = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).magneticProxy;
-	        this.hubspotAPIAllContacts = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.endpoints.allContacts;
-	        this.hubspotAPIAllDeals = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.endpoints.allDeals;
-	        // This endpoint is what validates and returns a user via JWT
-	        this.token_endpoint = 'auth/token';
+	        this.store = store;
+	        this.hubspotAPIService = hubspotAPIService;
+	        this.HUBAPI = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.APIURL;
+	        this.HUBCONTACTS = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.endpoints.allContacts;
+	        this.clients = [];
+	        this.stringFilter = '';
 	    }
-	    Main.prototype.ngOnInit = function () {
-	        // const self = this;
-	        // // get user on initial load
-	        // this.authService.setUser(this.token_endpoint)
-	        // .subscribe(res => {
-	        //     this.user_email = res.email;
-	        //     this.super = this.authService.userIsSuper();
-	        //     this.admin = this.authService.userIsAdmin();
-	        //     this.storeHelper.update('user', res);
-	        // });
-	        // get clients on initial load
-	        // this.clientsService.fetchDeals(this.hubspotAPIAllDeals, 'allDeals', 'includeAssociations=true&limit=250&properties=stage')
-	        // this.clientsService.fetchCompanies();
-	        // .map(res=> res.json())
-	        // .subscribe(clients => {
-	        //     console.log('get all companies: ', clients);
-	        //     let tempCompanyIdArr = [];
-	        //     clients.forEach(client => tempCompanyIdArr.push(client));
-	        // })
-	        // get scope object on initial load
-	        // this.scopeService.getScope();
-	        // changed for https requirement of gh-pages... our api is http.
-	        // .subscribe(res=> this.storeHelper.update('scope', res));
+	    ClientsDisplay.prototype.ngOnInit = function () {
+	        console.log('clients.length at ng init: ', this.store.getState().clients.length);
+	        // Check store for clients before making api call
+	        if (this.store.getState().clients.length < 1) {
+	            this.getClients();
+	        }
+	        else {
+	            this.getClientsFromStore();
+	        }
 	    };
-	    Main.prototype.logout = function () {
-	        this.authService.signout();
+	    ClientsDisplay.prototype.getClients = function () {
+	        var _this = this;
+	        this.hubspotAPIService.hubSpotAPICall(this.HUBCONTACTS)
+	            .subscribe(function (res) {
+	            _this.storeHelper.update('clients', res);
+	            _this.clients = _this.store.getState().clients;
+	            console.log('this.clients: ', _this.clients);
+	        });
 	    };
-	    return Main;
+	    ClientsDisplay.prototype.getClientsFromStore = function () {
+	        console.log('clients already in store. getting them from store: ');
+	        this.clients = this.store.getState().clients;
+	    };
+	    ClientsDisplay.prototype.selectClient = function (client) {
+	        console.log('selected client', client);
+	        this.storeHelper.update('activeClient', client);
+	    };
+	    return ClientsDisplay;
 	}());
-	Main = __decorate([
+	ClientsDisplay = __decorate([
 	    core_1.Component({
-	        selector: 'main-container',
-	        styles: [__webpack_require__(692)],
-	        template: __webpack_require__(412)
+	        selector: 'clients-display',
+	        styles: [__webpack_require__(698)],
+	        template: __webpack_require__(417)
 	    }),
-	    __metadata("design:paramtypes", [typeof (_a = typeof services_1.StoreHelper !== "undefined" && services_1.StoreHelper) === "function" && _a || Object, typeof (_b = typeof services_1.ClientsService !== "undefined" && services_1.ClientsService) === "function" && _b || Object, typeof (_c = typeof services_1.AuthService !== "undefined" && services_1.AuthService) === "function" && _c || Object, typeof (_d = typeof services_1.ScopeService !== "undefined" && services_1.ScopeService) === "function" && _d || Object])
-	], Main);
-	exports.Main = Main;
-	var _a, _b, _c, _d;
+	    __metadata("design:paramtypes", [typeof (_a = typeof services_1.ClientsService !== "undefined" && services_1.ClientsService) === "function" && _a || Object, typeof (_b = typeof services_1.ApiService !== "undefined" && services_1.ApiService) === "function" && _b || Object, typeof (_c = typeof services_1.StoreHelper !== "undefined" && services_1.StoreHelper) === "function" && _c || Object, typeof (_d = typeof services_1.AuthService !== "undefined" && services_1.AuthService) === "function" && _d || Object, typeof (_e = typeof store_1.Store !== "undefined" && store_1.Store) === "function" && _e || Object, typeof (_f = typeof services_1.HubSpotAPIService !== "undefined" && services_1.HubSpotAPIService) === "function" && _f || Object])
+	], ClientsDisplay);
+	exports.ClientsDisplay = ClientsDisplay;
+	var _a, _b, _c, _d, _e, _f;
 
 
 /***/ },
@@ -26512,8 +26178,8 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var scope_display_component_1 = __webpack_require__(216);
-	exports.ScopeDisplay = scope_display_component_1.ScopeDisplay;
+	var clients_display_component_1 = __webpack_require__(214);
+	exports.ClientsDisplay = clients_display_component_1.ClientsDisplay;
 	
 
 /***/ },
@@ -26531,14 +26197,260 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
-	var router_1 = __webpack_require__(19);
-	var platform_browser_1 = __webpack_require__(50);
-	var services_1 = __webpack_require__(15);
-	// import { DragulaService } from 'ng2-dragula/ng2-dragula';
-	var router_2 = __webpack_require__(19);
-	var store_1 = __webpack_require__(21);
+	var services_1 = __webpack_require__(13);
+	var store_1 = __webpack_require__(16);
+	var CompaniesDisplay = (function () {
+	    function CompaniesDisplay(clientsService, apiService, storeHelper, authService, store, hubspotAPIService) {
+	        this.clientsService = clientsService;
+	        this.apiService = apiService;
+	        this.storeHelper = storeHelper;
+	        this.authService = authService;
+	        this.store = store;
+	        this.hubspotAPIService = hubspotAPIService;
+	        this.HUBAPI = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.APIURL;
+	        // HUBDEALS: string = CONFIG.hubspot.endpoints.allContacts;
+	        this.HUBCOMPANIES = 'https://b2c78a56.ngrok.io/hubCompanies';
+	        this.companies = [];
+	    }
+	    CompaniesDisplay.prototype.ngOnInit = function () {
+	        // console.log('companies.length at ng init: ', this.store.getState().companies.length);
+	        // Check store for companies before making api call
+	        if (this.store.getState().companies.length < 1) {
+	            this.getCompanies();
+	        }
+	        this.companies = this.store.getState().companies;
+	    };
+	    CompaniesDisplay.prototype.getCompanies = function () {
+	        var _this = this;
+	        this.hubspotAPIService.hubSpotCompaniesCall(this.HUBCOMPANIES)
+	            .subscribe(function (res) {
+	            _this.storeHelper.update('companies', res);
+	            _this.companies = _this.store.getState().companies;
+	            // console.log('this.companies: ', this.companies);
+	        });
+	    };
+	    CompaniesDisplay.prototype.getDeal = function (dealId) {
+	        this.hubspotAPIService.hubspotDealCall(dealId)
+	            .subscribe(function (res) {
+	            console.log('this.hubspotapiservice.hubspotdealcall() res: ', res);
+	        });
+	    };
+	    CompaniesDisplay.prototype.getCompaniesFromStore = function () {
+	        console.log('companies already in store. getting them from store: ');
+	        this.companies = this.store.getState().companies;
+	    };
+	    CompaniesDisplay.prototype.selectCompany = function (company) {
+	        console.log('selected company', company);
+	        this.storeHelper.update('activeCompany', company);
+	    };
+	    return CompaniesDisplay;
+	}());
+	CompaniesDisplay = __decorate([
+	    core_1.Component({
+	        selector: 'companies-display',
+	        styles: [__webpack_require__(699)],
+	        template: __webpack_require__(418)
+	    }),
+	    __metadata("design:paramtypes", [typeof (_a = typeof services_1.ClientsService !== "undefined" && services_1.ClientsService) === "function" && _a || Object, typeof (_b = typeof services_1.ApiService !== "undefined" && services_1.ApiService) === "function" && _b || Object, typeof (_c = typeof services_1.StoreHelper !== "undefined" && services_1.StoreHelper) === "function" && _c || Object, typeof (_d = typeof services_1.AuthService !== "undefined" && services_1.AuthService) === "function" && _d || Object, typeof (_e = typeof store_1.Store !== "undefined" && store_1.Store) === "function" && _e || Object, typeof (_f = typeof services_1.HubSpotAPIService !== "undefined" && services_1.HubSpotAPIService) === "function" && _f || Object])
+	], CompaniesDisplay);
+	exports.CompaniesDisplay = CompaniesDisplay;
+	var _a, _b, _c, _d, _e, _f;
+
+
+/***/ },
+/* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var companies_display_component_1 = __webpack_require__(216);
+	exports.CompaniesDisplay = companies_display_component_1.CompaniesDisplay;
+	
+
+/***/ },
+/* 218 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(4);
+	var services_1 = __webpack_require__(13);
+	var store_1 = __webpack_require__(16);
+	var DealsDisplay = (function () {
+	    function DealsDisplay(clientsService, apiService, storeHelper, authService, store, hubspotAPIService) {
+	        this.clientsService = clientsService;
+	        this.apiService = apiService;
+	        this.storeHelper = storeHelper;
+	        this.authService = authService;
+	        this.store = store;
+	        this.hubspotAPIService = hubspotAPIService;
+	        this.HUBAPI = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.APIURL;
+	        // HUBDEALS: string = CONFIG.hubspot.endpoints.allContacts;
+	        this.HUBDEALS = 'https://b2c78a56.ngrok.io/hubDeals';
+	        this.deals = [];
+	    }
+	    DealsDisplay.prototype.ngOnInit = function () {
+	        console.log('deals.length at ng init: ', this.store.getState().deals.length);
+	        // Check store for deals before making api call
+	        if (this.store.getState().deals.length < 1) {
+	            this.getDeals();
+	        }
+	        else {
+	            this.getDealsFromStore();
+	        }
+	    };
+	    DealsDisplay.prototype.getDeals = function () {
+	        var _this = this;
+	        this.hubspotAPIService.hubSpotDealsCall(this.HUBDEALS)
+	            .subscribe(function (res) {
+	            _this.storeHelper.update('deals', res);
+	            _this.deals = _this.store.getState().deals;
+	            console.log('this.deals: ', _this.deals);
+	        });
+	    };
+	    DealsDisplay.prototype.getDeal = function (dealId) {
+	        this.hubspotAPIService.hubspotDealCall(dealId)
+	            .subscribe(function (res) {
+	            console.log('this.hubspotapiservice.hubspotdealcall() res: ', res);
+	        });
+	    };
+	    DealsDisplay.prototype.getDealsFromStore = function () {
+	        console.log('deals already in store. getting them from store: ');
+	        this.deals = this.store.getState().deals;
+	    };
+	    DealsDisplay.prototype.selectClient = function (deal) {
+	        console.log('selected deal', deal);
+	        this.storeHelper.update('activeDeal', deal);
+	    };
+	    return DealsDisplay;
+	}());
+	DealsDisplay = __decorate([
+	    core_1.Component({
+	        selector: 'deals-display',
+	        styles: [__webpack_require__(700)],
+	        template: __webpack_require__(419)
+	    }),
+	    __metadata("design:paramtypes", [typeof (_a = typeof services_1.ClientsService !== "undefined" && services_1.ClientsService) === "function" && _a || Object, typeof (_b = typeof services_1.ApiService !== "undefined" && services_1.ApiService) === "function" && _b || Object, typeof (_c = typeof services_1.StoreHelper !== "undefined" && services_1.StoreHelper) === "function" && _c || Object, typeof (_d = typeof services_1.AuthService !== "undefined" && services_1.AuthService) === "function" && _d || Object, typeof (_e = typeof store_1.Store !== "undefined" && store_1.Store) === "function" && _e || Object, typeof (_f = typeof services_1.HubSpotAPIService !== "undefined" && services_1.HubSpotAPIService) === "function" && _f || Object])
+	], DealsDisplay);
+	exports.DealsDisplay = DealsDisplay;
+	var _a, _b, _c, _d, _e, _f;
+
+
+/***/ },
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var deals_display_component_1 = __webpack_require__(218);
+	exports.DealsDisplay = deals_display_component_1.DealsDisplay;
+	
+
+/***/ },
+/* 220 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var main_1 = __webpack_require__(221);
+	exports.Main = main_1.Main;
+	
+
+/***/ },
+/* 221 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(4);
+	var services_1 = __webpack_require__(13);
+	var router_1 = __webpack_require__(17);
 	var _ = __webpack_require__(25);
-	_.mixin(__webpack_require__(171));
+	var Main = (function () {
+	    function Main(storeHelper, clientsService, authService, scopeService, router) {
+	        this.storeHelper = storeHelper;
+	        this.clientsService = clientsService;
+	        this.authService = authService;
+	        this.scopeService = scopeService;
+	        this.router = router;
+	        this.magHttpsProxy = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).magneticProxy;
+	        this.hubspotAPIAllContacts = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.endpoints.allContacts;
+	        this.hubspotAPIAllDeals = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).hubspot.endpoints.allDeals;
+	        // This endpoint is what validates and returns a user via JWT
+	        this.token_endpoint = 'auth/token';
+	    }
+	    Main.prototype.ngOnInit = function () {
+	        if (this.authService.isAuthorized()) {
+	            console.log('main.ts isAuthorized is true');
+	            this.router.navigate(['home']);
+	        }
+	        else {
+	            console.log('main.ts oninit this.authService.isAuthorized() returned false');
+	            this.router.navigate(['auth']);
+	        }
+	    };
+	    Main.prototype.logout = function () {
+	        this.authService.signout();
+	    };
+	    return Main;
+	}());
+	Main = __decorate([
+	    core_1.Component({
+	        selector: 'main-container',
+	        styles: [__webpack_require__(701)],
+	        template: __webpack_require__(420)
+	    }),
+	    __metadata("design:paramtypes", [typeof (_a = typeof services_1.StoreHelper !== "undefined" && services_1.StoreHelper) === "function" && _a || Object, typeof (_b = typeof services_1.ClientsService !== "undefined" && services_1.ClientsService) === "function" && _b || Object, typeof (_c = typeof services_1.AuthService !== "undefined" && services_1.AuthService) === "function" && _c || Object, typeof (_d = typeof services_1.ScopeService !== "undefined" && services_1.ScopeService) === "function" && _d || Object, typeof (_e = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _e || Object])
+	], Main);
+	exports.Main = Main;
+	var _a, _b, _c, _d, _e;
+
+
+/***/ },
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var scope_display_component_1 = __webpack_require__(223);
+	exports.ScopeDisplay = scope_display_component_1.ScopeDisplay;
+	
+
+/***/ },
+/* 223 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(4);
+	var router_1 = __webpack_require__(17);
+	var platform_browser_1 = __webpack_require__(50);
+	var services_1 = __webpack_require__(13);
+	// import { DragulaService } from 'ng2-dragula/ng2-dragula';
+	var router_2 = __webpack_require__(17);
+	var store_1 = __webpack_require__(16);
+	var _ = __webpack_require__(25);
+	_.mixin(__webpack_require__(172));
 	var ScopeDisplay = (function () {
 	    function ScopeDisplay(route, storeHelper, scopeService, store, router, sanitizer) {
 	        this.route = route;
@@ -26553,40 +26465,31 @@ webpackJsonp([1],[
 	    }
 	    ScopeDisplay.prototype.ngOnInit = function () {
 	        var _this = this;
-	        this.setScope();
-	        this.clients = this.store.getState().clients;
-	        this.sub = this.route.params.subscribe(function (params) {
-	            _this.id = params['companyId']; // (+) converts string 'id' to a number
-	            _this.findClient(_this.id);
+	        this.setScope()
+	            .then(function (scopeObject) {
+	            _this.scope = scopeObject;
+	            console.log('scope-display nginit this.scope: ', _this.scope);
+	            _this.company = _this.store.getState()['activeCompany'];
+	            console.log('scope-display nginit this.company: ', _this.company);
 	        });
-	    };
-	    ScopeDisplay.prototype.findClient = function (companyID) {
-	        var self = this;
-	        //get client through route params
-	        this.client = (companyID) ? _.find(this.clients[0], { companyId: parseInt(companyID) }) : self.router.navigate(['clients']);
-	        if (!this.store.getState['activeClient']) {
-	            this.storeHelper.add('activeClient', this.client);
-	        }
-	        else {
-	            this.storeHelper.update('activeClient', this.client);
-	        }
 	    };
 	    ScopeDisplay.prototype.setScope = function () {
-	        var _this = this;
 	        var self = this;
-	        this.scopeService.getScope()
-	            .subscribe(function (res) {
-	            _this.scopeService.cleanScope(res, function (res) {
-	                if (!self.store.getState()['scope']) {
-	                    self.storeHelper.add('scope', res);
+	        if (!this.store.getState().activeScope) {
+	            return this.scopeService.getScope()
+	                .then(function (scopeObject) {
+	                if (scopeObject) {
+	                    console.log('scopeObject in setScope: ', scopeObject);
+	                    return Promise.resolve(scopeObject);
 	                }
 	                else {
-	                    self.storeHelper.update('scope', res);
+	                    return Promise.reject('no scopeObject returned from scopeService.getScope()');
 	                }
-	                self.scope = self.store.getState()['scope'];
-	                console.log('self.scope: ', self.scope);
 	            });
-	        });
+	        }
+	        else {
+	            return Promise.resolve(this.store.getState().activeScope);
+	        }
 	    };
 	    ScopeDisplay.prototype.saveScope = function () {
 	        var _this = this;
@@ -26607,10 +26510,18 @@ webpackJsonp([1],[
 	                confirmButtonColor: '#3085d6',
 	                confirmButtonText: 'Yes, save it'
 	            }).then(function () {
-	                swal('Saved!', 'Relax... Your Scope has been saved', 'success');
 	                self_1.scopeResult = [];
-	                self_1.scope['client'] = self_1.client;
-	                return self_1.scopeService.createScope('/clients', self_1.store.getState()['activeClient']['_id'], { scope: self_1.scope, data: self_1.scope['client'] });
+	                // scopeService.createScope returns a promise
+	                return self_1.scopeService.createScope(self_1.scope, self_1.company);
+	                // .then(res => {
+	                //     console.log('success res: ', res);
+	                //     swal(
+	                //         'Saved!',
+	                //         'Relax... Your Scope has been saved',
+	                //         'success'
+	                //     );
+	                // })
+	                // .catch(err => console.log('createScope failed err: ', err))
 	            }, function (dismiss) {
 	                // dismiss can be 'cancel', 'overlay',
 	                // 'close', and 'timer'
@@ -26638,8 +26549,8 @@ webpackJsonp([1],[
 	ScopeDisplay = __decorate([
 	    core_1.Component({
 	        selector: 'scope-display',
-	        styles: [__webpack_require__(693)],
-	        template: __webpack_require__(413),
+	        styles: [__webpack_require__(702)],
+	        template: __webpack_require__(421),
 	        animations: [
 	            core_1.trigger('itemState', [
 	                core_1.state('false', core_1.style({
@@ -26664,16 +26575,16 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 217 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var user_profile_component_1 = __webpack_require__(218);
+	var user_profile_component_1 = __webpack_require__(225);
 	exports.UserProfile = user_profile_component_1.UserProfile;
 	
 
 /***/ },
-/* 218 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26687,12 +26598,13 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
-	var services_1 = __webpack_require__(15); // removed socket service temporarily until debugged
-	var router_1 = __webpack_require__(19);
-	var common_1 = __webpack_require__(62);
-	var store_1 = __webpack_require__(21);
+	var services_1 = __webpack_require__(13); // removed socket service temporarily until debugged
+	var router_1 = __webpack_require__(17);
+	var common_1 = __webpack_require__(61);
+	var store_1 = __webpack_require__(16);
+	var _ = __webpack_require__(25);
 	var UserProfile = (function () {
-	    function UserProfile(location, clientsService, router, myClients, authService, apiService, store, storeHelper) {
+	    function UserProfile(location, clientsService, router, myClients, authService, apiService, store, storeHelper, scopeService) {
 	        this.location = location;
 	        this.clientsService = clientsService;
 	        this.router = router;
@@ -26701,63 +26613,117 @@ webpackJsonp([1],[
 	        this.apiService = apiService;
 	        this.store = store;
 	        this.storeHelper = storeHelper;
-	        // This endpoint is what validates and returns a user via JWT
-	        this.token_endpoint = 'auth/token';
-	        this.endpoint = 'users';
+	        this.scopeService = scopeService;
+	        this.JWTKEY = 'hubspot_token';
+	        this.me = this.getMe();
 	    }
 	    UserProfile.prototype.ngOnInit = function () {
-	        this.me = this.getMe();
 	        console.log('this.me: ', this.me);
+	        // if (this.me.contactInfo.properties.scopes.value.indexOf('o') === 0) {
+	        //     console.log('malformed json');
+	        // }
+	        var tempScopesArr = JSON.parse(decodeURI(this.me.contactInfo.properties.scopes.value));
+	        console.log('tempScopesArr: ', tempScopesArr);
+	        if (!tempScopesArr.length) {
+	            // console.log('!JSON.parse(this.me.contactInfo.properties.scopes.value).length: ', JSON.parse(this.me.contactInfo.properties.scopes.value).length);
+	            return this.scopes = tempScopesArr;
+	        }
+	        else {
+	            this.storeHelper.update('scopes', tempScopesArr);
+	            console.log('error before setting tempScopesArr');
+	            this.scopes = _
+	                .chain(tempScopesArr)
+	                .uniqBy('company.properties.name.value')
+	                .sortBy(['company', 'value'])
+	                .value();
+	            console.log('tempScopesArr: ', tempScopesArr);
+	            console.log('this.scopes: ', this.scopes);
+	        }
 	        if (!this.me) {
 	            console.log('this.me is empty');
 	        }
-	        else {
-	            this.getMyClients(this.me.email);
-	        }
+	        // this.deleteProps(contactKeys);
 	    };
 	    UserProfile.prototype.getMe = function () {
-	        var _this = this;
-	        // console.log('in profile ts this.store.getState().user: ', this.store.getState());
-	        this.store.getState().user;
-	        if (!this.store.getState().user['email']) {
-	            console.log('getstate.user is empty!');
-	            this.authService.setUser(this.token_endpoint)
-	                .subscribe(function (res) { return _this.storeHelper.update('user', res); });
-	        }
-	        else {
-	            return this.store.getState().user;
-	        }
-	    };
-	    UserProfile.prototype.getMyClients = function (me) {
-	        return this.clients = this.myClients.getClients(me);
-	        // console.log('in profile this.clients: ', this.clients);
+	        return this.store.getState().user;
 	    };
 	    UserProfile.prototype.goBack = function () {
 	        this.location.back();
+	    };
+	    /**
+	     * Delete properties on a contact.
+	     * Created this function to remove accidentally created scope properties
+	     * @constructor
+	     * @param {Array}  properties - contactKeys the keys of properties on contactProps.
+	     */
+	    UserProfile.prototype.deleteProps = function (properties) {
+	        var contactProps = this.me.contactInfo.properties;
+	        var contactKeys = Object.keys(contactProps);
+	        this.deletePropertiesArray = _.filter(properties, function (key) {
+	            return key.startsWith('scope');
+	        });
+	        console.log('scopeArray: ', this.deletePropertiesArray);
+	        if (this.deletePropertiesArray.length > 1) {
+	            return this.apiService.post('https://b2c78a56.ngrok.io/hubDeleteProps', this.deletePropertiesArray)
+	                .subscribe(function (res) { return console.log('delete response: ', res); });
+	        }
+	    };
+	    UserProfile.prototype.selectCompany = function (company, scope) {
+	        console.log('selected company', company);
+	        console.log('activeScope ', scope);
+	        this.storeHelper.update('activeCompany', company);
+	        this.storeHelper.update('activeScope', scope);
+	    };
+	    UserProfile.prototype.purgeScopes = function () {
+	        var self = this;
+	        swal({
+	            title: 'Purge All Scopes?',
+	            text: "How sure are you really? You won't be able to revert this!",
+	            type: 'info',
+	            showCancelButton: true,
+	            cancelButtonColor: '#d33',
+	            confirmButtonColor: '#3085d6',
+	            confirmButtonText: 'Yes, delete them all!'
+	        }).then(function () {
+	            return self.scopeService.purgeScopes()
+	                .then(function (res) {
+	                self.updateScopes();
+	            })
+	                .catch(function (err) { return console.log('this.scopeService.purgeScopes() error: ', err); });
+	        }, function (dismiss) {
+	            // dismiss can be 'cancel', 'overlay',
+	            // 'close', and 'timer'
+	            if (dismiss === 'cancel') {
+	                swal('Cancelled', 'Phew, that was close. Your scopes remain', 'error');
+	            }
+	        });
+	    };
+	    UserProfile.prototype.updateScopes = function () {
+	        this.authService.getUser(localStorage.getItem(this.JWTKEY));
 	    };
 	    return UserProfile;
 	}());
 	UserProfile = __decorate([
 	    core_1.Component({
 	        selector: 'user-profile',
-	        styles: [__webpack_require__(694)],
-	        template: __webpack_require__(414)
+	        styles: [__webpack_require__(703)],
+	        template: __webpack_require__(422)
 	    }),
-	    __metadata("design:paramtypes", [typeof (_a = typeof common_1.Location !== "undefined" && common_1.Location) === "function" && _a || Object, typeof (_b = typeof services_1.ClientsService !== "undefined" && services_1.ClientsService) === "function" && _b || Object, typeof (_c = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _c || Object, typeof (_d = typeof services_1.MyClients !== "undefined" && services_1.MyClients) === "function" && _d || Object, typeof (_e = typeof services_1.AuthService !== "undefined" && services_1.AuthService) === "function" && _e || Object, typeof (_f = typeof services_1.ApiService !== "undefined" && services_1.ApiService) === "function" && _f || Object, typeof (_g = typeof store_1.Store !== "undefined" && store_1.Store) === "function" && _g || Object, typeof (_h = typeof services_1.StoreHelper !== "undefined" && services_1.StoreHelper) === "function" && _h || Object])
+	    __metadata("design:paramtypes", [typeof (_a = typeof common_1.Location !== "undefined" && common_1.Location) === "function" && _a || Object, typeof (_b = typeof services_1.ClientsService !== "undefined" && services_1.ClientsService) === "function" && _b || Object, typeof (_c = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _c || Object, typeof (_d = typeof services_1.MyClients !== "undefined" && services_1.MyClients) === "function" && _d || Object, typeof (_e = typeof services_1.AuthService !== "undefined" && services_1.AuthService) === "function" && _e || Object, typeof (_f = typeof services_1.ApiService !== "undefined" && services_1.ApiService) === "function" && _f || Object, typeof (_g = typeof store_1.Store !== "undefined" && store_1.Store) === "function" && _g || Object, typeof (_h = typeof services_1.StoreHelper !== "undefined" && services_1.StoreHelper) === "function" && _h || Object, typeof (_j = typeof services_1.ScopeService !== "undefined" && services_1.ScopeService) === "function" && _j || Object])
 	], UserProfile);
 	exports.UserProfile = UserProfile;
-	var _a, _b, _c, _d, _e, _f, _g, _h;
+	var _a, _b, _c, _d, _e, _f, _g, _h, _j;
 
 
 /***/ },
-/* 219 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var app_component_1 = __webpack_require__(129);
+	var app_component_1 = __webpack_require__(130);
 	exports.AppComponent = app_component_1.AppComponent;
-	var store_1 = __webpack_require__(21);
-	var services = __webpack_require__(15);
+	var store_1 = __webpack_require__(16);
+	var services = __webpack_require__(13);
 	var mapValuesToArray = function (obj) { return Object.keys(obj).map(function (key) { return obj[key]; }); };
 	exports.providers = [
 	    store_1.Store
@@ -26765,7 +26731,7 @@ webpackJsonp([1],[
 	
 
 /***/ },
-/* 220 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26780,16 +26746,15 @@ webpackJsonp([1],[
 	};
 	var http_1 = __webpack_require__(49);
 	var core_1 = __webpack_require__(4);
-	var store_1 = __webpack_require__(21);
-	var rxjs_1 = __webpack_require__(58);
+	var store_1 = __webpack_require__(16);
+	var rxjs_1 = __webpack_require__(70);
 	var ApiService = (function () {
 	    function ApiService(http, store) {
 	        this.http = http;
 	        this.store = store;
 	        this.headers = new http_1.Headers({
 	            'Content-Type': 'application/json',
-	            Accept: 'application/json',
-	            Authorization: window.localStorage['hubspot_token']
+	            Accept: 'application/json'
 	        });
 	        this.api_url = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).API_URL;
 	    }
@@ -26798,6 +26763,7 @@ webpackJsonp([1],[
 	    };
 	    ApiService.prototype.checkForError = function (response) {
 	        console.log('checkForError');
+	        console.log('response in checkForError: ', response);
 	        if (response.status >= 200 && response.status < 300) {
 	            return response;
 	        }
@@ -26810,15 +26776,15 @@ webpackJsonp([1],[
 	    };
 	    ApiService.prototype.get = function (path) {
 	        var _this = this;
-	        // return this.http.get(`${this.api_url}${path}`, { headers: this.headers })
+	        console.log('{ headers: this.headers }: ', { headers: this.headers });
 	        // this is to be updated when our node proxy server is permanently hosted
 	        return this.http.get("" + path, { headers: this.headers })
 	            .map(this.checkForError)
 	            .catch(function (err) { return rxjs_1.Observable.throw(err); })
 	            .map(function (res) {
-	            console.log('ApiService.get res: ', res);
+	            // console.log('ApiService.get res: ', res);
 	            if (res.status >= 200 && res.status < 300) {
-	                console.log('res.status ok: ', res.status);
+	                // console.log('res.status ok: ', res.status);
 	                return res;
 	            }
 	            else {
@@ -26827,7 +26793,8 @@ webpackJsonp([1],[
 	        });
 	    };
 	    ApiService.prototype.post = function (path, body) {
-	        return this.http.post(encodeURI("" + this.api_url + path), body, { headers: this.headers })
+	        console.log('ApiService.post path: ', path, ' body: ', body, ' headers: ', this.headers);
+	        return this.http.post(encodeURI("" + path), body, { headers: this.headers })
 	            .map(this.checkForError)
 	            .catch(function (err) { return rxjs_1.Observable.throw(err); })
 	            .map(this.getJson);
@@ -26846,6 +26813,7 @@ webpackJsonp([1],[
 	    };
 	    ApiService.prototype.setHeaders = function (headers) {
 	        var _this = this;
+	        console.log('setHeaders called headers: ', headers);
 	        Object.keys(headers).forEach(function (header) { return _this.headers.set(header, headers[header]); });
 	    };
 	    return ApiService;
@@ -26859,7 +26827,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 221 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26873,8 +26841,8 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
-	var services_1 = __webpack_require__(15);
-	var store_1 = __webpack_require__(21);
+	var services_1 = __webpack_require__(13);
+	var store_1 = __webpack_require__(16);
 	var platform_browser_1 = __webpack_require__(50);
 	var _ = __webpack_require__(25);
 	var ClientParsePipe = (function () {
@@ -26884,9 +26852,9 @@ webpackJsonp([1],[
 	        this.store = store;
 	    }
 	    ClientParsePipe.prototype.transform = function (html) {
-	        this.client = (this.store.getState()['activeClient']) ? this.store.getState()['activeClient'][0] : swal('No Client!', 'omg', 'error');
-	        console.log('in html parse pipe, client is: ', this.client);
-	        var subItem = _.replace(html, "%%client%%", "" + this.client['properties']['name']['value']);
+	        this.company = (this.store.getState()['activeCompany']) ? this.store.getState()['activeCompany'] : swal('No company!', 'omg', 'error');
+	        console.log('in html parse pipe, company is: ', this.company);
+	        var subItem = _.replace(html, "%%client%%", "" + this.company['properties']['name']['value']);
 	        return this.sanitizer.bypassSecurityTrustHtml(subItem);
 	    };
 	    return ClientParsePipe;
@@ -26900,7 +26868,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 222 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26914,10 +26882,10 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
-	var router_1 = __webpack_require__(19);
-	var auth_service_1 = __webpack_require__(131);
-	var store_1 = __webpack_require__(21);
-	__webpack_require__(58);
+	var router_1 = __webpack_require__(17);
+	var auth_service_1 = __webpack_require__(132);
+	var store_1 = __webpack_require__(16);
+	__webpack_require__(70);
 	var IsSuper = (function () {
 	    function IsSuper(store, router, authService) {
 	        this.store = store;
@@ -26946,7 +26914,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 223 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26978,7 +26946,7 @@ webpackJsonp([1],[
 	
 
 /***/ },
-/* 224 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26992,8 +26960,8 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
-	var clients_service_1 = __webpack_require__(132);
-	var store_1 = __webpack_require__(21);
+	var clients_service_1 = __webpack_require__(133);
+	var store_1 = __webpack_require__(16);
 	var _ = __webpack_require__(25);
 	var MyClients = (function () {
 	    function MyClients(clientsService, store) {
@@ -27025,7 +26993,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 225 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -27061,7 +27029,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 226 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -27076,13 +27044,13 @@ webpackJsonp([1],[
 	};
 	var core_1 = __webpack_require__(4);
 	var http_1 = __webpack_require__(49);
-	var router_1 = __webpack_require__(19);
-	var index_1 = __webpack_require__(15);
-	var rxjs_1 = __webpack_require__(58);
-	var store_1 = __webpack_require__(21);
-	__webpack_require__(58);
+	var router_1 = __webpack_require__(17);
+	var index_1 = __webpack_require__(13);
+	var store_1 = __webpack_require__(16);
+	var ng2_hashids_1 = __webpack_require__(207);
+	__webpack_require__(70);
 	var _ = __webpack_require__(25);
-	_.mixin(__webpack_require__(171));
+	_.mixin(__webpack_require__(172));
 	var ScopeService = (function () {
 	    function ScopeService(router, apiService, storeHelper, store, http) {
 	        this.router = router;
@@ -27096,11 +27064,13 @@ webpackJsonp([1],[
 	        });
 	        this.magAPI_URL = 'https://dev.magne.tc/scope-api/v1/';
 	        this.newGHPagesAPI_URL = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).scopeAPI;
-	        this.testing = 'testing';
+	        // Change to CONFIG
+	        this.hubFormPurgeEndpoint = 'https://b2c78a56.ngrok.io/hubFormsPurge';
+	        this.hubFormUpdateEndpoint = 'https://b2c78a56.ngrok.io/hubFormsUpdate';
 	        this.scope = ({"API_URL":"https://magportal.herokuapp.com","endpoints":{"clientsAPI":"/clients"},"scopeAPI":"https://magn3tic.github.io/Portal-client/scope.json","magneticProxy":"https://express-proxy-togppeylca.now.sh/hubAPI","hubspot":{"APIURL":"https://api.hubapi.com/","APIKEY":"hapikey=cd63a972-83d5-41d1-9476-7a31c2c53d92","endpoints":{"allContacts":"contacts/v1/lists/all/contacts/all/","allDeals":"deals/v1/deal/paged/","getCompany":"/companies/v2/companies/:companyId","getCompanies":"http://dev.magne.tc/api/hubspot/cache/clients.json","companyContacts":"companies/v2/companies/:companyId/contacts"}},"scope":[{"name":"Branding","bundles":[{"name":"Planning & Discovery","description":"Magnetic will perform Primary and gather secondary research in order to familiarize its self with the {{client}}, competitive and consumer landscape. This will play a key role in the discovering the Brand DNA.","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false}],"active":false},{"name":"Brand DNA","description":"Based on our review of initial discovery phase, Magnetic will begin crafting a brand messaging strategy to resonate with our target audience that’s disruptive enough to stand out. Magnetic will detail the brand purpose, promise and values to be used as the foundation for the CannaMart brand. Game-changing brands are not defined by the industry around them; instead they define themselves through their actions and business model. \r\n\r\n\r\nWe will also begin the process of defining the overarching positioning and brand architecture for CannaMart including the brand essence, brand platforms/pillars and brand positioning. This stage will determine the creative direction and overall brand voice for CannaMart and its position within the Software Industry. \r\n\r\n\r\nMagnetic believes that the essence of a brand includes everything that the brand hopes to register with prospects and customers about why it is the preferred choice. Magnetic will work with the CannaMart team to produce brand documentation and define the brand promise to ensure scalability. Key areas of focus within the deck are as follows:","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false}],"active":false},{"name":"Creative Development","description":"","items":[{"name":"Primary Research","disclaimer":"","subitems":[{"name":"","description":"%%client%% will assume to provide whatever base brand information is available, including high level positioning and target audience attributes, initial thoughts on goals, brand voice, personas, etc.","active":false},{"name":"","description":"%%client%% will be able to provide a complete overview of their product(s) including; aspirations and projected market the brand is looking to appeal to.","active":false},{"name":"","description":"Observational Research","active":false},{"name":"","description":"Up to %%quantity%% Stakeholder interviews with Executive Leadership","active":false},{"name":"","description":"Initial kick-off meeting(s) between Magnetic Creative and the {{client}} team as deemed necessary either in person or via WebEx.","active":false},{"name":"","description":"Up to %%quantity%% written Stakeholder Surveys will be distributed and analyzed","active":false},{"name":"","description":"Quantitative Surveys","active":false}],"active":false},{"name":"Secondary Research ","disclaimer":"","subitems":[{"name":"","description":"Industry Audit","active":false},{"name":"","description":"Competitive Audit","active":false},{"name":"","description":"Customer Audit","active":false},{"name":"","description":"Company Audit","active":false},{"name":"","description":"Communication Audit","active":false}],"active":false},{"name":"Brand Pillars","disclaimer":"","subitems":[{"name":"","description":"Core Values","active":false},{"name":"","description":"Vision Statement","active":false},{"name":"","description":"Mission Statement","active":false},{"name":"","description":"Positioning Statement","active":false}],"active":false},{"name":"Brand Identity","disclaimer":"","subitems":[{"name":"","description":"Brand Attributes","active":false},{"name":"","description":"Tone of Voice","active":false},{"name":"","description":"Brand Language","active":false},{"name":"","description":"Brand Persona","active":false}],"active":false},{"name":"Brand Narrative","disclaimer":"","subitems":[{"name":"","description":"Brand Story","active":false},{"name":"","description":"Tagline","active":false}],"active":false},{"name":"Traditional Design","disclaimer":"","subitems":[],"active":false},{"name":"Interactive Design","disclaimer":"","subitems":[],"active":false},{"name":"Photography","disclaimer":"","subitems":[],"active":false},{"name":"Videography","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false},{"name":"Digital","bundles":[{"name":"","description":"","items":null,"active":false}],"active":false},{"name":"Engagement","bundles":[{"name":"Content Creation","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit.  Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false}],"active":false},{"name":"Social Media Management","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.","items":[{"name":"Brand Sizzle Video","disclaimer":"","subitems":[],"active":false},{"name":"Facebook Cover Photo","disclaimer":"","subitems":[],"active":false},{"name":"Twitter Campaign","disclaimer":"","subitems":[],"active":false}],"active":false}],"active":false}]}).scope;
 	    }
 	    ScopeService.prototype.getJson = function (response) {
-	        return response.json();
+	        return decodeURI(response.json());
 	    };
 	    ScopeService.prototype.checkForError = function (response) {
 	        console.log('checkForError');
@@ -27114,24 +27084,98 @@ webpackJsonp([1],[
 	            throw error;
 	        }
 	    };
-	    ScopeService.prototype.createScope = function (path, id, body) {
-	        console.log('body in createScope: ', body);
-	        this.apiService.update(path, id, body)
-	            .subscribe(function (res) { return console.log('server response: ', res); });
+	    ScopeService.prototype.purgeScopes = function () {
+	        var _this = this;
+	        var userEmail = this.store.getState().user['data']['user'];
+	        var body = JSON.stringify({
+	            email: userEmail
+	        });
+	        console.log('sent: ', body, ' to: ', this.hubFormPurgeEndpoint);
+	        return new Promise(function (resolve, reject) {
+	            // Async operation to save scope as property on company. Resolve if successful, Reject if unsuccessful.
+	            _this.apiService.post(_this.hubFormPurgeEndpoint, body)
+	                .subscribe(function (res) {
+	                console.log('res: ', res);
+	            });
+	        });
+	    };
+	    ScopeService.prototype.createScope = function (scope, company) {
+	        console.log('scope in createScope: ', scope);
+	        console.log('company in createScope: ', company);
+	        var userEmail = this.store.getState().user['data']['user'];
+	        var activeCompany = this.store.getState().activeCompany;
+	        var scopeObject = this.store.getState().activeScope;
+	        var scopeDate = new Date().toDateString();
+	        var currentScopesArray = decodeURI(this.store.getState().user['contactInfo']['properties']['scopes']['value']);
+	        var body = JSON.stringify({
+	            email: userEmail,
+	            scopes: this.updateScopesOnContact(JSON.parse(currentScopesArray), {
+	                meta: this.createMetaInfo({ company: activeCompany }),
+	                company: activeCompany,
+	                scope: scopeObject
+	            }),
+	        });
+	        console.log('data sent: ', body);
+	        // Async operation to save scope as property on company. Resolve if successful, Reject if unsuccessful.
+	        return this.apiService.post(this.hubFormUpdateEndpoint, body)
+	            .subscribe(function (res) {
+	            console.log('res: ', decodeURI(res));
+	        });
+	    };
+	    ScopeService.prototype.removeScope = function (hashId) {
+	        var currentScopesArray = JSON.parse(decodeURI(this.store.getState().user['contactInfo']['properties']['scopes']['value']));
+	        console.log('scopeService.removeScope called hashId: ', hashId, ' currentScopesArray: ', currentScopesArray);
+	        var newScopesArray = _.reject(currentScopesArray, function (scopeObj) {
+	            return scopeObj.meta.id === hashId;
+	        });
+	        console.log('before removing selected scope, currentScopesArray: ', currentScopesArray);
+	        console.log('removeScope in scope service called, sending newScopesArray to updateScopesOnContact(newScopesArray): ', newScopesArray);
+	        return this.updateScopesOnContact(newScopesArray);
+	    };
+	    ScopeService.prototype.updateScopesOnContact = function (currentScopesArray, newScopeObject) {
+	        var userEmail = this.store.getState().user['data']['user'];
+	        console.log('currentScopesArray is array?: ', Array.isArray(currentScopesArray));
+	        if (newScopeObject) {
+	            var tempScopesArr = currentScopesArray;
+	            tempScopesArr.push(newScopeObject);
+	            console.log('tempScopesArr: ', tempScopesArr);
+	            console.log('currentScopesArray: ', currentScopesArray);
+	            return tempScopesArr;
+	        }
+	        else if (!newScopeObject) {
+	            console.log('no newScope object passed to updateScopesOnContact currentScopesArray: ', currentScopesArray);
+	            var body = JSON.stringify({
+	                email: userEmail,
+	                scopes: currentScopesArray
+	            });
+	            return this.apiService.post(this.hubFormUpdateEndpoint, body)
+	                .subscribe(function (res) {
+	                console.log('res: ', decodeURI(res));
+	            });
+	        }
 	    };
 	    ScopeService.prototype.getScope = function () {
-	        console.log('in get scope api being used is: ', this.newGHPagesAPI_URL);
-	        // changed for https requirement of gh-pages... our api is http.
-	        return this.http.get(this.newGHPagesAPI_URL + '?o', { headers: this.headers })
-	            .map(this.checkForError)
-	            .catch(function (err) { return rxjs_1.Observable.throw(err); })
-	            .map(this.getJson);
+	        console.log('in getscope this.scope: ', this.scope);
+	        this.storeHelper.update('activeScope', this.scope);
+	        return Promise.resolve(this.store.getState().activeScope);
 	    };
-	    ScopeService.prototype.cleanScope = function (rawScope, next) {
-	        console.log('in cleanScope rawScope is: ', rawScope);
-	        var result;
-	        result = _.omit(rawScope, ['_type']);
-	        return next(rawScope);
+	    ScopeService.prototype.createMetaInfo = function (company) {
+	        var companyId = company.company.companyId;
+	        var companyName = company.company.properties.name.value;
+	        var hashids = new ng2_hashids_1.Hashids('', 15);
+	        var humanTimeStamp = new Date().toDateString();
+	        var rawTimeStamp = Date.now();
+	        var newId = hashids.encode(companyId, rawTimeStamp);
+	        return {
+	            id: newId,
+	            companyName: companyName,
+	            humanTimeStamp: humanTimeStamp,
+	            rawTimeStamp: rawTimeStamp
+	        };
+	    };
+	    ScopeService.prototype.decodeMetaInfo = function (hashId) {
+	        var hashids = new ng2_hashids_1.Hashids('', 15);
+	        return hashids.decode(hashId);
 	    };
 	    return ScopeService;
 	}());
@@ -27144,7 +27188,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 227 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -27164,7 +27208,7 @@ webpackJsonp([1],[
 	    }
 	    SearchFilterPipe.prototype.transform = function (items, args) {
 	        // console.log('SearchFilterPipe items: ', items, ' args: ', args);      
-	        return _.filter(items, function (client) { return client.properties.name.value.toLowerCase().indexOf(args) ? false : client.properties.name.value; });
+	        return _.filter(items, function (company) { return company.properties.name.value.toLowerCase().indexOf(args) ? false : company.properties.name.value; });
 	    };
 	    return SearchFilterPipe;
 	}());
@@ -27176,7 +27220,7 @@ webpackJsonp([1],[
 	
 
 /***/ },
-/* 228 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -27190,7 +27234,7 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
-	var store_1 = __webpack_require__(21);
+	var store_1 = __webpack_require__(16);
 	var StoreHelper = (function () {
 	    function StoreHelper(store) {
 	        this.store = store;
@@ -27234,7 +27278,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 229 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -27266,182 +27310,6 @@ webpackJsonp([1],[
 	
 
 /***/ },
-/* 230 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(4);
-	var router_1 = __webpack_require__(19);
-	var router_2 = __webpack_require__(19);
-	var common_1 = __webpack_require__(62);
-	var services_1 = __webpack_require__(15);
-	var store_1 = __webpack_require__(21);
-	var _ = __webpack_require__(25);
-	var ClientDetails = (function () {
-	    function ClientDetails(location, router, route, apiService, storeHelper, authService, store) {
-	        this.location = location;
-	        this.router = router;
-	        this.route = route;
-	        this.apiService = apiService;
-	        this.storeHelper = storeHelper;
-	        this.authService = authService;
-	        this.store = store;
-	    }
-	    ClientDetails.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this.clients = this.store.getState()['clients'];
-	        this.sub = this.route.params.subscribe(function (params) {
-	            _this.id = params['companyId']; // (+) converts string 'id' to a number
-	            _this.findClient(_this.id);
-	        });
-	    };
-	    ClientDetails.prototype.findClient = function (companyID) {
-	        var self = this;
-	        //get client through route params
-	        this.client = (companyID) ? _.find(this.clients[0], { companyId: parseInt(companyID) }) : self.router.navigate(['clients']);
-	        console.log('this.client: ', this.client);
-	    };
-	    ClientDetails.prototype.goBack = function () {
-	        this.location.back();
-	    };
-	    return ClientDetails;
-	}());
-	ClientDetails = __decorate([
-	    core_1.Component({
-	        selector: 'client-details',
-	        styles: [__webpack_require__(695)],
-	        template: __webpack_require__(415)
-	    }),
-	    __metadata("design:paramtypes", [typeof (_a = typeof common_1.Location !== "undefined" && common_1.Location) === "function" && _a || Object, typeof (_b = typeof router_2.Router !== "undefined" && router_2.Router) === "function" && _b || Object, typeof (_c = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _c || Object, typeof (_d = typeof services_1.ApiService !== "undefined" && services_1.ApiService) === "function" && _d || Object, typeof (_e = typeof services_1.StoreHelper !== "undefined" && services_1.StoreHelper) === "function" && _e || Object, typeof (_f = typeof services_1.AuthService !== "undefined" && services_1.AuthService) === "function" && _f || Object, typeof (_g = typeof store_1.Store !== "undefined" && store_1.Store) === "function" && _g || Object])
-	], ClientDetails);
-	exports.ClientDetails = ClientDetails;
-	var _a, _b, _c, _d, _e, _f, _g;
-
-
-/***/ },
-/* 231 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var client_details_component_1 = __webpack_require__(230);
-	exports.ClientDetails = client_details_component_1.ClientDetails;
-	
-
-/***/ },
-/* 232 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(4);
-	var router_1 = __webpack_require__(19);
-	var Home = (function () {
-	    function Home(activatedRoute) {
-	        this.activatedRoute = activatedRoute;
-	        this.route = 'none yet';
-	    }
-	    Home.prototype.ngOnInit = function () {
-	        this.route = window.location;
-	    };
-	    return Home;
-	}());
-	Home = __decorate([
-	    core_1.Component({
-	        selector: 'home',
-	        styles: [__webpack_require__(696)],
-	        template: __webpack_require__(416)
-	    }),
-	    __metadata("design:paramtypes", [typeof (_a = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _a || Object])
-	], Home);
-	exports.Home = Home;
-	;
-	var _a;
-
-
-/***/ },
-/* 233 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var home_component_1 = __webpack_require__(232);
-	exports.Home = home_component_1.Home;
-	
-
-/***/ },
-/* 234 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var pageNotFound_component_1 = __webpack_require__(235);
-	exports.PageNotFound = pageNotFound_component_1.PageNotFound;
-	
-
-/***/ },
-/* 235 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(4);
-	var router_1 = __webpack_require__(19);
-	var PageNotFound = (function () {
-	    function PageNotFound(activatedRoute) {
-	        this.activatedRoute = activatedRoute;
-	        this.route = 'none';
-	    }
-	    PageNotFound.prototype.ngOnInit = function () {
-	        this.route = window.location;
-	    };
-	    return PageNotFound;
-	}());
-	PageNotFound = __decorate([
-	    core_1.Component({
-	        selector: 'pageNotFound',
-	        styles: [__webpack_require__(697)],
-	        template: __webpack_require__(417)
-	    }),
-	    __metadata("design:paramtypes", [typeof (_a = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _a || Object])
-	], PageNotFound);
-	exports.PageNotFound = PageNotFound;
-	;
-	var _a;
-
-
-/***/ },
-/* 236 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var test_component_1 = __webpack_require__(237);
-	exports.Test = test_component_1.Test;
-	
-
-/***/ },
 /* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -27456,28 +27324,66 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
-	var router_1 = __webpack_require__(19);
-	var Test = (function () {
-	    function Test(activatedRoute) {
-	        this.activatedRoute = activatedRoute;
-	        this.route = 'none yet';
+	var router_1 = __webpack_require__(17);
+	var router_2 = __webpack_require__(17);
+	var common_1 = __webpack_require__(61);
+	var services_1 = __webpack_require__(13);
+	var store_1 = __webpack_require__(16);
+	var _ = __webpack_require__(25);
+	var CompanyDetails = (function () {
+	    function CompanyDetails(location, router, route, apiService, storeHelper, authService, store, scopeService) {
+	        this.location = location;
+	        this.router = router;
+	        this.route = route;
+	        this.apiService = apiService;
+	        this.storeHelper = storeHelper;
+	        this.authService = authService;
+	        this.store = store;
+	        this.scopeService = scopeService;
 	    }
-	    Test.prototype.ngOnInit = function () {
-	        this.route = window.location;
+	    CompanyDetails.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.company = this.store.getState()['activeCompany'];
+	        this.scopes = _.filter(this.store.getState().scopes, function (company) {
+	            return company['company']['companyId'] === _this.company['companyId'];
+	        });
+	        if (this.scopes.length) {
+	            this.isScopes = true;
+	        }
+	        else {
+	            this.isScopes = false;
+	        }
+	        console.log('this.company: ', this.company);
+	        console.log('this.scopes: ', this.scopes);
 	    };
-	    return Test;
+	    CompanyDetails.prototype.goBack = function () {
+	        this.location.back();
+	    };
+	    CompanyDetails.prototype.newScope = function () {
+	        var _this = this;
+	        this.scopeService.getScope()
+	            .then(function (scope) {
+	            console.log('getScope resolved: ', scope);
+	            _this.router.navigate(['/scope']);
+	        })
+	            .catch(function (err) { return console.log('err in this.scopeService.getScope(): ', err); });
+	    };
+	    CompanyDetails.prototype.removeScope = function (companyHash) {
+	        console.log('removeScope called hash: ', companyHash);
+	        return this.scopeService.removeScope(companyHash);
+	    };
+	    return CompanyDetails;
 	}());
-	Test = __decorate([
+	CompanyDetails = __decorate([
 	    core_1.Component({
-	        selector: 'test',
-	        styles: [__webpack_require__(698)],
-	        template: __webpack_require__(418)
+	        selector: 'company-details',
+	        styles: [__webpack_require__(704)],
+	        template: __webpack_require__(423)
 	    }),
-	    __metadata("design:paramtypes", [typeof (_a = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _a || Object])
-	], Test);
-	exports.Test = Test;
-	;
-	var _a;
+	    __metadata("design:paramtypes", [typeof (_a = typeof common_1.Location !== "undefined" && common_1.Location) === "function" && _a || Object, typeof (_b = typeof router_2.Router !== "undefined" && router_2.Router) === "function" && _b || Object, typeof (_c = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _c || Object, typeof (_d = typeof services_1.ApiService !== "undefined" && services_1.ApiService) === "function" && _d || Object, typeof (_e = typeof services_1.StoreHelper !== "undefined" && services_1.StoreHelper) === "function" && _e || Object, typeof (_f = typeof services_1.AuthService !== "undefined" && services_1.AuthService) === "function" && _f || Object, typeof (_g = typeof store_1.Store !== "undefined" && store_1.Store) === "function" && _g || Object, typeof (_h = typeof services_1.ScopeService !== "undefined" && services_1.ScopeService) === "function" && _h || Object])
+	], CompanyDetails);
+	exports.CompanyDetails = CompanyDetails;
+	var _a, _b, _c, _d, _e, _f, _g, _h;
 
 
 /***/ },
@@ -27485,8 +27391,8 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var token_display_component_1 = __webpack_require__(239);
-	exports.TokenDisplay = token_display_component_1.TokenDisplay;
+	var company_details_component_1 = __webpack_require__(237);
+	exports.CompanyDetails = company_details_component_1.CompanyDetails;
 	
 
 /***/ },
@@ -27504,29 +27410,189 @@ webpackJsonp([1],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(4);
+	var router_1 = __webpack_require__(17);
+	var Home = (function () {
+	    function Home(activatedRoute) {
+	        this.activatedRoute = activatedRoute;
+	        this.route = 'none yet';
+	    }
+	    Home.prototype.ngOnInit = function () {
+	        this.route = window.location;
+	    };
+	    return Home;
+	}());
+	Home = __decorate([
+	    core_1.Component({
+	        selector: 'home',
+	        styles: [__webpack_require__(705)],
+	        template: __webpack_require__(424)
+	    }),
+	    __metadata("design:paramtypes", [typeof (_a = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _a || Object])
+	], Home);
+	exports.Home = Home;
+	;
+	var _a;
+
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var home_component_1 = __webpack_require__(239);
+	exports.Home = home_component_1.Home;
+	
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var pageNotFound_component_1 = __webpack_require__(242);
+	exports.PageNotFound = pageNotFound_component_1.PageNotFound;
+	
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(4);
+	var router_1 = __webpack_require__(17);
+	var PageNotFound = (function () {
+	    function PageNotFound(activatedRoute) {
+	        this.activatedRoute = activatedRoute;
+	        this.route = 'none';
+	    }
+	    PageNotFound.prototype.ngOnInit = function () {
+	        this.route = window.location;
+	    };
+	    return PageNotFound;
+	}());
+	PageNotFound = __decorate([
+	    core_1.Component({
+	        selector: 'pageNotFound',
+	        styles: [__webpack_require__(706)],
+	        template: __webpack_require__(425)
+	    }),
+	    __metadata("design:paramtypes", [typeof (_a = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _a || Object])
+	], PageNotFound);
+	exports.PageNotFound = PageNotFound;
+	;
+	var _a;
+
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var test_component_1 = __webpack_require__(244);
+	exports.Test = test_component_1.Test;
+	
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(4);
+	var router_1 = __webpack_require__(17);
+	var Test = (function () {
+	    function Test(activatedRoute) {
+	        this.activatedRoute = activatedRoute;
+	        this.route = 'none yet';
+	    }
+	    Test.prototype.ngOnInit = function () {
+	        this.route = window.location;
+	    };
+	    return Test;
+	}());
+	Test = __decorate([
+	    core_1.Component({
+	        selector: 'test',
+	        styles: [__webpack_require__(707)],
+	        template: __webpack_require__(426)
+	    }),
+	    __metadata("design:paramtypes", [typeof (_a = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _a || Object])
+	], Test);
+	exports.Test = Test;
+	;
+	var _a;
+
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var token_display_component_1 = __webpack_require__(246);
+	exports.TokenDisplay = token_display_component_1.TokenDisplay;
+	
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(4);
 	var http_1 = __webpack_require__(49);
-	var router_1 = __webpack_require__(19);
-	var services_1 = __webpack_require__(15);
-	var services_2 = __webpack_require__(15);
-	var services_3 = __webpack_require__(15);
+	var router_1 = __webpack_require__(17);
+	var services_1 = __webpack_require__(13);
+	var services_2 = __webpack_require__(13);
+	var services_3 = __webpack_require__(13);
+	var store_1 = __webpack_require__(16);
 	var TokenDisplay = (function () {
-	    function TokenDisplay(activatedRoute, router, apiService, authService, http, storeHelper) {
+	    function TokenDisplay(activatedRoute, router, apiService, authService, http, storeHelper, store) {
 	        this.activatedRoute = activatedRoute;
 	        this.router = router;
 	        this.apiService = apiService;
 	        this.authService = authService;
 	        this.http = http;
 	        this.storeHelper = storeHelper;
+	        this.store = store;
 	        // JWTKEY: string = CONFIG.hubspot.JWTKEY;
 	        this.JWTKEY = 'hubspot_token';
 	        this.JWTREFRESH = 'refresh_token';
+	        this.EXPRESSPROXYCONTACT = 'https://b2c78a56.ngrok.io/contact';
 	        // HUBTOKENURL: string = CONFIG.hubspot.HUBTOKENURL;
 	        this.HUBTOKENURL = 'https://b2c78a56.ngrok.io/hubToken';
+	        this.userEmail = '';
+	        this.headers = new http_1.Headers({
+	            'Content-Type': 'application/json',
+	            Accept: 'application/json',
+	            Authorization: 'Bearer ' + window.localStorage.getItem(this.JWTKEY)
+	        });
+	        this.getToken();
 	    }
 	    TokenDisplay.prototype.ngOnInit = function () {
-	        // Get and set JWT on init
-	        console.log('ngOnInit running JWTKEY: ', this.JWTKEY, ' HUBTOKENURL: ', this.HUBTOKENURL);
-	        this.getToken();
 	    };
 	    TokenDisplay.prototype.getToken = function () {
 	        var _this = this;
@@ -27534,118 +27600,44 @@ webpackJsonp([1],[
 	            .subscribe(function (res) {
 	            var resBody = JSON.parse(res._body);
 	            console.log('get token res: ', resBody);
-	            // console.log('res tokens: ', JSON.parse(res._body));
-	            _this.storeHelper.update('user', { tokens: resBody });
-	            _this.authService.setJwt(resBody.accessToken, _this.JWTKEY)
-	                .then(function (localTokens) {
-	                _this.authService.setJwt(resBody.refreshToken, _this.JWTREFRESH).then(function () {
-	                    _this.router.navigate(['/home']);
-	                })
-	                    .catch(function (err) { return console.log(err); });
-	            })
-	                .catch(function (err) { return console.log(err); });
+	            _this.authService.setJwt(resBody.accessToken);
+	            _this.setUser(resBody.accessToken);
 	        });
-	        // .map(token => this.storeHelper.add('user-acccess-jwt', token['accessToken']))
-	        // .do(token => this.storeHelper.add('user-refresh-jwt', token['refreshToken']));
-	        // .map(token => this.storeHelper.update('user-refresh-jwt', token.refreshToken));
+	    };
+	    TokenDisplay.prototype.setUser = function (token) {
+	        var _this = this;
+	        this.authService.getUser(token)
+	            .subscribe(function (user) {
+	            var hubspotUserObject = JSON.parse(user);
+	            _this.getUserHubspotContact(hubspotUserObject);
+	        });
+	    };
+	    TokenDisplay.prototype.getUserHubspotContact = function (hubspotUserObject) {
+	        var _this = this;
+	        console.log('hubspotUserObject: ', hubspotUserObject);
+	        this.apiService.post(this.EXPRESSPROXYCONTACT, { email: hubspotUserObject['user'], authorization: 'Bearer ' + window.localStorage.getItem(this.JWTKEY) })
+	            .subscribe(function (hubspotUserContactInfo) {
+	            console.log('apiService hubspotUserContactInfo: ', hubspotUserContactInfo);
+	            _this.storeHelper.update('user', { data: hubspotUserObject, contactInfo: hubspotUserContactInfo, loggedIn: true });
+	            _this.router.navigate(['profile']);
+	        });
 	    };
 	    return TokenDisplay;
 	}());
 	TokenDisplay = __decorate([
 	    core_1.Component({
 	        selector: 'token-display',
-	        styles: [__webpack_require__(699)],
-	        template: __webpack_require__(419)
+	        styles: [__webpack_require__(708)],
+	        template: __webpack_require__(427)
 	    }),
-	    __metadata("design:paramtypes", [typeof (_a = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object, typeof (_c = typeof services_1.ApiService !== "undefined" && services_1.ApiService) === "function" && _c || Object, typeof (_d = typeof services_2.AuthService !== "undefined" && services_2.AuthService) === "function" && _d || Object, typeof (_e = typeof http_1.Http !== "undefined" && http_1.Http) === "function" && _e || Object, typeof (_f = typeof services_3.StoreHelper !== "undefined" && services_3.StoreHelper) === "function" && _f || Object])
+	    __metadata("design:paramtypes", [typeof (_a = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object, typeof (_c = typeof services_1.ApiService !== "undefined" && services_1.ApiService) === "function" && _c || Object, typeof (_d = typeof services_2.AuthService !== "undefined" && services_2.AuthService) === "function" && _d || Object, typeof (_e = typeof http_1.Http !== "undefined" && http_1.Http) === "function" && _e || Object, typeof (_f = typeof services_3.StoreHelper !== "undefined" && services_3.StoreHelper) === "function" && _f || Object, typeof (_g = typeof store_1.Store !== "undefined" && store_1.Store) === "function" && _g || Object])
 	], TokenDisplay);
 	exports.TokenDisplay = TokenDisplay;
 	;
-	var _a, _b, _c, _d, _e, _f;
+	var _a, _b, _c, _d, _e, _f, _g;
 
 
 /***/ },
-/* 240 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var ticky = __webpack_require__(690);
-
-	module.exports = function debounce (fn, args, ctx) {
-	  if (!fn) { return; }
-	  ticky(function run () {
-	    fn.apply(ctx || null, args || []);
-	  });
-	};
-
-
-/***/ },
-/* 241 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var atoa = __webpack_require__(206);
-	var debounce = __webpack_require__(240);
-
-	module.exports = function emitter (thing, options) {
-	  var opts = options || {};
-	  var evt = {};
-	  if (thing === undefined) { thing = {}; }
-	  thing.on = function (type, fn) {
-	    if (!evt[type]) {
-	      evt[type] = [fn];
-	    } else {
-	      evt[type].push(fn);
-	    }
-	    return thing;
-	  };
-	  thing.once = function (type, fn) {
-	    fn._once = true; // thing.off(fn) still works!
-	    thing.on(type, fn);
-	    return thing;
-	  };
-	  thing.off = function (type, fn) {
-	    var c = arguments.length;
-	    if (c === 1) {
-	      delete evt[type];
-	    } else if (c === 0) {
-	      evt = {};
-	    } else {
-	      var et = evt[type];
-	      if (!et) { return thing; }
-	      et.splice(et.indexOf(fn), 1);
-	    }
-	    return thing;
-	  };
-	  thing.emit = function () {
-	    var args = atoa(arguments);
-	    return thing.emitterSnapshot(args.shift()).apply(this, args);
-	  };
-	  thing.emitterSnapshot = function (type) {
-	    var et = (evt[type] || []).slice(0);
-	    return function () {
-	      var args = atoa(arguments);
-	      var ctx = this || thing;
-	      if (type === 'error' && opts.throws !== false && !et.length) { throw args.length === 1 ? args[0] : args; }
-	      et.forEach(function emitter (listen) {
-	        if (opts.async) { debounce(listen, args, ctx); } else { listen.apply(ctx, args); }
-	        if (listen._once) { thing.off(type, listen); }
-	      });
-	      return thing;
-	    };
-	  };
-	  return thing;
-	};
-
-
-/***/ },
-/* 242 */,
-/* 243 */,
-/* 244 */,
-/* 245 */,
-/* 246 */,
 /* 247 */,
 /* 248 */,
 /* 249 */,
@@ -27801,230 +27793,349 @@ webpackJsonp([1],[
 /* 399 */,
 /* 400 */,
 /* 401 */,
-/* 402 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
-
-	var customEvent = __webpack_require__(404);
-	var eventmap = __webpack_require__(403);
-	var doc = global.document;
-	var addEvent = addEventEasy;
-	var removeEvent = removeEventEasy;
-	var hardCache = [];
-
-	if (!global.addEventListener) {
-	  addEvent = addEventHard;
-	  removeEvent = removeEventHard;
-	}
-
-	module.exports = {
-	  add: addEvent,
-	  remove: removeEvent,
-	  fabricate: fabricateEvent
-	};
-
-	function addEventEasy (el, type, fn, capturing) {
-	  return el.addEventListener(type, fn, capturing);
-	}
-
-	function addEventHard (el, type, fn) {
-	  return el.attachEvent('on' + type, wrap(el, type, fn));
-	}
-
-	function removeEventEasy (el, type, fn, capturing) {
-	  return el.removeEventListener(type, fn, capturing);
-	}
-
-	function removeEventHard (el, type, fn) {
-	  var listener = unwrap(el, type, fn);
-	  if (listener) {
-	    return el.detachEvent('on' + type, listener);
-	  }
-	}
-
-	function fabricateEvent (el, type, model) {
-	  var e = eventmap.indexOf(type) === -1 ? makeCustomEvent() : makeClassicEvent();
-	  if (el.dispatchEvent) {
-	    el.dispatchEvent(e);
-	  } else {
-	    el.fireEvent('on' + type, e);
-	  }
-	  function makeClassicEvent () {
-	    var e;
-	    if (doc.createEvent) {
-	      e = doc.createEvent('Event');
-	      e.initEvent(type, true, true);
-	    } else if (doc.createEventObject) {
-	      e = doc.createEventObject();
-	    }
-	    return e;
-	  }
-	  function makeCustomEvent () {
-	    return new customEvent(type, { detail: model });
-	  }
-	}
-
-	function wrapperFactory (el, type, fn) {
-	  return function wrapper (originalEvent) {
-	    var e = originalEvent || global.event;
-	    e.target = e.target || e.srcElement;
-	    e.preventDefault = e.preventDefault || function preventDefault () { e.returnValue = false; };
-	    e.stopPropagation = e.stopPropagation || function stopPropagation () { e.cancelBubble = true; };
-	    e.which = e.which || e.keyCode;
-	    fn.call(el, e);
-	  };
-	}
-
-	function wrap (el, type, fn) {
-	  var wrapper = unwrap(el, type, fn) || wrapperFactory(el, type, fn);
-	  hardCache.push({
-	    wrapper: wrapper,
-	    element: el,
-	    type: type,
-	    fn: fn
-	  });
-	  return wrapper;
-	}
-
-	function unwrap (el, type, fn) {
-	  var i = find(el, type, fn);
-	  if (i) {
-	    var wrapper = hardCache[i].wrapper;
-	    hardCache.splice(i, 1); // free up a tad of memory
-	    return wrapper;
-	  }
-	}
-
-	function find (el, type, fn) {
-	  var i, item;
-	  for (i = 0; i < hardCache.length; i++) {
-	    item = hardCache[i];
-	    if (item.element === el && item.type === type && item.fn === fn) {
-	      return i;
-	    }
-	  }
-	}
-
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 403 */
-/***/ function(module, exports) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
-
-	var eventmap = [];
-	var eventname = '';
-	var ron = /^on/;
-
-	for (eventname in global) {
-	  if (ron.test(eventname)) {
-	    eventmap.push(eventname.slice(2));
-	  }
-	}
-
-	module.exports = eventmap;
-
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 404 */
-/***/ function(module, exports) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {
-	var NativeCustomEvent = global.CustomEvent;
-
-	function useNative () {
-	  try {
-	    var p = new NativeCustomEvent('cat', { detail: { foo: 'bar' } });
-	    return  'cat' === p.type && 'bar' === p.detail.foo;
-	  } catch (e) {
-	  }
-	  return false;
-	}
-
-	/**
-	 * Cross-browser `CustomEvent` constructor.
-	 *
-	 * https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent.CustomEvent
-	 *
-	 * @public
-	 */
-
-	module.exports = useNative() ? NativeCustomEvent :
-
-	// IE >= 9
-	'function' === typeof document.createEvent ? function CustomEvent (type, params) {
-	  var e = document.createEvent('CustomEvent');
-	  if (params) {
-	    e.initCustomEvent(type, params.bubbles, params.cancelable, params.detail);
-	  } else {
-	    e.initCustomEvent(type, false, false, void 0);
-	  }
-	  return e;
-	} :
-
-	// IE <= 8
-	function CustomEvent (type, params) {
-	  var e = document.createEventObject();
-	  e.type = type;
-	  if (params) {
-	    e.bubbles = Boolean(params.bubbles);
-	    e.cancelable = Boolean(params.cancelable);
-	    e.detail = params.detail;
-	  } else {
-	    e.bubbles = false;
-	    e.cancelable = false;
-	    e.detail = void 0;
-	  }
-	  return e;
-	}
-
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 405 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var cache = {};
-	var start = '(?:^|\\s)';
-	var end = '(?:\\s|$)';
-
-	function lookupClass (className) {
-	  var cached = cache[className];
-	  if (cached) {
-	    cached.lastIndex = 0;
-	  } else {
-	    cache[className] = cached = new RegExp(start + className + end, 'g');
-	  }
-	  return cached;
-	}
-
-	function addClass (el, className) {
-	  var current = el.className;
-	  if (!current.length) {
-	    el.className = className;
-	  } else if (!lookupClass(className).test(current)) {
-	    el.className += ' ' + className;
-	  }
-	}
-
-	function rmClass (el, className) {
-	  el.className = el.className.replace(lookupClass(className), ' ').trim();
-	}
-
-	module.exports = {
-	  add: addClass,
-	  rm: rmClass
-	};
-
-
-/***/ },
+/* 402 */,
+/* 403 */,
+/* 404 */,
+/* 405 */,
 /* 406 */,
 /* 407 */
+/***/ function(module, exports) {
+
+	(function() {
+	  var base64map
+	      = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
+
+	  crypt = {
+	    // Bit-wise rotation left
+	    rotl: function(n, b) {
+	      return (n << b) | (n >>> (32 - b));
+	    },
+
+	    // Bit-wise rotation right
+	    rotr: function(n, b) {
+	      return (n << (32 - b)) | (n >>> b);
+	    },
+
+	    // Swap big-endian to little-endian and vice versa
+	    endian: function(n) {
+	      // If number given, swap endian
+	      if (n.constructor == Number) {
+	        return crypt.rotl(n, 8) & 0x00FF00FF | crypt.rotl(n, 24) & 0xFF00FF00;
+	      }
+
+	      // Else, assume array and swap all items
+	      for (var i = 0; i < n.length; i++)
+	        n[i] = crypt.endian(n[i]);
+	      return n;
+	    },
+
+	    // Generate an array of any length of random bytes
+	    randomBytes: function(n) {
+	      for (var bytes = []; n > 0; n--)
+	        bytes.push(Math.floor(Math.random() * 256));
+	      return bytes;
+	    },
+
+	    // Convert a byte array to big-endian 32-bit words
+	    bytesToWords: function(bytes) {
+	      for (var words = [], i = 0, b = 0; i < bytes.length; i++, b += 8)
+	        words[b >>> 5] |= bytes[i] << (24 - b % 32);
+	      return words;
+	    },
+
+	    // Convert big-endian 32-bit words to a byte array
+	    wordsToBytes: function(words) {
+	      for (var bytes = [], b = 0; b < words.length * 32; b += 8)
+	        bytes.push((words[b >>> 5] >>> (24 - b % 32)) & 0xFF);
+	      return bytes;
+	    },
+
+	    // Convert a byte array to a hex string
+	    bytesToHex: function(bytes) {
+	      for (var hex = [], i = 0; i < bytes.length; i++) {
+	        hex.push((bytes[i] >>> 4).toString(16));
+	        hex.push((bytes[i] & 0xF).toString(16));
+	      }
+	      return hex.join('');
+	    },
+
+	    // Convert a hex string to a byte array
+	    hexToBytes: function(hex) {
+	      for (var bytes = [], c = 0; c < hex.length; c += 2)
+	        bytes.push(parseInt(hex.substr(c, 2), 16));
+	      return bytes;
+	    },
+
+	    // Convert a byte array to a base-64 string
+	    bytesToBase64: function(bytes) {
+	      for (var base64 = [], i = 0; i < bytes.length; i += 3) {
+	        var triplet = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2];
+	        for (var j = 0; j < 4; j++)
+	          if (i * 8 + j * 6 <= bytes.length * 8)
+	            base64.push(base64map.charAt((triplet >>> 6 * (3 - j)) & 0x3F));
+	          else
+	            base64.push('=');
+	      }
+	      return base64.join('');
+	    },
+
+	    // Convert a base-64 string to a byte array
+	    base64ToBytes: function(base64) {
+	      // Remove non-base-64 characters
+	      base64 = base64.replace(/[^A-Z0-9+\/]/ig, '');
+
+	      for (var bytes = [], i = 0, imod4 = 0; i < base64.length;
+	          imod4 = ++i % 4) {
+	        if (imod4 == 0) continue;
+	        bytes.push(((base64map.indexOf(base64.charAt(i - 1))
+	            & (Math.pow(2, -2 * imod4 + 8) - 1)) << (imod4 * 2))
+	            | (base64map.indexOf(base64.charAt(i)) >>> (6 - imod4 * 2)));
+	      }
+	      return bytes;
+	    }
+	  };
+
+	  module.exports = crypt;
+	})();
+
+
+/***/ },
+/* 408 */,
+/* 409 */
+/***/ function(module, exports) {
+
+	/*!
+	 * Determine if an object is a Buffer
+	 *
+	 * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+	 * @license  MIT
+	 */
+
+	// The _isBuffer check is for Safari 5-7 support, because it's missing
+	// Object.prototype.constructor. Remove this eventually
+	module.exports = function (obj) {
+	  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
+	}
+
+	function isBuffer (obj) {
+	  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+	}
+
+	// For Node v0.10 support. Remove this eventually.
+	function isSlowBuffer (obj) {
+	  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
+	}
+
+
+/***/ },
+/* 410 */
+/***/ function(module, exports, __webpack_require__) {
+
+	(function(){
+	  var crypt = __webpack_require__(407),
+	      utf8 = __webpack_require__(136).utf8,
+	      isBuffer = __webpack_require__(409),
+	      bin = __webpack_require__(136).bin,
+
+	  // The core
+	  md5 = function (message, options) {
+	    // Convert to byte array
+	    if (message.constructor == String)
+	      if (options && options.encoding === 'binary')
+	        message = bin.stringToBytes(message);
+	      else
+	        message = utf8.stringToBytes(message);
+	    else if (isBuffer(message))
+	      message = Array.prototype.slice.call(message, 0);
+	    else if (!Array.isArray(message))
+	      message = message.toString();
+	    // else, assume byte array already
+
+	    var m = crypt.bytesToWords(message),
+	        l = message.length * 8,
+	        a =  1732584193,
+	        b = -271733879,
+	        c = -1732584194,
+	        d =  271733878;
+
+	    // Swap endian
+	    for (var i = 0; i < m.length; i++) {
+	      m[i] = ((m[i] <<  8) | (m[i] >>> 24)) & 0x00FF00FF |
+	             ((m[i] << 24) | (m[i] >>>  8)) & 0xFF00FF00;
+	    }
+
+	    // Padding
+	    m[l >>> 5] |= 0x80 << (l % 32);
+	    m[(((l + 64) >>> 9) << 4) + 14] = l;
+
+	    // Method shortcuts
+	    var FF = md5._ff,
+	        GG = md5._gg,
+	        HH = md5._hh,
+	        II = md5._ii;
+
+	    for (var i = 0; i < m.length; i += 16) {
+
+	      var aa = a,
+	          bb = b,
+	          cc = c,
+	          dd = d;
+
+	      a = FF(a, b, c, d, m[i+ 0],  7, -680876936);
+	      d = FF(d, a, b, c, m[i+ 1], 12, -389564586);
+	      c = FF(c, d, a, b, m[i+ 2], 17,  606105819);
+	      b = FF(b, c, d, a, m[i+ 3], 22, -1044525330);
+	      a = FF(a, b, c, d, m[i+ 4],  7, -176418897);
+	      d = FF(d, a, b, c, m[i+ 5], 12,  1200080426);
+	      c = FF(c, d, a, b, m[i+ 6], 17, -1473231341);
+	      b = FF(b, c, d, a, m[i+ 7], 22, -45705983);
+	      a = FF(a, b, c, d, m[i+ 8],  7,  1770035416);
+	      d = FF(d, a, b, c, m[i+ 9], 12, -1958414417);
+	      c = FF(c, d, a, b, m[i+10], 17, -42063);
+	      b = FF(b, c, d, a, m[i+11], 22, -1990404162);
+	      a = FF(a, b, c, d, m[i+12],  7,  1804603682);
+	      d = FF(d, a, b, c, m[i+13], 12, -40341101);
+	      c = FF(c, d, a, b, m[i+14], 17, -1502002290);
+	      b = FF(b, c, d, a, m[i+15], 22,  1236535329);
+
+	      a = GG(a, b, c, d, m[i+ 1],  5, -165796510);
+	      d = GG(d, a, b, c, m[i+ 6],  9, -1069501632);
+	      c = GG(c, d, a, b, m[i+11], 14,  643717713);
+	      b = GG(b, c, d, a, m[i+ 0], 20, -373897302);
+	      a = GG(a, b, c, d, m[i+ 5],  5, -701558691);
+	      d = GG(d, a, b, c, m[i+10],  9,  38016083);
+	      c = GG(c, d, a, b, m[i+15], 14, -660478335);
+	      b = GG(b, c, d, a, m[i+ 4], 20, -405537848);
+	      a = GG(a, b, c, d, m[i+ 9],  5,  568446438);
+	      d = GG(d, a, b, c, m[i+14],  9, -1019803690);
+	      c = GG(c, d, a, b, m[i+ 3], 14, -187363961);
+	      b = GG(b, c, d, a, m[i+ 8], 20,  1163531501);
+	      a = GG(a, b, c, d, m[i+13],  5, -1444681467);
+	      d = GG(d, a, b, c, m[i+ 2],  9, -51403784);
+	      c = GG(c, d, a, b, m[i+ 7], 14,  1735328473);
+	      b = GG(b, c, d, a, m[i+12], 20, -1926607734);
+
+	      a = HH(a, b, c, d, m[i+ 5],  4, -378558);
+	      d = HH(d, a, b, c, m[i+ 8], 11, -2022574463);
+	      c = HH(c, d, a, b, m[i+11], 16,  1839030562);
+	      b = HH(b, c, d, a, m[i+14], 23, -35309556);
+	      a = HH(a, b, c, d, m[i+ 1],  4, -1530992060);
+	      d = HH(d, a, b, c, m[i+ 4], 11,  1272893353);
+	      c = HH(c, d, a, b, m[i+ 7], 16, -155497632);
+	      b = HH(b, c, d, a, m[i+10], 23, -1094730640);
+	      a = HH(a, b, c, d, m[i+13],  4,  681279174);
+	      d = HH(d, a, b, c, m[i+ 0], 11, -358537222);
+	      c = HH(c, d, a, b, m[i+ 3], 16, -722521979);
+	      b = HH(b, c, d, a, m[i+ 6], 23,  76029189);
+	      a = HH(a, b, c, d, m[i+ 9],  4, -640364487);
+	      d = HH(d, a, b, c, m[i+12], 11, -421815835);
+	      c = HH(c, d, a, b, m[i+15], 16,  530742520);
+	      b = HH(b, c, d, a, m[i+ 2], 23, -995338651);
+
+	      a = II(a, b, c, d, m[i+ 0],  6, -198630844);
+	      d = II(d, a, b, c, m[i+ 7], 10,  1126891415);
+	      c = II(c, d, a, b, m[i+14], 15, -1416354905);
+	      b = II(b, c, d, a, m[i+ 5], 21, -57434055);
+	      a = II(a, b, c, d, m[i+12],  6,  1700485571);
+	      d = II(d, a, b, c, m[i+ 3], 10, -1894986606);
+	      c = II(c, d, a, b, m[i+10], 15, -1051523);
+	      b = II(b, c, d, a, m[i+ 1], 21, -2054922799);
+	      a = II(a, b, c, d, m[i+ 8],  6,  1873313359);
+	      d = II(d, a, b, c, m[i+15], 10, -30611744);
+	      c = II(c, d, a, b, m[i+ 6], 15, -1560198380);
+	      b = II(b, c, d, a, m[i+13], 21,  1309151649);
+	      a = II(a, b, c, d, m[i+ 4],  6, -145523070);
+	      d = II(d, a, b, c, m[i+11], 10, -1120210379);
+	      c = II(c, d, a, b, m[i+ 2], 15,  718787259);
+	      b = II(b, c, d, a, m[i+ 9], 21, -343485551);
+
+	      a = (a + aa) >>> 0;
+	      b = (b + bb) >>> 0;
+	      c = (c + cc) >>> 0;
+	      d = (d + dd) >>> 0;
+	    }
+
+	    return crypt.endian([a, b, c, d]);
+	  };
+
+	  // Auxiliary functions
+	  md5._ff  = function (a, b, c, d, x, s, t) {
+	    var n = a + (b & c | ~b & d) + (x >>> 0) + t;
+	    return ((n << s) | (n >>> (32 - s))) + b;
+	  };
+	  md5._gg  = function (a, b, c, d, x, s, t) {
+	    var n = a + (b & d | c & ~d) + (x >>> 0) + t;
+	    return ((n << s) | (n >>> (32 - s))) + b;
+	  };
+	  md5._hh  = function (a, b, c, d, x, s, t) {
+	    var n = a + (b ^ c ^ d) + (x >>> 0) + t;
+	    return ((n << s) | (n >>> (32 - s))) + b;
+	  };
+	  md5._ii  = function (a, b, c, d, x, s, t) {
+	    var n = a + (c ^ (b | ~d)) + (x >>> 0) + t;
+	    return ((n << s) | (n >>> (32 - s))) + b;
+	  };
+
+	  // Package private blocksize
+	  md5._blocksize = 16;
+	  md5._digestsize = 16;
+
+	  module.exports = function (message, options) {
+	    if (message === undefined || message === null)
+	      throw new Error('Illegal argument ' + message);
+
+	    var digestbytes = crypt.wordsToBytes(md5(message, options));
+	    return options && options.asBytes ? digestbytes :
+	        options && options.asString ? bin.bytesToString(digestbytes) :
+	        crypt.bytesToHex(digestbytes);
+	  };
+
+	})();
+
+
+/***/ },
+/* 411 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	/**
+	 * Created by vadimdez on 28/11/2016.
+	 */
+	__export(__webpack_require__(412));
+	__export(__webpack_require__(173));
+	//# sourceMappingURL=index.js.map
+
+/***/ },
+/* 412 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	/**
+	 * Created by vadimdez on 28/11/2016.
+	 */
+	var core_1 = __webpack_require__(4);
+	var ng2_filter_pipe_1 = __webpack_require__(173);
+	var Ng2FilterPipeModule = (function () {
+	    function Ng2FilterPipeModule() {
+	    }
+	    Ng2FilterPipeModule.decorators = [
+	        { type: core_1.NgModule, args: [{
+	                    declarations: [ng2_filter_pipe_1.Ng2FilterPipe],
+	                    exports: [ng2_filter_pipe_1.Ng2FilterPipe]
+	                },] },
+	    ];
+	    /** @nocollapse */
+	    Ng2FilterPipeModule.ctorParameters = [];
+	    return Ng2FilterPipeModule;
+	}());
+	exports.Ng2FilterPipeModule = Ng2FilterPipeModule;
+	//# sourceMappingURL=ng2-filter.module.js.map
+
+/***/ },
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28037,101 +28148,123 @@ webpackJsonp([1],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
 	var core_1 = __webpack_require__(4);
-	var dragula_directive_1 = __webpack_require__(172);
-	var dragula_provider_1 = __webpack_require__(116);
-	__export(__webpack_require__(116));
-	__export(__webpack_require__(172));
-	var DragulaModule = (function () {
-	    function DragulaModule() {
+	var md5 = __webpack_require__(410);
+	var Gravatar = (function () {
+	    function Gravatar(elementRef) {
+	        this.elementRef = elementRef;
+	        this.size = 16;
+	        this.fallback = 'mm';
 	    }
-	    DragulaModule = __decorate([
-	        core_1.NgModule({
-	            exports: [dragula_directive_1.DragulaDirective],
-	            declarations: [dragula_directive_1.DragulaDirective],
-	            providers: [dragula_provider_1.DragulaService]
+	    Gravatar.prototype.ngOnInit = function () {
+	        this.elementRef.nativeElement.src = "//www.gravatar.com/avatar/" + md5(this.email) + "?s=" + this.size + "&d=" + this.fallback;
+	    };
+	    __decorate([
+	        core_1.Input('email'), 
+	        __metadata('design:type', String)
+	    ], Gravatar.prototype, "email", void 0);
+	    __decorate([
+	        core_1.Input('size'), 
+	        __metadata('design:type', Number)
+	    ], Gravatar.prototype, "size", void 0);
+	    __decorate([
+	        core_1.Input('fallback'), 
+	        __metadata('design:type', String)
+	    ], Gravatar.prototype, "fallback", void 0);
+	    Gravatar = __decorate([
+	        core_1.Directive({
+	            selector: '[gravatar]'
 	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], DragulaModule);
-	    return DragulaModule;
+	        __metadata('design:paramtypes', [core_1.ElementRef])
+	    ], Gravatar);
+	    return Gravatar;
 	}());
-	exports.DragulaModule = DragulaModule;
-
+	exports.Gravatar = Gravatar;
+	//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZ3JhdmF0YXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJncmF2YXRhci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7O0FBQUEscUJBQTJDLGVBQWUsQ0FBQyxDQUFBO0FBQzNELElBQUksR0FBRyxHQUFHLE9BQU8sQ0FBQyxLQUFLLENBQUMsQ0FBQztBQUt6QjtJQUtFLGtCQUFvQixVQUFzQjtRQUF0QixlQUFVLEdBQVYsVUFBVSxDQUFZO1FBSDNCLFNBQUksR0FBVyxFQUFFLENBQUM7UUFDZCxhQUFRLEdBQVcsSUFBSSxDQUFDO0lBRUUsQ0FBQztJQUU5QywyQkFBUSxHQUFSO1FBQ0UsSUFBSSxDQUFDLFVBQVUsQ0FBQyxhQUFhLENBQUMsR0FBRyxHQUFHLCtCQUE2QixHQUFHLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxXQUFNLElBQUksQ0FBQyxJQUFJLFdBQU0sSUFBSSxDQUFDLFFBQVUsQ0FBQztJQUN2SCxDQUFDO0lBUkQ7UUFBQyxZQUFLLENBQUMsT0FBTyxDQUFDOzsyQ0FBQTtJQUNmO1FBQUMsWUFBSyxDQUFDLE1BQU0sQ0FBQzs7MENBQUE7SUFDZDtRQUFDLFlBQUssQ0FBQyxVQUFVLENBQUM7OzhDQUFBO0lBTnBCO1FBQUMsZ0JBQVMsQ0FBQztZQUNULFFBQVEsRUFBRSxZQUFZO1NBQ3ZCLENBQUM7O2dCQUFBO0lBV0YsZUFBQztBQUFELENBQUMsQUFWRCxJQVVDO0FBVlksZ0JBQVEsV0FVcEIsQ0FBQSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7RGlyZWN0aXZlLCBFbGVtZW50UmVmLCBJbnB1dH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5sZXQgbWQ1ID0gcmVxdWlyZSgnbWQ1Jyk7XG5cbkBEaXJlY3RpdmUoe1xuICBzZWxlY3RvcjogJ1tncmF2YXRhcl0nXG59KVxuZXhwb3J0IGNsYXNzIEdyYXZhdGFyIHtcbiAgQElucHV0KCdlbWFpbCcpIGVtYWlsOiBzdHJpbmc7XG4gIEBJbnB1dCgnc2l6ZScpIHNpemU6IG51bWJlciA9IDE2O1xuICBASW5wdXQoJ2ZhbGxiYWNrJykgZmFsbGJhY2s6IHN0cmluZyA9ICdtbSc7XG5cbiAgY29uc3RydWN0b3IocHJpdmF0ZSBlbGVtZW50UmVmOiBFbGVtZW50UmVmKSB7fVxuXG4gIG5nT25Jbml0KCkge1xuICAgIHRoaXMuZWxlbWVudFJlZi5uYXRpdmVFbGVtZW50LnNyYyA9IGAvL3d3dy5ncmF2YXRhci5jb20vYXZhdGFyLyR7bWQ1KHRoaXMuZW1haWwpfT9zPSR7dGhpcy5zaXplfSZkPSR7dGhpcy5mYWxsYmFja31gO1xuICB9XG59XG4iXX0=
 
 /***/ },
-/* 408 */,
-/* 409 */
+/* 414 */,
+/* 415 */
 /***/ function(module, exports) {
 
 	module.exports = "<div>\n    <router-outlet></router-outlet>\n</div>"
 
 /***/ },
-/* 410 */
+/* 416 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"container\">\n  <div class=\"col-md-8 col-md-offset-2 text-center\">\n    <h2>Login with Hubspot</h2>\n    <a href=\"{{hubAuthAPI}}\" class=\"btn btn-primary\">Log In</a>\n  </div>\n</div>\n\n"
 
 /***/ },
-/* 411 */
-/***/ function(module, exports) {
-
-	module.exports = "<h1>Clients</h1>\n<p># of clients: {{clients.length}}</p>\n<input type=\"text\" [(ngModel)]=\"input\"/>\n<div *ngFor=\"let client of clients | searchFilterPipe:input\">\n  <h5><a [routerLink]=\"[clients, client.companyId]\">Client Name: {{ client.properties.name.value }}</a></h5>\n  <h5>Company ID: {{client.companyId}}</h5>\n</div>"
-
-/***/ },
-/* 412 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"wrapper\">\n    <div class=\"sidebar\" data-background-color=\"white\" data-active-color=\"danger\">\n\n        <!--\n\t\tTip 1: you can change the color of the sidebar's background using: data-background-color=\"white | black\"\n\t\tTip 2: you can change the color of the active button using the data-active-color=\"primary | info | success | warning | danger\"\n\t-->\n\n        <div class=\"sidebar-wrapper\">\n            <div class=\"logo\">\n                <a routerLink=\"/\" class=\"simple-text\">\n                    Magnetic Creative\n                    <figure>\n                        <!--<img\n                    width=\"40%\" \n                    class=\"brand img-rounded\" \n                    src=\"https://www.magneticcreative.com/wp-content/themes/mag2015/assets/img/ico/touch-icon-ipad-retina.png\" alt=\"magnetic creative logo\">-->\n                    </figure>\n                </a>\n            </div>\n\n            <ul class=\"nav\">\n                <li><a routerLink=\"/home\">Home</a></li>\n                <li><a routerLink=\"/profile\">Profile</a></li>\n                <li *ngIf=\"super || admin\"><a routerLink=\"/admin\" routerLinkActive=\"active\">Admin</a></li>\n                <li *ngIf=\"super || admin\"><a routerLink=\"/clients\" routerLinkActive=\"active\">Clients</a></li>\n            </ul>\n        </div>\n    </div>\n\n    <div class=\"main-panel\">\n        <nav class=\"navbar navbar-default\">\n            <div class=\"container-fluid\">\n                <div class=\"navbar-header\">\n                    <button type=\"button\" class=\"navbar-toggle\">\n                        <span class=\"sr-only\">Toggle navigation</span>\n                        <span class=\"icon-bar bar1\"></span>\n                        <span class=\"icon-bar bar2\"></span>\n                        <span class=\"icon-bar bar3\"></span>\n                    </button>\n                    <a class=\"navbar-brand\">{{user_email}}</a>\n                </div>\n                <div class=\"collapse navbar-collapse\">\n                    <ul class=\"nav navbar-nav navbar-right\">\n                        <li>\n                            <a (click)=\"logout()\">\n                                <i class=\"ti-arrow-up\"></i>\n                                <p>Logout</p>\n                            </a>\n                        </li>\n                    </ul>\n\n                </div>\n            </div>\n        </nav>\n\n\n        <div class=\"content\">\n            <div class=\"container-fluid\">\n                <div class=\"row\">\n                    <router-outlet></router-outlet>\n                </div>\n            </div>\n        </div>\n\n\n        <footer class=\"footer\">\n            <div class=\"container-fluid\">\n            </div>\n        </footer>\n\n    </div>\n</div>"
-
-/***/ },
-/* 413 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"container-fluid\">\n  <h1 class=\"text-center\">Client: {{client.properties.name.value}}</h1>\n  <div id=\"result-container\" class=\"col-md-6\">\n    <h1 class=\"text-center\">Result Scope</h1>\n    <div *ngFor=\"let phase of scope\">\n      <div class=\"list-group no-bullet\">\n        <div class=\"list-group-item no-bullet\">\n          <h2 *ngIf=\"phase.active\" class=\"pointer\" (click)=\"toggleShow($event)\">{{phase.name}}</h2>\n          <div>\n            <div class=\"list-group\" *ngFor=\"let bundle of phase.bundles\">\n              <h3 *ngIf=\"bundle.active\" class=\"pointer\" (click)=\"toggleShow($event)\">{{bundle.name}}</h3>\n              <div *ngIf=\"bundle.active\">\n                <h5>{{bundle.name}} Description:</h5>\n                <p>{{bundle.description}}</p>\n              </div>\n              <div *ngFor=\"let bundleItem of bundle.items\" class=\"no-bullet scope-detail\">\n                <h4 *ngIf=\"bundleItem.active\" class=\"pointer panel-title\" (click)=\"toggleShow($event)\">{{bundleItem.name}}</h4>\n                <div class=\"pointer\">\n                  <div *ngFor=\"let subItem of bundleItem.subitems\">\n                    <p *ngIf=\"subItem.active\" [innerHtml]=\"subItem.description | quantityParse | clientParse\" ngDefaultControl>\n                    </p>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <button (click)=\"saveScope()\" class=\"btn btn-success\">Save</button>\n    <button (click)=\"resetScope()\" class=\"btn btn-default\">Reset</button>\n  </div>\n  <div class=\"col-md-6\">\n    <h1 class=\"text-center\">Scope Legend</h1>\n    <div *ngFor=\"let phase of scope\">\n      <div class=\"list-group no-bullet\">\n        <div class=\"list-group-item no-bullet\">\n          <h2 class=\"pointer\" (click)=\"toggleShow($event, phase.name)\" (dblclick)=\"toggleActive(phase)\">Phase: {{phase.name}}</h2>\n          <div class=\"hide\">\n            <div class=\"list-group\" *ngFor=\"let bundle of phase.bundles\">\n              <h3 class=\"pointer\" (click)=\"toggleShow($event, bundle.name)\" (dblclick)=\"toggleActive(bundle, [phase])\">Bundle: {{bundle.name}}</h3>\n              <div class=\"hide\">\n                <h5>{{bundle.name}}</h5>\n                <p>Description: {{bundle.description}}</p>\n              </div>\n              <div *ngFor=\"let bundleItem of bundle.items\" class=\"no-bullet scope-detail\">\n                <h4 class=\"pointer panel-title\" (click)=\"toggleShow($event, bundleItem.name)\" (dblclick)=\"toggleActive(bundleItem, [bundle, phase])\">BundleItem: {{bundleItem.name}}</h4>\n                <div class=\"hide pointer\">\n                  <div *ngFor=\"let subItem of bundleItem.subitems\">\n                    <p (dblclick)=\"toggleActive(subItem, [bundleItem, bundle, phase])\" [@itemState]=\"subItem.active\">SubItem description: {{subItem.description}}</p>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>"
-
-/***/ },
-/* 414 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"col-md-6\">\n    <div class=\"card card-user\">\n        <div class=\"image\">\n            <img src=\"assets/img/background.jpg\" alt=\"...\">\n        </div>\n        <div class=\"content\">\n            <div class=\"author\">\n                <img class=\"avatar border-white\" src=\"assets/img/faces/face-2.jpg\" alt=\"...\">\n                <h4 class=\"title\">{{me.email}}<br>\n                    <a href=\"#\"><small>{{me.email}}</small></a>\n                </h4>\n            </div>\n            <p class=\"description text-center\">\n                <!--<pre>\n                    {{me}}\n                </pre>-->\n            </p>\n        </div>\n        <hr>\n    </div>\n</div>\n<div class=\"col-md-6\">\n    <div class=\"card\">\n        <div class=\"content\">\n            <h4>My Clients</h4>\n            <div *ngFor=\"let client of clients\">\n                <h5><a [routerLink]=\"['/clients', client.data._id]\">{{client.data.name}}</a></h5>\n            </div>\n        </div>\n    </div>\n</div>"
-
-/***/ },
-/* 415 */
-/***/ function(module, exports) {
-
-	module.exports = "<div>\n  <h3>{{client.properties.name.value}}</h3>\n  <a class=\"btn btn-success\" [routerLink]=\"['/scope', client.companyId]\">Create Scope</a>\n  <button class=\"btn btn-primary\" (click)=\"goBack()\">Back</button>\n</div>"
-
-/***/ },
-/* 416 */
-/***/ function(module, exports) {
-
-	module.exports = "<h3>Welcome to the Scope Builder Tool</h3>\n<p>For more information on how to properly use this tool please refer to the documentation included in the following document</p>\n\n<p>Params: {{route}}</p>"
-
-/***/ },
 /* 417 */
 /***/ function(module, exports) {
 
-	module.exports = "<h1>No page found</h1>"
+	module.exports = "<h1>Clients</h1>\n<p># of clients: {{clients.length}}</p>\n<!--<input type=\"text\" [(ngModel)]=\"input\" />-->\n<!--<div *ngFor=\"let client of clients; let i = index; | searchFilterPipe:input\">-->\n<div *ngFor=\"let client of clients; let i = index;\">\n  <div class=\"media\">\n    {{i + 1}}\n    <!--<img *ngIf=\"client['identity-profiles'][0]['identities'][0].value\" class=\"media-object\" alt=\"Generic placeholder image\" gravatar\n      [email]=\"client['identity-profiles'][0]['identities'][0].value\" [size]=\"150\">-->\n    <div class=\"media-body\">\n      <h5 *ngIf=\"client.properties.company\" class=\"mt-0\">\n        {{client.properties.company.value}}\n      </h5>\n      <p *ngIf=\"client.properties.firstname\">{{ client.properties.firstname.value }}</p>\n      <p *ngIf=\"client.properties.lastname\">{{ client.properties.lastname.value }}</p>\n      <a [routerLink]=\"[clients, client]\">\n        <h5 (click)=\"selectClient(client)\">View More</h5>\n      </a>\n      <p><a [href]=\"client['profile-url']\" target=\"_blank\">Hubspot Profile</a></p>\n    </div>\n  </div>\n</div>"
 
 /***/ },
 /* 418 */
 /***/ function(module, exports) {
 
-	module.exports = "<h3>Welcome to the Scope Builder Tool</h3>\n<p>For more information on how to properly use this tool please refer to the documentation included in the following document</p>\n\n<p>Params: {{route}}</p>"
+	module.exports = "<h1>Companies</h1>\n<p># of companies: {{companies.length}}</p>\n<input type=\"text\" [(ngModel)]=\"input\" />\n<div *ngFor=\"let company of companies | searchFilterPipe:input\">\n<!--<div *ngFor=\"let company of companies; let i = index;\">-->\n  <div class=\"media\">\n    <div class=\"media-body\">\n      <h4 *ngIf=\"company.properties.name\" class=\"media-heading\">{{company.properties.name.value}}</h4>\n      <div *ngIf=\"company.properties.phone\" class=\"media-heading\">\n        <h5>Phone: <span><small>{{company.properties.phone.value}}</small></span></h5>\n      </div>\n      <a (click)=\"selectCompany(company)\" [routerLink]=\"['/company']\">\n        <h5>View More</h5>\n      </a>\n    </div>\n  </div>\n</div>"
 
 /***/ },
 /* 419 */
 /***/ function(module, exports) {
 
+	module.exports = "<h1>Deals</h1>\n<p># of deals: {{deals.length}}</p>\n<input type=\"text\" [(ngModel)]=\"input\" />\n<!--<div *ngFor=\"let client of deals; let i = index; | searchFilterPipe:input\">-->\n<div *ngFor=\"let deal of deals; let i = index;\">\n  <div class=\"media\">\n    {{i + 1}}\n    <!--<img *ngIf=\"deals['identity-profiles'][0]['identities'][0].value\" class=\"media-object\" alt=\"Generic placeholder image\" gravatar\n      [email]=\"deals['identity-profiles'][0]['identities'][0].value\" [size]=\"150\">-->\n    <div class=\"media-body\">\n      <h5 (click)=\"getDeal(deal.dealId)\" *ngIf=\"deal.dealId\" class=\"mt-0\">\n        {{deal.dealId}}\n      </h5>\n      <a [routerLink]=\"[deals]\">\n        <h5 (click)=\"selectDeal(deal)\">View More</h5>\n      </a>\n      <!--<p><a [href]=\"deal['profile-url']\" target=\"_blank\">Hubspot Profile</a></p>-->\n    </div>\n  </div>\n</div>"
+
+/***/ },
+/* 420 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"wrapper\">\n    <div class=\"sidebar\" data-background-color=\"white\" data-active-color=\"danger\">\n\n        <!--\n\t\tTip 1: you can change the color of the sidebar's background using: data-background-color=\"white | black\"\n\t\tTip 2: you can change the color of the active button using the data-active-color=\"primary | info | success | warning | danger\"\n\t-->\n\n        <div class=\"sidebar-wrapper\">\n            <div class=\"logo\">\n                <a routerLink=\"/\" class=\"simple-text\">\n                    Magnetic Creative\n                    <figure>\n                        <!--<img\n                    width=\"40%\" \n                    class=\"brand img-rounded\" \n                    src=\"https://www.magneticcreative.com/wp-content/themes/mag2015/assets/img/ico/touch-icon-ipad-retina.png\" alt=\"magnetic creative logo\">-->\n                    </figure>\n                </a>\n            </div>\n\n            <ul class=\"nav\">\n                <li><a routerLink=\"/home\">Home</a></li>\n                <li><a routerLink=\"/profile\">Profile</a></li>\n                <li *ngIf=\"super || admin\"><a routerLink=\"/admin\" routerLinkActive=\"active\">Admin</a></li>\n                <li><a routerLink=\"/clients\" routerLinkActive=\"active\">Clients</a></li>\n                <li><a routerLink=\"/deals\">Deals</a></li>\n                <li><a routerLink=\"/companies\">Companies</a></li>\n            </ul>\n        </div>\n    </div>\n\n    <div class=\"main-panel\">\n        <nav class=\"navbar navbar-default\">\n            <div class=\"container-fluid\">\n                <div class=\"navbar-header\">\n                    <button type=\"button\" class=\"navbar-toggle\">\n                        <span class=\"sr-only\">Toggle navigation</span>\n                        <span class=\"icon-bar bar1\"></span>\n                        <span class=\"icon-bar bar2\"></span>\n                        <span class=\"icon-bar bar3\"></span>\n                    </button>\n                    <a class=\"navbar-brand\">{{user_email}}</a>\n                </div>\n                <div class=\"collapse navbar-collapse\">\n                    <ul class=\"nav navbar-nav navbar-right\">\n                        <li>\n                            <a (click)=\"logout()\">\n                                <i class=\"ti-arrow-up\"></i>\n                                <p>Logout</p>\n                            </a>\n                        </li>\n                    </ul>\n\n                </div>\n            </div>\n        </nav>\n\n\n        <div class=\"content\">\n            <div class=\"container-fluid\">\n                <div class=\"row\">\n                    <router-outlet></router-outlet>\n                </div>\n            </div>\n        </div>\n\n\n        <footer class=\"footer\">\n            <div class=\"container-fluid\">\n            </div>\n        </footer>\n\n    </div>\n</div>"
+
+/***/ },
+/* 421 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"container-fluid\">\n  <h1 *ngIf=\"company\" class=\"text-center\">{{company.properties.name.value}}</h1>\n  <div id=\"result-container\" class=\"col-md-6\">\n    <h1 class=\"text-center\">Result Scope</h1>\n    <div *ngFor=\"let phase of scope\">\n      <div class=\"list-group no-bullet\">\n        <div class=\"list-group-item no-bullet\">\n          <h2 *ngIf=\"phase.active\" class=\"pointer\" (click)=\"toggleShow($event)\">{{phase.name}}</h2>\n          <div>\n            <div class=\"list-group\" *ngFor=\"let bundle of phase.bundles\">\n              <h3 *ngIf=\"bundle.active\" class=\"pointer\" (click)=\"toggleShow($event)\">{{bundle.name}}</h3>\n              <div *ngIf=\"bundle.active\">\n                <h5>{{bundle.name}} Description:</h5>\n                <p>{{bundle.description}}</p>\n              </div>\n              <div *ngFor=\"let bundleItem of bundle.items\" class=\"no-bullet scope-detail\">\n                <h4 *ngIf=\"bundleItem.active\" class=\"pointer panel-title\" (click)=\"toggleShow($event)\">{{bundleItem.name}}</h4>\n                <div class=\"pointer\">\n                  <div *ngFor=\"let subItem of bundleItem.subitems\">\n                    <p *ngIf=\"subItem.active\" [innerHtml]=\"subItem.description | quantityParse | clientParse\" ngDefaultControl>\n                    </p>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <button (click)=\"saveScope()\" class=\"btn btn-success\">Save</button>\n    <button (click)=\"resetScope()\" class=\"btn btn-default\">Reset</button>\n  </div>\n  <div class=\"col-md-6\">\n    <h1 class=\"text-center\">Scope Legend</h1>\n    <div *ngFor=\"let phase of scope\">\n      <div class=\"list-group no-bullet\">\n        <div class=\"list-group-item no-bullet\">\n          <h2 class=\"pointer\" (click)=\"toggleShow($event, phase.name)\" (dblclick)=\"toggleActive(phase)\">Phase: {{phase.name}}</h2>\n          <div class=\"hide\">\n            <div class=\"list-group\" *ngFor=\"let bundle of phase.bundles\">\n              <h3 class=\"pointer\" (click)=\"toggleShow($event, bundle.name)\" (dblclick)=\"toggleActive(bundle, [phase])\">Bundle: {{bundle.name}}</h3>\n              <div class=\"hide\">\n                <h5>{{bundle.name}}</h5>\n                <p>Description: {{bundle.description}}</p>\n              </div>\n              <div *ngFor=\"let bundleItem of bundle.items\" class=\"no-bullet scope-detail\">\n                <h4 class=\"pointer panel-title\" (click)=\"toggleShow($event, bundleItem.name)\" (dblclick)=\"toggleActive(bundleItem, [bundle, phase])\">BundleItem: {{bundleItem.name}}</h4>\n                <div class=\"hide pointer\">\n                  <div *ngFor=\"let subItem of bundleItem.subitems\">\n                    <p (dblclick)=\"toggleActive(subItem, [bundleItem, bundle, phase])\" [@itemState]=\"subItem.active\">SubItem description: {{subItem.description}}</p>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>"
+
+/***/ },
+/* 422 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"col-md-6\">\n    <div class=\"card card-user\">\n        <div class=\"image\">\n        </div>\n        <div class=\"content\">\n            <div class=\"author\">\n                <h4 class=\"title\">{{me.data.user}}<br>\n                    <img *ngIf=\"me.data.user\" class=\"media-object\" alt=\"Generic placeholder image\" gravatar [email]=\"me.data.user\" [size]=\"515\">\n                    <a href=\"#\"><small>{{me.data.user}}</small></a>\n                </h4>\n            </div>\n            <p class=\"description text-center\">\n\n            </p>\n        </div>\n        <hr>\n    </div>\n</div>\n<div class=\"col-md-6\">\n    <div class=\"card\">\n        <div class=\"content\">\n            <button class=\"btn btn-danger text-center\" (click)=\"purgeScopes()\">Clear All Scopes</button>\n            <h4>Scopes</h4>\n            <div *ngFor=\"let scope of scopes; let i = index;\">\n                <section *ngIf=\"scope.company\" class=\"company\">\n                    <h1 *ngIf=\"scope.company.properties.name\">{{scope.company.properties.name.value}}</h1>\n                    <a (click)=\"selectCompany(scope.company, scope.scope)\" [routerLink]=\"['/company']\">\n                        <h5>View More</h5>\n                    </a>\n                </section>\n            </div>\n        </div>\n    </div>\n</div>"
+
+/***/ },
+/* 423 */
+/***/ function(module, exports) {
+
+	module.exports = "<div>\n  <button class=\"btn btn-primary\" (click)=\"goBack()\">Back</button>\n  <button class=\"btn btn-success\" (click)=\"newScope()\">New Scope</button>\n  <section *ngIf=\"isScopes\" class=\"details-container\">\n    <h2>Scopes</h2>\n    <div *ngFor=\"let scope of scopes\" class=\"scopes-container\">\n      <h3 *ngIf=\"scope.company.properties\">{{scope.company.properties.name.value}}</h3>\n      <h4 *ngIf=\"scope.company.properties.website\" class=\"media-heading\">Website: <a href=\"{{scope.company.properties.website.value}}\" target=\"_blank\">{{scope.company.properties.website.value}}</a></h4>\n      <div class=\"button-container\">\n        <a class=\"btn btn-warning\" [routerLink]=\"['/scope']\">View / Update Scope</a>\n        <a class=\"btn btn-danger\" (click)=\"removeScope(scope.meta.id)\">Remove Scope</a>\n      </div>\n    </div>\n  </section>\n  <section *ngIf=\"!isScopes\" class=\"details-container\">\n    <h3 *ngIf=\"company.properties\">No Scopes yet for {{company.properties.name.value}}</h3>\n    <h4 *ngIf=\"company.properties.website\" class=\"media-heading\">Website: <a href=\"{{company.properties.website.value}}\" target=\"_blank\">{{company.properties.website.value}}</a></h4>\n  </section>\n</div>"
+
+/***/ },
+/* 424 */
+/***/ function(module, exports) {
+
+	module.exports = "<h3>Welcome to the Scope Builder Tool</h3>\n<p>For more information on how to properly use this tool please refer to the documentation included in the following document</p>\n\n<p>Params: {{route}}</p>"
+
+/***/ },
+/* 425 */
+/***/ function(module, exports) {
+
+	module.exports = "<h1>No page found</h1>"
+
+/***/ },
+/* 426 */
+/***/ function(module, exports) {
+
+	module.exports = "<h3>Welcome to the Scope Builder Tool</h3>\n<p>For more information on how to properly use this tool please refer to the documentation included in the following document</p>\n\n<p>Params: {{route}}</p>"
+
+/***/ },
+/* 427 */
+/***/ function(module, exports) {
+
 	module.exports = ""
 
 /***/ },
-/* 420 */,
-/* 421 */,
-/* 422 */
+/* 428 */,
+/* 429 */,
+/* 430 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -28185,95 +28318,15 @@ webpackJsonp([1],[
 	//# sourceMappingURL=Scheduler.js.map
 
 /***/ },
-/* 423 */,
-/* 424 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var bindCallback_1 = __webpack_require__(571);
-	Observable_1.Observable.bindCallback = bindCallback_1.bindCallback;
-	//# sourceMappingURL=bindCallback.js.map
-
-/***/ },
-/* 425 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var bindNodeCallback_1 = __webpack_require__(572);
-	Observable_1.Observable.bindNodeCallback = bindNodeCallback_1.bindNodeCallback;
-	//# sourceMappingURL=bindNodeCallback.js.map
-
-/***/ },
-/* 426 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var combineLatest_1 = __webpack_require__(573);
-	Observable_1.Observable.combineLatest = combineLatest_1.combineLatest;
-	//# sourceMappingURL=combineLatest.js.map
-
-/***/ },
-/* 427 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var concat_1 = __webpack_require__(574);
-	Observable_1.Observable.concat = concat_1.concat;
-	//# sourceMappingURL=concat.js.map
-
-/***/ },
-/* 428 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var defer_1 = __webpack_require__(575);
-	Observable_1.Observable.defer = defer_1.defer;
-	//# sourceMappingURL=defer.js.map
-
-/***/ },
-/* 429 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var ajax_1 = __webpack_require__(577);
-	Observable_1.Observable.ajax = ajax_1.ajax;
-	//# sourceMappingURL=ajax.js.map
-
-/***/ },
-/* 430 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var webSocket_1 = __webpack_require__(578);
-	Observable_1.Observable.webSocket = webSocket_1.webSocket;
-	//# sourceMappingURL=webSocket.js.map
-
-/***/ },
-/* 431 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var empty_1 = __webpack_require__(579);
-	Observable_1.Observable.empty = empty_1.empty;
-	//# sourceMappingURL=empty.js.map
-
-/***/ },
+/* 431 */,
 /* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var forkJoin_1 = __webpack_require__(580);
-	Observable_1.Observable.forkJoin = forkJoin_1.forkJoin;
-	//# sourceMappingURL=forkJoin.js.map
+	var bindCallback_1 = __webpack_require__(579);
+	Observable_1.Observable.bindCallback = bindCallback_1.bindCallback;
+	//# sourceMappingURL=bindCallback.js.map
 
 /***/ },
 /* 433 */
@@ -28281,9 +28334,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var from_1 = __webpack_require__(177);
-	Observable_1.Observable.from = from_1.from;
-	//# sourceMappingURL=from.js.map
+	var bindNodeCallback_1 = __webpack_require__(580);
+	Observable_1.Observable.bindNodeCallback = bindNodeCallback_1.bindNodeCallback;
+	//# sourceMappingURL=bindNodeCallback.js.map
 
 /***/ },
 /* 434 */
@@ -28291,9 +28344,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var fromEvent_1 = __webpack_require__(581);
-	Observable_1.Observable.fromEvent = fromEvent_1.fromEvent;
-	//# sourceMappingURL=fromEvent.js.map
+	var combineLatest_1 = __webpack_require__(581);
+	Observable_1.Observable.combineLatest = combineLatest_1.combineLatest;
+	//# sourceMappingURL=combineLatest.js.map
 
 /***/ },
 /* 435 */
@@ -28301,9 +28354,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var fromEventPattern_1 = __webpack_require__(582);
-	Observable_1.Observable.fromEventPattern = fromEventPattern_1.fromEventPattern;
-	//# sourceMappingURL=fromEventPattern.js.map
+	var concat_1 = __webpack_require__(582);
+	Observable_1.Observable.concat = concat_1.concat;
+	//# sourceMappingURL=concat.js.map
 
 /***/ },
 /* 436 */
@@ -28311,9 +28364,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var fromPromise_1 = __webpack_require__(119);
-	Observable_1.Observable.fromPromise = fromPromise_1.fromPromise;
-	//# sourceMappingURL=fromPromise.js.map
+	var defer_1 = __webpack_require__(583);
+	Observable_1.Observable.defer = defer_1.defer;
+	//# sourceMappingURL=defer.js.map
 
 /***/ },
 /* 437 */
@@ -28321,9 +28374,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var GenerateObservable_1 = __webpack_require__(561);
-	Observable_1.Observable.generate = GenerateObservable_1.GenerateObservable.create;
-	//# sourceMappingURL=generate.js.map
+	var ajax_1 = __webpack_require__(585);
+	Observable_1.Observable.ajax = ajax_1.ajax;
+	//# sourceMappingURL=ajax.js.map
 
 /***/ },
 /* 438 */
@@ -28331,9 +28384,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var if_1 = __webpack_require__(583);
-	Observable_1.Observable.if = if_1._if;
-	//# sourceMappingURL=if.js.map
+	var webSocket_1 = __webpack_require__(586);
+	Observable_1.Observable.webSocket = webSocket_1.webSocket;
+	//# sourceMappingURL=webSocket.js.map
 
 /***/ },
 /* 439 */
@@ -28341,9 +28394,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var interval_1 = __webpack_require__(584);
-	Observable_1.Observable.interval = interval_1.interval;
-	//# sourceMappingURL=interval.js.map
+	var empty_1 = __webpack_require__(587);
+	Observable_1.Observable.empty = empty_1.empty;
+	//# sourceMappingURL=empty.js.map
 
 /***/ },
 /* 440 */
@@ -28351,9 +28404,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var merge_1 = __webpack_require__(585);
-	Observable_1.Observable.merge = merge_1.merge;
-	//# sourceMappingURL=merge.js.map
+	var forkJoin_1 = __webpack_require__(588);
+	Observable_1.Observable.forkJoin = forkJoin_1.forkJoin;
+	//# sourceMappingURL=forkJoin.js.map
 
 /***/ },
 /* 441 */
@@ -28361,9 +28414,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var never_1 = __webpack_require__(586);
-	Observable_1.Observable.never = never_1.never;
-	//# sourceMappingURL=never.js.map
+	var from_1 = __webpack_require__(178);
+	Observable_1.Observable.from = from_1.from;
+	//# sourceMappingURL=from.js.map
 
 /***/ },
 /* 442 */
@@ -28371,9 +28424,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var of_1 = __webpack_require__(178);
-	Observable_1.Observable.of = of_1.of;
-	//# sourceMappingURL=of.js.map
+	var fromEvent_1 = __webpack_require__(589);
+	Observable_1.Observable.fromEvent = fromEvent_1.fromEvent;
+	//# sourceMappingURL=fromEvent.js.map
 
 /***/ },
 /* 443 */
@@ -28381,9 +28434,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var onErrorResumeNext_1 = __webpack_require__(190);
-	Observable_1.Observable.onErrorResumeNext = onErrorResumeNext_1.onErrorResumeNextStatic;
-	//# sourceMappingURL=onErrorResumeNext.js.map
+	var fromEventPattern_1 = __webpack_require__(590);
+	Observable_1.Observable.fromEventPattern = fromEventPattern_1.fromEventPattern;
+	//# sourceMappingURL=fromEventPattern.js.map
 
 /***/ },
 /* 444 */
@@ -28391,9 +28444,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var pairs_1 = __webpack_require__(587);
-	Observable_1.Observable.pairs = pairs_1.pairs;
-	//# sourceMappingURL=pairs.js.map
+	var fromPromise_1 = __webpack_require__(118);
+	Observable_1.Observable.fromPromise = fromPromise_1.fromPromise;
+	//# sourceMappingURL=fromPromise.js.map
 
 /***/ },
 /* 445 */
@@ -28401,9 +28454,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var race_1 = __webpack_require__(191);
-	Observable_1.Observable.race = race_1.raceStatic;
-	//# sourceMappingURL=race.js.map
+	var GenerateObservable_1 = __webpack_require__(569);
+	Observable_1.Observable.generate = GenerateObservable_1.GenerateObservable.create;
+	//# sourceMappingURL=generate.js.map
 
 /***/ },
 /* 446 */
@@ -28411,9 +28464,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var range_1 = __webpack_require__(588);
-	Observable_1.Observable.range = range_1.range;
-	//# sourceMappingURL=range.js.map
+	var if_1 = __webpack_require__(591);
+	Observable_1.Observable.if = if_1._if;
+	//# sourceMappingURL=if.js.map
 
 /***/ },
 /* 447 */
@@ -28421,9 +28474,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var throw_1 = __webpack_require__(589);
-	Observable_1.Observable.throw = throw_1._throw;
-	//# sourceMappingURL=throw.js.map
+	var interval_1 = __webpack_require__(592);
+	Observable_1.Observable.interval = interval_1.interval;
+	//# sourceMappingURL=interval.js.map
 
 /***/ },
 /* 448 */
@@ -28431,9 +28484,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var timer_1 = __webpack_require__(590);
-	Observable_1.Observable.timer = timer_1.timer;
-	//# sourceMappingURL=timer.js.map
+	var merge_1 = __webpack_require__(593);
+	Observable_1.Observable.merge = merge_1.merge;
+	//# sourceMappingURL=merge.js.map
 
 /***/ },
 /* 449 */
@@ -28441,9 +28494,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var using_1 = __webpack_require__(591);
-	Observable_1.Observable.using = using_1.using;
-	//# sourceMappingURL=using.js.map
+	var never_1 = __webpack_require__(594);
+	Observable_1.Observable.never = never_1.never;
+	//# sourceMappingURL=never.js.map
 
 /***/ },
 /* 450 */
@@ -28451,9 +28504,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var zip_1 = __webpack_require__(592);
-	Observable_1.Observable.zip = zip_1.zip;
-	//# sourceMappingURL=zip.js.map
+	var of_1 = __webpack_require__(179);
+	Observable_1.Observable.of = of_1.of;
+	//# sourceMappingURL=of.js.map
 
 /***/ },
 /* 451 */
@@ -28461,9 +28514,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var audit_1 = __webpack_require__(593);
-	Observable_1.Observable.prototype.audit = audit_1.audit;
-	//# sourceMappingURL=audit.js.map
+	var onErrorResumeNext_1 = __webpack_require__(191);
+	Observable_1.Observable.onErrorResumeNext = onErrorResumeNext_1.onErrorResumeNextStatic;
+	//# sourceMappingURL=onErrorResumeNext.js.map
 
 /***/ },
 /* 452 */
@@ -28471,9 +28524,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var auditTime_1 = __webpack_require__(594);
-	Observable_1.Observable.prototype.auditTime = auditTime_1.auditTime;
-	//# sourceMappingURL=auditTime.js.map
+	var pairs_1 = __webpack_require__(595);
+	Observable_1.Observable.pairs = pairs_1.pairs;
+	//# sourceMappingURL=pairs.js.map
 
 /***/ },
 /* 453 */
@@ -28481,9 +28534,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var buffer_1 = __webpack_require__(595);
-	Observable_1.Observable.prototype.buffer = buffer_1.buffer;
-	//# sourceMappingURL=buffer.js.map
+	var race_1 = __webpack_require__(192);
+	Observable_1.Observable.race = race_1.raceStatic;
+	//# sourceMappingURL=race.js.map
 
 /***/ },
 /* 454 */
@@ -28491,9 +28544,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var bufferCount_1 = __webpack_require__(596);
-	Observable_1.Observable.prototype.bufferCount = bufferCount_1.bufferCount;
-	//# sourceMappingURL=bufferCount.js.map
+	var range_1 = __webpack_require__(596);
+	Observable_1.Observable.range = range_1.range;
+	//# sourceMappingURL=range.js.map
 
 /***/ },
 /* 455 */
@@ -28501,9 +28554,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var bufferTime_1 = __webpack_require__(597);
-	Observable_1.Observable.prototype.bufferTime = bufferTime_1.bufferTime;
-	//# sourceMappingURL=bufferTime.js.map
+	var throw_1 = __webpack_require__(597);
+	Observable_1.Observable.throw = throw_1._throw;
+	//# sourceMappingURL=throw.js.map
 
 /***/ },
 /* 456 */
@@ -28511,9 +28564,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var bufferToggle_1 = __webpack_require__(598);
-	Observable_1.Observable.prototype.bufferToggle = bufferToggle_1.bufferToggle;
-	//# sourceMappingURL=bufferToggle.js.map
+	var timer_1 = __webpack_require__(598);
+	Observable_1.Observable.timer = timer_1.timer;
+	//# sourceMappingURL=timer.js.map
 
 /***/ },
 /* 457 */
@@ -28521,9 +28574,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var bufferWhen_1 = __webpack_require__(599);
-	Observable_1.Observable.prototype.bufferWhen = bufferWhen_1.bufferWhen;
-	//# sourceMappingURL=bufferWhen.js.map
+	var using_1 = __webpack_require__(599);
+	Observable_1.Observable.using = using_1.using;
+	//# sourceMappingURL=using.js.map
 
 /***/ },
 /* 458 */
@@ -28531,9 +28584,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var cache_1 = __webpack_require__(600);
-	Observable_1.Observable.prototype.cache = cache_1.cache;
-	//# sourceMappingURL=cache.js.map
+	var zip_1 = __webpack_require__(600);
+	Observable_1.Observable.zip = zip_1.zip;
+	//# sourceMappingURL=zip.js.map
 
 /***/ },
 /* 459 */
@@ -28541,10 +28594,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var catch_1 = __webpack_require__(179);
-	Observable_1.Observable.prototype.catch = catch_1._catch;
-	Observable_1.Observable.prototype._catch = catch_1._catch;
-	//# sourceMappingURL=catch.js.map
+	var audit_1 = __webpack_require__(601);
+	Observable_1.Observable.prototype.audit = audit_1.audit;
+	//# sourceMappingURL=audit.js.map
 
 /***/ },
 /* 460 */
@@ -28552,9 +28604,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var combineAll_1 = __webpack_require__(601);
-	Observable_1.Observable.prototype.combineAll = combineAll_1.combineAll;
-	//# sourceMappingURL=combineAll.js.map
+	var auditTime_1 = __webpack_require__(602);
+	Observable_1.Observable.prototype.auditTime = auditTime_1.auditTime;
+	//# sourceMappingURL=auditTime.js.map
 
 /***/ },
 /* 461 */
@@ -28562,9 +28614,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var combineLatest_1 = __webpack_require__(120);
-	Observable_1.Observable.prototype.combineLatest = combineLatest_1.combineLatest;
-	//# sourceMappingURL=combineLatest.js.map
+	var buffer_1 = __webpack_require__(603);
+	Observable_1.Observable.prototype.buffer = buffer_1.buffer;
+	//# sourceMappingURL=buffer.js.map
 
 /***/ },
 /* 462 */
@@ -28572,9 +28624,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var concat_1 = __webpack_require__(121);
-	Observable_1.Observable.prototype.concat = concat_1.concat;
-	//# sourceMappingURL=concat.js.map
+	var bufferCount_1 = __webpack_require__(604);
+	Observable_1.Observable.prototype.bufferCount = bufferCount_1.bufferCount;
+	//# sourceMappingURL=bufferCount.js.map
 
 /***/ },
 /* 463 */
@@ -28582,9 +28634,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var concatAll_1 = __webpack_require__(180);
-	Observable_1.Observable.prototype.concatAll = concatAll_1.concatAll;
-	//# sourceMappingURL=concatAll.js.map
+	var bufferTime_1 = __webpack_require__(605);
+	Observable_1.Observable.prototype.bufferTime = bufferTime_1.bufferTime;
+	//# sourceMappingURL=bufferTime.js.map
 
 /***/ },
 /* 464 */
@@ -28592,9 +28644,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var concatMap_1 = __webpack_require__(602);
-	Observable_1.Observable.prototype.concatMap = concatMap_1.concatMap;
-	//# sourceMappingURL=concatMap.js.map
+	var bufferToggle_1 = __webpack_require__(606);
+	Observable_1.Observable.prototype.bufferToggle = bufferToggle_1.bufferToggle;
+	//# sourceMappingURL=bufferToggle.js.map
 
 /***/ },
 /* 465 */
@@ -28602,9 +28654,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var concatMapTo_1 = __webpack_require__(603);
-	Observable_1.Observable.prototype.concatMapTo = concatMapTo_1.concatMapTo;
-	//# sourceMappingURL=concatMapTo.js.map
+	var bufferWhen_1 = __webpack_require__(607);
+	Observable_1.Observable.prototype.bufferWhen = bufferWhen_1.bufferWhen;
+	//# sourceMappingURL=bufferWhen.js.map
 
 /***/ },
 /* 466 */
@@ -28612,9 +28664,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var count_1 = __webpack_require__(604);
-	Observable_1.Observable.prototype.count = count_1.count;
-	//# sourceMappingURL=count.js.map
+	var cache_1 = __webpack_require__(608);
+	Observable_1.Observable.prototype.cache = cache_1.cache;
+	//# sourceMappingURL=cache.js.map
 
 /***/ },
 /* 467 */
@@ -28622,9 +28674,10 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var debounce_1 = __webpack_require__(605);
-	Observable_1.Observable.prototype.debounce = debounce_1.debounce;
-	//# sourceMappingURL=debounce.js.map
+	var catch_1 = __webpack_require__(180);
+	Observable_1.Observable.prototype.catch = catch_1._catch;
+	Observable_1.Observable.prototype._catch = catch_1._catch;
+	//# sourceMappingURL=catch.js.map
 
 /***/ },
 /* 468 */
@@ -28632,9 +28685,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var debounceTime_1 = __webpack_require__(606);
-	Observable_1.Observable.prototype.debounceTime = debounceTime_1.debounceTime;
-	//# sourceMappingURL=debounceTime.js.map
+	var combineAll_1 = __webpack_require__(609);
+	Observable_1.Observable.prototype.combineAll = combineAll_1.combineAll;
+	//# sourceMappingURL=combineAll.js.map
 
 /***/ },
 /* 469 */
@@ -28642,9 +28695,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var defaultIfEmpty_1 = __webpack_require__(607);
-	Observable_1.Observable.prototype.defaultIfEmpty = defaultIfEmpty_1.defaultIfEmpty;
-	//# sourceMappingURL=defaultIfEmpty.js.map
+	var combineLatest_1 = __webpack_require__(119);
+	Observable_1.Observable.prototype.combineLatest = combineLatest_1.combineLatest;
+	//# sourceMappingURL=combineLatest.js.map
 
 /***/ },
 /* 470 */
@@ -28652,9 +28705,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var delay_1 = __webpack_require__(608);
-	Observable_1.Observable.prototype.delay = delay_1.delay;
-	//# sourceMappingURL=delay.js.map
+	var concat_1 = __webpack_require__(120);
+	Observable_1.Observable.prototype.concat = concat_1.concat;
+	//# sourceMappingURL=concat.js.map
 
 /***/ },
 /* 471 */
@@ -28662,9 +28715,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var delayWhen_1 = __webpack_require__(609);
-	Observable_1.Observable.prototype.delayWhen = delayWhen_1.delayWhen;
-	//# sourceMappingURL=delayWhen.js.map
+	var concatAll_1 = __webpack_require__(181);
+	Observable_1.Observable.prototype.concatAll = concatAll_1.concatAll;
+	//# sourceMappingURL=concatAll.js.map
 
 /***/ },
 /* 472 */
@@ -28672,9 +28725,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var dematerialize_1 = __webpack_require__(610);
-	Observable_1.Observable.prototype.dematerialize = dematerialize_1.dematerialize;
-	//# sourceMappingURL=dematerialize.js.map
+	var concatMap_1 = __webpack_require__(610);
+	Observable_1.Observable.prototype.concatMap = concatMap_1.concatMap;
+	//# sourceMappingURL=concatMap.js.map
 
 /***/ },
 /* 473 */
@@ -28682,9 +28735,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var distinct_1 = __webpack_require__(181);
-	Observable_1.Observable.prototype.distinct = distinct_1.distinct;
-	//# sourceMappingURL=distinct.js.map
+	var concatMapTo_1 = __webpack_require__(611);
+	Observable_1.Observable.prototype.concatMapTo = concatMapTo_1.concatMapTo;
+	//# sourceMappingURL=concatMapTo.js.map
 
 /***/ },
 /* 474 */
@@ -28692,9 +28745,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var distinctKey_1 = __webpack_require__(611);
-	Observable_1.Observable.prototype.distinctKey = distinctKey_1.distinctKey;
-	//# sourceMappingURL=distinctKey.js.map
+	var count_1 = __webpack_require__(612);
+	Observable_1.Observable.prototype.count = count_1.count;
+	//# sourceMappingURL=count.js.map
 
 /***/ },
 /* 475 */
@@ -28702,9 +28755,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var distinctUntilChanged_1 = __webpack_require__(182);
-	Observable_1.Observable.prototype.distinctUntilChanged = distinctUntilChanged_1.distinctUntilChanged;
-	//# sourceMappingURL=distinctUntilChanged.js.map
+	var debounce_1 = __webpack_require__(613);
+	Observable_1.Observable.prototype.debounce = debounce_1.debounce;
+	//# sourceMappingURL=debounce.js.map
 
 /***/ },
 /* 476 */
@@ -28712,9 +28765,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var distinctUntilKeyChanged_1 = __webpack_require__(612);
-	Observable_1.Observable.prototype.distinctUntilKeyChanged = distinctUntilKeyChanged_1.distinctUntilKeyChanged;
-	//# sourceMappingURL=distinctUntilKeyChanged.js.map
+	var debounceTime_1 = __webpack_require__(614);
+	Observable_1.Observable.prototype.debounceTime = debounceTime_1.debounceTime;
+	//# sourceMappingURL=debounceTime.js.map
 
 /***/ },
 /* 477 */
@@ -28722,10 +28775,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var do_1 = __webpack_require__(613);
-	Observable_1.Observable.prototype.do = do_1._do;
-	Observable_1.Observable.prototype._do = do_1._do;
-	//# sourceMappingURL=do.js.map
+	var defaultIfEmpty_1 = __webpack_require__(615);
+	Observable_1.Observable.prototype.defaultIfEmpty = defaultIfEmpty_1.defaultIfEmpty;
+	//# sourceMappingURL=defaultIfEmpty.js.map
 
 /***/ },
 /* 478 */
@@ -28733,9 +28785,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var elementAt_1 = __webpack_require__(614);
-	Observable_1.Observable.prototype.elementAt = elementAt_1.elementAt;
-	//# sourceMappingURL=elementAt.js.map
+	var delay_1 = __webpack_require__(616);
+	Observable_1.Observable.prototype.delay = delay_1.delay;
+	//# sourceMappingURL=delay.js.map
 
 /***/ },
 /* 479 */
@@ -28743,9 +28795,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var every_1 = __webpack_require__(183);
-	Observable_1.Observable.prototype.every = every_1.every;
-	//# sourceMappingURL=every.js.map
+	var delayWhen_1 = __webpack_require__(617);
+	Observable_1.Observable.prototype.delayWhen = delayWhen_1.delayWhen;
+	//# sourceMappingURL=delayWhen.js.map
 
 /***/ },
 /* 480 */
@@ -28753,9 +28805,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var exhaust_1 = __webpack_require__(615);
-	Observable_1.Observable.prototype.exhaust = exhaust_1.exhaust;
-	//# sourceMappingURL=exhaust.js.map
+	var dematerialize_1 = __webpack_require__(618);
+	Observable_1.Observable.prototype.dematerialize = dematerialize_1.dematerialize;
+	//# sourceMappingURL=dematerialize.js.map
 
 /***/ },
 /* 481 */
@@ -28763,9 +28815,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var exhaustMap_1 = __webpack_require__(616);
-	Observable_1.Observable.prototype.exhaustMap = exhaustMap_1.exhaustMap;
-	//# sourceMappingURL=exhaustMap.js.map
+	var distinct_1 = __webpack_require__(182);
+	Observable_1.Observable.prototype.distinct = distinct_1.distinct;
+	//# sourceMappingURL=distinct.js.map
 
 /***/ },
 /* 482 */
@@ -28773,9 +28825,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var expand_1 = __webpack_require__(617);
-	Observable_1.Observable.prototype.expand = expand_1.expand;
-	//# sourceMappingURL=expand.js.map
+	var distinctKey_1 = __webpack_require__(619);
+	Observable_1.Observable.prototype.distinctKey = distinctKey_1.distinctKey;
+	//# sourceMappingURL=distinctKey.js.map
 
 /***/ },
 /* 483 */
@@ -28783,9 +28835,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var filter_1 = __webpack_require__(184);
-	Observable_1.Observable.prototype.filter = filter_1.filter;
-	//# sourceMappingURL=filter.js.map
+	var distinctUntilChanged_1 = __webpack_require__(183);
+	Observable_1.Observable.prototype.distinctUntilChanged = distinctUntilChanged_1.distinctUntilChanged;
+	//# sourceMappingURL=distinctUntilChanged.js.map
 
 /***/ },
 /* 484 */
@@ -28793,10 +28845,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var finally_1 = __webpack_require__(618);
-	Observable_1.Observable.prototype.finally = finally_1._finally;
-	Observable_1.Observable.prototype._finally = finally_1._finally;
-	//# sourceMappingURL=finally.js.map
+	var distinctUntilKeyChanged_1 = __webpack_require__(620);
+	Observable_1.Observable.prototype.distinctUntilKeyChanged = distinctUntilKeyChanged_1.distinctUntilKeyChanged;
+	//# sourceMappingURL=distinctUntilKeyChanged.js.map
 
 /***/ },
 /* 485 */
@@ -28804,9 +28855,10 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var find_1 = __webpack_require__(185);
-	Observable_1.Observable.prototype.find = find_1.find;
-	//# sourceMappingURL=find.js.map
+	var do_1 = __webpack_require__(621);
+	Observable_1.Observable.prototype.do = do_1._do;
+	Observable_1.Observable.prototype._do = do_1._do;
+	//# sourceMappingURL=do.js.map
 
 /***/ },
 /* 486 */
@@ -28814,9 +28866,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var findIndex_1 = __webpack_require__(619);
-	Observable_1.Observable.prototype.findIndex = findIndex_1.findIndex;
-	//# sourceMappingURL=findIndex.js.map
+	var elementAt_1 = __webpack_require__(622);
+	Observable_1.Observable.prototype.elementAt = elementAt_1.elementAt;
+	//# sourceMappingURL=elementAt.js.map
 
 /***/ },
 /* 487 */
@@ -28824,9 +28876,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var first_1 = __webpack_require__(186);
-	Observable_1.Observable.prototype.first = first_1.first;
-	//# sourceMappingURL=first.js.map
+	var every_1 = __webpack_require__(184);
+	Observable_1.Observable.prototype.every = every_1.every;
+	//# sourceMappingURL=every.js.map
 
 /***/ },
 /* 488 */
@@ -28834,9 +28886,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var groupBy_1 = __webpack_require__(620);
-	Observable_1.Observable.prototype.groupBy = groupBy_1.groupBy;
-	//# sourceMappingURL=groupBy.js.map
+	var exhaust_1 = __webpack_require__(623);
+	Observable_1.Observable.prototype.exhaust = exhaust_1.exhaust;
+	//# sourceMappingURL=exhaust.js.map
 
 /***/ },
 /* 489 */
@@ -28844,9 +28896,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var ignoreElements_1 = __webpack_require__(621);
-	Observable_1.Observable.prototype.ignoreElements = ignoreElements_1.ignoreElements;
-	//# sourceMappingURL=ignoreElements.js.map
+	var exhaustMap_1 = __webpack_require__(624);
+	Observable_1.Observable.prototype.exhaustMap = exhaustMap_1.exhaustMap;
+	//# sourceMappingURL=exhaustMap.js.map
 
 /***/ },
 /* 490 */
@@ -28854,9 +28906,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var isEmpty_1 = __webpack_require__(622);
-	Observable_1.Observable.prototype.isEmpty = isEmpty_1.isEmpty;
-	//# sourceMappingURL=isEmpty.js.map
+	var expand_1 = __webpack_require__(625);
+	Observable_1.Observable.prototype.expand = expand_1.expand;
+	//# sourceMappingURL=expand.js.map
 
 /***/ },
 /* 491 */
@@ -28864,9 +28916,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var last_1 = __webpack_require__(187);
-	Observable_1.Observable.prototype.last = last_1.last;
-	//# sourceMappingURL=last.js.map
+	var filter_1 = __webpack_require__(185);
+	Observable_1.Observable.prototype.filter = filter_1.filter;
+	//# sourceMappingURL=filter.js.map
 
 /***/ },
 /* 492 */
@@ -28874,13 +28926,94 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var let_1 = __webpack_require__(623);
+	var finally_1 = __webpack_require__(626);
+	Observable_1.Observable.prototype.finally = finally_1._finally;
+	Observable_1.Observable.prototype._finally = finally_1._finally;
+	//# sourceMappingURL=finally.js.map
+
+/***/ },
+/* 493 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var find_1 = __webpack_require__(186);
+	Observable_1.Observable.prototype.find = find_1.find;
+	//# sourceMappingURL=find.js.map
+
+/***/ },
+/* 494 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var findIndex_1 = __webpack_require__(627);
+	Observable_1.Observable.prototype.findIndex = findIndex_1.findIndex;
+	//# sourceMappingURL=findIndex.js.map
+
+/***/ },
+/* 495 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var first_1 = __webpack_require__(187);
+	Observable_1.Observable.prototype.first = first_1.first;
+	//# sourceMappingURL=first.js.map
+
+/***/ },
+/* 496 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var groupBy_1 = __webpack_require__(628);
+	Observable_1.Observable.prototype.groupBy = groupBy_1.groupBy;
+	//# sourceMappingURL=groupBy.js.map
+
+/***/ },
+/* 497 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var ignoreElements_1 = __webpack_require__(629);
+	Observable_1.Observable.prototype.ignoreElements = ignoreElements_1.ignoreElements;
+	//# sourceMappingURL=ignoreElements.js.map
+
+/***/ },
+/* 498 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var isEmpty_1 = __webpack_require__(630);
+	Observable_1.Observable.prototype.isEmpty = isEmpty_1.isEmpty;
+	//# sourceMappingURL=isEmpty.js.map
+
+/***/ },
+/* 499 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var last_1 = __webpack_require__(188);
+	Observable_1.Observable.prototype.last = last_1.last;
+	//# sourceMappingURL=last.js.map
+
+/***/ },
+/* 500 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var let_1 = __webpack_require__(631);
 	Observable_1.Observable.prototype.let = let_1.letProto;
 	Observable_1.Observable.prototype.letBind = let_1.letProto;
 	//# sourceMappingURL=let.js.map
 
 /***/ },
-/* 493 */
+/* 501 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28890,47 +29023,47 @@ webpackJsonp([1],[
 	//# sourceMappingURL=map.js.map
 
 /***/ },
-/* 494 */
+/* 502 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var mapTo_1 = __webpack_require__(624);
+	var mapTo_1 = __webpack_require__(632);
 	Observable_1.Observable.prototype.mapTo = mapTo_1.mapTo;
 	//# sourceMappingURL=mapTo.js.map
 
 /***/ },
-/* 495 */
+/* 503 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var materialize_1 = __webpack_require__(625);
+	var materialize_1 = __webpack_require__(633);
 	Observable_1.Observable.prototype.materialize = materialize_1.materialize;
 	//# sourceMappingURL=materialize.js.map
 
 /***/ },
-/* 496 */
+/* 504 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var max_1 = __webpack_require__(626);
+	var max_1 = __webpack_require__(634);
 	Observable_1.Observable.prototype.max = max_1.max;
 	//# sourceMappingURL=max.js.map
 
 /***/ },
-/* 497 */
+/* 505 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var merge_1 = __webpack_require__(188);
+	var merge_1 = __webpack_require__(189);
 	Observable_1.Observable.prototype.merge = merge_1.merge;
 	//# sourceMappingURL=merge.js.map
 
 /***/ },
-/* 498 */
+/* 506 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28940,96 +29073,15 @@ webpackJsonp([1],[
 	//# sourceMappingURL=mergeAll.js.map
 
 /***/ },
-/* 499 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var mergeMap_1 = __webpack_require__(122);
-	Observable_1.Observable.prototype.mergeMap = mergeMap_1.mergeMap;
-	Observable_1.Observable.prototype.flatMap = mergeMap_1.mergeMap;
-	//# sourceMappingURL=mergeMap.js.map
-
-/***/ },
-/* 500 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var mergeMapTo_1 = __webpack_require__(189);
-	Observable_1.Observable.prototype.flatMapTo = mergeMapTo_1.mergeMapTo;
-	Observable_1.Observable.prototype.mergeMapTo = mergeMapTo_1.mergeMapTo;
-	//# sourceMappingURL=mergeMapTo.js.map
-
-/***/ },
-/* 501 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var mergeScan_1 = __webpack_require__(627);
-	Observable_1.Observable.prototype.mergeScan = mergeScan_1.mergeScan;
-	//# sourceMappingURL=mergeScan.js.map
-
-/***/ },
-/* 502 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var min_1 = __webpack_require__(628);
-	Observable_1.Observable.prototype.min = min_1.min;
-	//# sourceMappingURL=min.js.map
-
-/***/ },
-/* 503 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var multicast_1 = __webpack_require__(61);
-	Observable_1.Observable.prototype.multicast = multicast_1.multicast;
-	//# sourceMappingURL=multicast.js.map
-
-/***/ },
-/* 504 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var observeOn_1 = __webpack_require__(123);
-	Observable_1.Observable.prototype.observeOn = observeOn_1.observeOn;
-	//# sourceMappingURL=observeOn.js.map
-
-/***/ },
-/* 505 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var onErrorResumeNext_1 = __webpack_require__(190);
-	Observable_1.Observable.prototype.onErrorResumeNext = onErrorResumeNext_1.onErrorResumeNext;
-	//# sourceMappingURL=onErrorResumeNext.js.map
-
-/***/ },
-/* 506 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var pairwise_1 = __webpack_require__(629);
-	Observable_1.Observable.prototype.pairwise = pairwise_1.pairwise;
-	//# sourceMappingURL=pairwise.js.map
-
-/***/ },
 /* 507 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var partition_1 = __webpack_require__(630);
-	Observable_1.Observable.prototype.partition = partition_1.partition;
-	//# sourceMappingURL=partition.js.map
+	var mergeMap_1 = __webpack_require__(121);
+	Observable_1.Observable.prototype.mergeMap = mergeMap_1.mergeMap;
+	Observable_1.Observable.prototype.flatMap = mergeMap_1.mergeMap;
+	//# sourceMappingURL=mergeMap.js.map
 
 /***/ },
 /* 508 */
@@ -29037,9 +29089,10 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var pluck_1 = __webpack_require__(631);
-	Observable_1.Observable.prototype.pluck = pluck_1.pluck;
-	//# sourceMappingURL=pluck.js.map
+	var mergeMapTo_1 = __webpack_require__(190);
+	Observable_1.Observable.prototype.flatMapTo = mergeMapTo_1.mergeMapTo;
+	Observable_1.Observable.prototype.mergeMapTo = mergeMapTo_1.mergeMapTo;
+	//# sourceMappingURL=mergeMapTo.js.map
 
 /***/ },
 /* 509 */
@@ -29047,9 +29100,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var publish_1 = __webpack_require__(632);
-	Observable_1.Observable.prototype.publish = publish_1.publish;
-	//# sourceMappingURL=publish.js.map
+	var mergeScan_1 = __webpack_require__(635);
+	Observable_1.Observable.prototype.mergeScan = mergeScan_1.mergeScan;
+	//# sourceMappingURL=mergeScan.js.map
 
 /***/ },
 /* 510 */
@@ -29057,9 +29110,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var publishBehavior_1 = __webpack_require__(633);
-	Observable_1.Observable.prototype.publishBehavior = publishBehavior_1.publishBehavior;
-	//# sourceMappingURL=publishBehavior.js.map
+	var min_1 = __webpack_require__(636);
+	Observable_1.Observable.prototype.min = min_1.min;
+	//# sourceMappingURL=min.js.map
 
 /***/ },
 /* 511 */
@@ -29067,9 +29120,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var publishLast_1 = __webpack_require__(634);
-	Observable_1.Observable.prototype.publishLast = publishLast_1.publishLast;
-	//# sourceMappingURL=publishLast.js.map
+	var multicast_1 = __webpack_require__(60);
+	Observable_1.Observable.prototype.multicast = multicast_1.multicast;
+	//# sourceMappingURL=multicast.js.map
 
 /***/ },
 /* 512 */
@@ -29077,9 +29130,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var publishReplay_1 = __webpack_require__(635);
-	Observable_1.Observable.prototype.publishReplay = publishReplay_1.publishReplay;
-	//# sourceMappingURL=publishReplay.js.map
+	var observeOn_1 = __webpack_require__(122);
+	Observable_1.Observable.prototype.observeOn = observeOn_1.observeOn;
+	//# sourceMappingURL=observeOn.js.map
 
 /***/ },
 /* 513 */
@@ -29087,12 +29140,92 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var race_1 = __webpack_require__(191);
+	var onErrorResumeNext_1 = __webpack_require__(191);
+	Observable_1.Observable.prototype.onErrorResumeNext = onErrorResumeNext_1.onErrorResumeNext;
+	//# sourceMappingURL=onErrorResumeNext.js.map
+
+/***/ },
+/* 514 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var pairwise_1 = __webpack_require__(637);
+	Observable_1.Observable.prototype.pairwise = pairwise_1.pairwise;
+	//# sourceMappingURL=pairwise.js.map
+
+/***/ },
+/* 515 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var partition_1 = __webpack_require__(638);
+	Observable_1.Observable.prototype.partition = partition_1.partition;
+	//# sourceMappingURL=partition.js.map
+
+/***/ },
+/* 516 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var pluck_1 = __webpack_require__(639);
+	Observable_1.Observable.prototype.pluck = pluck_1.pluck;
+	//# sourceMappingURL=pluck.js.map
+
+/***/ },
+/* 517 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var publish_1 = __webpack_require__(640);
+	Observable_1.Observable.prototype.publish = publish_1.publish;
+	//# sourceMappingURL=publish.js.map
+
+/***/ },
+/* 518 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var publishBehavior_1 = __webpack_require__(641);
+	Observable_1.Observable.prototype.publishBehavior = publishBehavior_1.publishBehavior;
+	//# sourceMappingURL=publishBehavior.js.map
+
+/***/ },
+/* 519 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var publishLast_1 = __webpack_require__(642);
+	Observable_1.Observable.prototype.publishLast = publishLast_1.publishLast;
+	//# sourceMappingURL=publishLast.js.map
+
+/***/ },
+/* 520 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var publishReplay_1 = __webpack_require__(643);
+	Observable_1.Observable.prototype.publishReplay = publishReplay_1.publishReplay;
+	//# sourceMappingURL=publishReplay.js.map
+
+/***/ },
+/* 521 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var race_1 = __webpack_require__(192);
 	Observable_1.Observable.prototype.race = race_1.race;
 	//# sourceMappingURL=race.js.map
 
 /***/ },
-/* 514 */
+/* 522 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29102,94 +29235,14 @@ webpackJsonp([1],[
 	//# sourceMappingURL=reduce.js.map
 
 /***/ },
-/* 515 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var repeat_1 = __webpack_require__(636);
-	Observable_1.Observable.prototype.repeat = repeat_1.repeat;
-	//# sourceMappingURL=repeat.js.map
-
-/***/ },
-/* 516 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var repeatWhen_1 = __webpack_require__(637);
-	Observable_1.Observable.prototype.repeatWhen = repeatWhen_1.repeatWhen;
-	//# sourceMappingURL=repeatWhen.js.map
-
-/***/ },
-/* 517 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var retry_1 = __webpack_require__(638);
-	Observable_1.Observable.prototype.retry = retry_1.retry;
-	//# sourceMappingURL=retry.js.map
-
-/***/ },
-/* 518 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var retryWhen_1 = __webpack_require__(639);
-	Observable_1.Observable.prototype.retryWhen = retryWhen_1.retryWhen;
-	//# sourceMappingURL=retryWhen.js.map
-
-/***/ },
-/* 519 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var sample_1 = __webpack_require__(640);
-	Observable_1.Observable.prototype.sample = sample_1.sample;
-	//# sourceMappingURL=sample.js.map
-
-/***/ },
-/* 520 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var sampleTime_1 = __webpack_require__(641);
-	Observable_1.Observable.prototype.sampleTime = sampleTime_1.sampleTime;
-	//# sourceMappingURL=sampleTime.js.map
-
-/***/ },
-/* 521 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var scan_1 = __webpack_require__(642);
-	Observable_1.Observable.prototype.scan = scan_1.scan;
-	//# sourceMappingURL=scan.js.map
-
-/***/ },
-/* 522 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(1);
-	var sequenceEqual_1 = __webpack_require__(643);
-	Observable_1.Observable.prototype.sequenceEqual = sequenceEqual_1.sequenceEqual;
-	//# sourceMappingURL=sequenceEqual.js.map
-
-/***/ },
 /* 523 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var share_1 = __webpack_require__(644);
-	Observable_1.Observable.prototype.share = share_1.share;
-	//# sourceMappingURL=share.js.map
+	var repeat_1 = __webpack_require__(644);
+	Observable_1.Observable.prototype.repeat = repeat_1.repeat;
+	//# sourceMappingURL=repeat.js.map
 
 /***/ },
 /* 524 */
@@ -29197,9 +29250,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var single_1 = __webpack_require__(645);
-	Observable_1.Observable.prototype.single = single_1.single;
-	//# sourceMappingURL=single.js.map
+	var repeatWhen_1 = __webpack_require__(645);
+	Observable_1.Observable.prototype.repeatWhen = repeatWhen_1.repeatWhen;
+	//# sourceMappingURL=repeatWhen.js.map
 
 /***/ },
 /* 525 */
@@ -29207,9 +29260,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var skip_1 = __webpack_require__(646);
-	Observable_1.Observable.prototype.skip = skip_1.skip;
-	//# sourceMappingURL=skip.js.map
+	var retry_1 = __webpack_require__(646);
+	Observable_1.Observable.prototype.retry = retry_1.retry;
+	//# sourceMappingURL=retry.js.map
 
 /***/ },
 /* 526 */
@@ -29217,9 +29270,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var skipUntil_1 = __webpack_require__(647);
-	Observable_1.Observable.prototype.skipUntil = skipUntil_1.skipUntil;
-	//# sourceMappingURL=skipUntil.js.map
+	var retryWhen_1 = __webpack_require__(647);
+	Observable_1.Observable.prototype.retryWhen = retryWhen_1.retryWhen;
+	//# sourceMappingURL=retryWhen.js.map
 
 /***/ },
 /* 527 */
@@ -29227,9 +29280,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var skipWhile_1 = __webpack_require__(648);
-	Observable_1.Observable.prototype.skipWhile = skipWhile_1.skipWhile;
-	//# sourceMappingURL=skipWhile.js.map
+	var sample_1 = __webpack_require__(648);
+	Observable_1.Observable.prototype.sample = sample_1.sample;
+	//# sourceMappingURL=sample.js.map
 
 /***/ },
 /* 528 */
@@ -29237,9 +29290,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var startWith_1 = __webpack_require__(649);
-	Observable_1.Observable.prototype.startWith = startWith_1.startWith;
-	//# sourceMappingURL=startWith.js.map
+	var sampleTime_1 = __webpack_require__(649);
+	Observable_1.Observable.prototype.sampleTime = sampleTime_1.sampleTime;
+	//# sourceMappingURL=sampleTime.js.map
 
 /***/ },
 /* 529 */
@@ -29247,9 +29300,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var subscribeOn_1 = __webpack_require__(650);
-	Observable_1.Observable.prototype.subscribeOn = subscribeOn_1.subscribeOn;
-	//# sourceMappingURL=subscribeOn.js.map
+	var scan_1 = __webpack_require__(650);
+	Observable_1.Observable.prototype.scan = scan_1.scan;
+	//# sourceMappingURL=scan.js.map
 
 /***/ },
 /* 530 */
@@ -29257,10 +29310,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var switch_1 = __webpack_require__(651);
-	Observable_1.Observable.prototype.switch = switch_1._switch;
-	Observable_1.Observable.prototype._switch = switch_1._switch;
-	//# sourceMappingURL=switch.js.map
+	var sequenceEqual_1 = __webpack_require__(651);
+	Observable_1.Observable.prototype.sequenceEqual = sequenceEqual_1.sequenceEqual;
+	//# sourceMappingURL=sequenceEqual.js.map
 
 /***/ },
 /* 531 */
@@ -29268,9 +29320,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var switchMap_1 = __webpack_require__(652);
-	Observable_1.Observable.prototype.switchMap = switchMap_1.switchMap;
-	//# sourceMappingURL=switchMap.js.map
+	var share_1 = __webpack_require__(652);
+	Observable_1.Observable.prototype.share = share_1.share;
+	//# sourceMappingURL=share.js.map
 
 /***/ },
 /* 532 */
@@ -29278,9 +29330,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var switchMapTo_1 = __webpack_require__(653);
-	Observable_1.Observable.prototype.switchMapTo = switchMapTo_1.switchMapTo;
-	//# sourceMappingURL=switchMapTo.js.map
+	var single_1 = __webpack_require__(653);
+	Observable_1.Observable.prototype.single = single_1.single;
+	//# sourceMappingURL=single.js.map
 
 /***/ },
 /* 533 */
@@ -29288,9 +29340,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var take_1 = __webpack_require__(654);
-	Observable_1.Observable.prototype.take = take_1.take;
-	//# sourceMappingURL=take.js.map
+	var skip_1 = __webpack_require__(654);
+	Observable_1.Observable.prototype.skip = skip_1.skip;
+	//# sourceMappingURL=skip.js.map
 
 /***/ },
 /* 534 */
@@ -29298,9 +29350,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var takeLast_1 = __webpack_require__(655);
-	Observable_1.Observable.prototype.takeLast = takeLast_1.takeLast;
-	//# sourceMappingURL=takeLast.js.map
+	var skipUntil_1 = __webpack_require__(655);
+	Observable_1.Observable.prototype.skipUntil = skipUntil_1.skipUntil;
+	//# sourceMappingURL=skipUntil.js.map
 
 /***/ },
 /* 535 */
@@ -29308,9 +29360,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var takeUntil_1 = __webpack_require__(656);
-	Observable_1.Observable.prototype.takeUntil = takeUntil_1.takeUntil;
-	//# sourceMappingURL=takeUntil.js.map
+	var skipWhile_1 = __webpack_require__(656);
+	Observable_1.Observable.prototype.skipWhile = skipWhile_1.skipWhile;
+	//# sourceMappingURL=skipWhile.js.map
 
 /***/ },
 /* 536 */
@@ -29318,9 +29370,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var takeWhile_1 = __webpack_require__(657);
-	Observable_1.Observable.prototype.takeWhile = takeWhile_1.takeWhile;
-	//# sourceMappingURL=takeWhile.js.map
+	var startWith_1 = __webpack_require__(657);
+	Observable_1.Observable.prototype.startWith = startWith_1.startWith;
+	//# sourceMappingURL=startWith.js.map
 
 /***/ },
 /* 537 */
@@ -29328,9 +29380,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var throttle_1 = __webpack_require__(658);
-	Observable_1.Observable.prototype.throttle = throttle_1.throttle;
-	//# sourceMappingURL=throttle.js.map
+	var subscribeOn_1 = __webpack_require__(658);
+	Observable_1.Observable.prototype.subscribeOn = subscribeOn_1.subscribeOn;
+	//# sourceMappingURL=subscribeOn.js.map
 
 /***/ },
 /* 538 */
@@ -29338,9 +29390,10 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var throttleTime_1 = __webpack_require__(659);
-	Observable_1.Observable.prototype.throttleTime = throttleTime_1.throttleTime;
-	//# sourceMappingURL=throttleTime.js.map
+	var switch_1 = __webpack_require__(659);
+	Observable_1.Observable.prototype.switch = switch_1._switch;
+	Observable_1.Observable.prototype._switch = switch_1._switch;
+	//# sourceMappingURL=switch.js.map
 
 /***/ },
 /* 539 */
@@ -29348,9 +29401,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var timeInterval_1 = __webpack_require__(192);
-	Observable_1.Observable.prototype.timeInterval = timeInterval_1.timeInterval;
-	//# sourceMappingURL=timeInterval.js.map
+	var switchMap_1 = __webpack_require__(660);
+	Observable_1.Observable.prototype.switchMap = switchMap_1.switchMap;
+	//# sourceMappingURL=switchMap.js.map
 
 /***/ },
 /* 540 */
@@ -29358,9 +29411,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var timeout_1 = __webpack_require__(660);
-	Observable_1.Observable.prototype.timeout = timeout_1.timeout;
-	//# sourceMappingURL=timeout.js.map
+	var switchMapTo_1 = __webpack_require__(661);
+	Observable_1.Observable.prototype.switchMapTo = switchMapTo_1.switchMapTo;
+	//# sourceMappingURL=switchMapTo.js.map
 
 /***/ },
 /* 541 */
@@ -29368,9 +29421,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var timeoutWith_1 = __webpack_require__(661);
-	Observable_1.Observable.prototype.timeoutWith = timeoutWith_1.timeoutWith;
-	//# sourceMappingURL=timeoutWith.js.map
+	var take_1 = __webpack_require__(662);
+	Observable_1.Observable.prototype.take = take_1.take;
+	//# sourceMappingURL=take.js.map
 
 /***/ },
 /* 542 */
@@ -29378,9 +29431,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var timestamp_1 = __webpack_require__(193);
-	Observable_1.Observable.prototype.timestamp = timestamp_1.timestamp;
-	//# sourceMappingURL=timestamp.js.map
+	var takeLast_1 = __webpack_require__(663);
+	Observable_1.Observable.prototype.takeLast = takeLast_1.takeLast;
+	//# sourceMappingURL=takeLast.js.map
 
 /***/ },
 /* 543 */
@@ -29388,9 +29441,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var toArray_1 = __webpack_require__(662);
-	Observable_1.Observable.prototype.toArray = toArray_1.toArray;
-	//# sourceMappingURL=toArray.js.map
+	var takeUntil_1 = __webpack_require__(664);
+	Observable_1.Observable.prototype.takeUntil = takeUntil_1.takeUntil;
+	//# sourceMappingURL=takeUntil.js.map
 
 /***/ },
 /* 544 */
@@ -29398,9 +29451,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var toPromise_1 = __webpack_require__(194);
-	Observable_1.Observable.prototype.toPromise = toPromise_1.toPromise;
-	//# sourceMappingURL=toPromise.js.map
+	var takeWhile_1 = __webpack_require__(665);
+	Observable_1.Observable.prototype.takeWhile = takeWhile_1.takeWhile;
+	//# sourceMappingURL=takeWhile.js.map
 
 /***/ },
 /* 545 */
@@ -29408,9 +29461,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var window_1 = __webpack_require__(663);
-	Observable_1.Observable.prototype.window = window_1.window;
-	//# sourceMappingURL=window.js.map
+	var throttle_1 = __webpack_require__(666);
+	Observable_1.Observable.prototype.throttle = throttle_1.throttle;
+	//# sourceMappingURL=throttle.js.map
 
 /***/ },
 /* 546 */
@@ -29418,9 +29471,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var windowCount_1 = __webpack_require__(664);
-	Observable_1.Observable.prototype.windowCount = windowCount_1.windowCount;
-	//# sourceMappingURL=windowCount.js.map
+	var throttleTime_1 = __webpack_require__(667);
+	Observable_1.Observable.prototype.throttleTime = throttleTime_1.throttleTime;
+	//# sourceMappingURL=throttleTime.js.map
 
 /***/ },
 /* 547 */
@@ -29428,9 +29481,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var windowTime_1 = __webpack_require__(665);
-	Observable_1.Observable.prototype.windowTime = windowTime_1.windowTime;
-	//# sourceMappingURL=windowTime.js.map
+	var timeInterval_1 = __webpack_require__(193);
+	Observable_1.Observable.prototype.timeInterval = timeInterval_1.timeInterval;
+	//# sourceMappingURL=timeInterval.js.map
 
 /***/ },
 /* 548 */
@@ -29438,9 +29491,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var windowToggle_1 = __webpack_require__(666);
-	Observable_1.Observable.prototype.windowToggle = windowToggle_1.windowToggle;
-	//# sourceMappingURL=windowToggle.js.map
+	var timeout_1 = __webpack_require__(668);
+	Observable_1.Observable.prototype.timeout = timeout_1.timeout;
+	//# sourceMappingURL=timeout.js.map
 
 /***/ },
 /* 549 */
@@ -29448,9 +29501,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var windowWhen_1 = __webpack_require__(667);
-	Observable_1.Observable.prototype.windowWhen = windowWhen_1.windowWhen;
-	//# sourceMappingURL=windowWhen.js.map
+	var timeoutWith_1 = __webpack_require__(669);
+	Observable_1.Observable.prototype.timeoutWith = timeoutWith_1.timeoutWith;
+	//# sourceMappingURL=timeoutWith.js.map
 
 /***/ },
 /* 550 */
@@ -29458,9 +29511,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var withLatestFrom_1 = __webpack_require__(668);
-	Observable_1.Observable.prototype.withLatestFrom = withLatestFrom_1.withLatestFrom;
-	//# sourceMappingURL=withLatestFrom.js.map
+	var timestamp_1 = __webpack_require__(194);
+	Observable_1.Observable.prototype.timestamp = timestamp_1.timestamp;
+	//# sourceMappingURL=timestamp.js.map
 
 /***/ },
 /* 551 */
@@ -29468,9 +29521,9 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var zip_1 = __webpack_require__(124);
-	Observable_1.Observable.prototype.zip = zip_1.zipProto;
-	//# sourceMappingURL=zip.js.map
+	var toArray_1 = __webpack_require__(670);
+	Observable_1.Observable.prototype.toArray = toArray_1.toArray;
+	//# sourceMappingURL=toArray.js.map
 
 /***/ },
 /* 552 */
@@ -29478,13 +29531,93 @@ webpackJsonp([1],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(1);
-	var zipAll_1 = __webpack_require__(669);
+	var toPromise_1 = __webpack_require__(195);
+	Observable_1.Observable.prototype.toPromise = toPromise_1.toPromise;
+	//# sourceMappingURL=toPromise.js.map
+
+/***/ },
+/* 553 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var window_1 = __webpack_require__(671);
+	Observable_1.Observable.prototype.window = window_1.window;
+	//# sourceMappingURL=window.js.map
+
+/***/ },
+/* 554 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var windowCount_1 = __webpack_require__(672);
+	Observable_1.Observable.prototype.windowCount = windowCount_1.windowCount;
+	//# sourceMappingURL=windowCount.js.map
+
+/***/ },
+/* 555 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var windowTime_1 = __webpack_require__(673);
+	Observable_1.Observable.prototype.windowTime = windowTime_1.windowTime;
+	//# sourceMappingURL=windowTime.js.map
+
+/***/ },
+/* 556 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var windowToggle_1 = __webpack_require__(674);
+	Observable_1.Observable.prototype.windowToggle = windowToggle_1.windowToggle;
+	//# sourceMappingURL=windowToggle.js.map
+
+/***/ },
+/* 557 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var windowWhen_1 = __webpack_require__(675);
+	Observable_1.Observable.prototype.windowWhen = windowWhen_1.windowWhen;
+	//# sourceMappingURL=windowWhen.js.map
+
+/***/ },
+/* 558 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var withLatestFrom_1 = __webpack_require__(676);
+	Observable_1.Observable.prototype.withLatestFrom = withLatestFrom_1.withLatestFrom;
+	//# sourceMappingURL=withLatestFrom.js.map
+
+/***/ },
+/* 559 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var zip_1 = __webpack_require__(123);
+	Observable_1.Observable.prototype.zip = zip_1.zipProto;
+	//# sourceMappingURL=zip.js.map
+
+/***/ },
+/* 560 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(1);
+	var zipAll_1 = __webpack_require__(677);
 	Observable_1.Observable.prototype.zipAll = zipAll_1.zipAll;
 	//# sourceMappingURL=zipAll.js.map
 
 /***/ },
-/* 553 */,
-/* 554 */
+/* 561 */,
+/* 562 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29494,8 +29627,8 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(1);
-	var tryCatch_1 = __webpack_require__(20);
-	var errorObject_1 = __webpack_require__(18);
+	var tryCatch_1 = __webpack_require__(21);
+	var errorObject_1 = __webpack_require__(20);
 	var AsyncSubject_1 = __webpack_require__(86);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
@@ -29653,7 +29786,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=BoundCallbackObservable.js.map
 
 /***/ },
-/* 555 */
+/* 563 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29663,8 +29796,8 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(1);
-	var tryCatch_1 = __webpack_require__(20);
-	var errorObject_1 = __webpack_require__(18);
+	var tryCatch_1 = __webpack_require__(21);
+	var errorObject_1 = __webpack_require__(20);
 	var AsyncSubject_1 = __webpack_require__(86);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
@@ -29834,7 +29967,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=BoundNodeCallbackObservable.js.map
 
 /***/ },
-/* 556 */
+/* 564 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29932,7 +30065,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=DeferObservable.js.map
 
 /***/ },
-/* 557 */
+/* 565 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30019,7 +30152,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=ErrorObservable.js.map
 
 /***/ },
-/* 558 */
+/* 566 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30136,7 +30269,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=ForkJoinObservable.js.map
 
 /***/ },
-/* 559 */
+/* 567 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30146,10 +30279,10 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(1);
-	var tryCatch_1 = __webpack_require__(20);
-	var isFunction_1 = __webpack_require__(126);
-	var errorObject_1 = __webpack_require__(18);
-	var Subscription_1 = __webpack_require__(17);
+	var tryCatch_1 = __webpack_require__(21);
+	var isFunction_1 = __webpack_require__(125);
+	var errorObject_1 = __webpack_require__(20);
+	var Subscription_1 = __webpack_require__(19);
 	function isNodeStyleEventEmmitter(sourceObj) {
 	    return !!sourceObj && typeof sourceObj.addListener === 'function' && typeof sourceObj.removeListener === 'function';
 	}
@@ -30273,7 +30406,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=FromEventObservable.js.map
 
 /***/ },
-/* 560 */
+/* 568 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30283,7 +30416,7 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(1);
-	var Subscription_1 = __webpack_require__(17);
+	var Subscription_1 = __webpack_require__(19);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -30386,7 +30519,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=FromEventPatternObservable.js.map
 
 /***/ },
-/* 561 */
+/* 569 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30526,7 +30659,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=GenerateObservable.js.map
 
 /***/ },
-/* 562 */
+/* 570 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30592,7 +30725,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=IfObservable.js.map
 
 /***/ },
-/* 563 */
+/* 571 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30601,7 +30734,7 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var isNumeric_1 = __webpack_require__(127);
+	var isNumeric_1 = __webpack_require__(126);
 	var Observable_1 = __webpack_require__(1);
 	var async_1 = __webpack_require__(26);
 	/**
@@ -30685,8 +30818,8 @@ webpackJsonp([1],[
 	//# sourceMappingURL=IntervalObservable.js.map
 
 /***/ },
-/* 564 */,
-/* 565 */
+/* 572 */,
+/* 573 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30696,7 +30829,7 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(1);
-	var noop_1 = __webpack_require__(203);
+	var noop_1 = __webpack_require__(204);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -30750,7 +30883,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=NeverObservable.js.map
 
 /***/ },
-/* 566 */
+/* 574 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30840,7 +30973,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=PairsObservable.js.map
 
 /***/ },
-/* 567 */
+/* 575 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30941,7 +31074,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=RangeObservable.js.map
 
 /***/ },
-/* 568 */
+/* 576 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30951,8 +31084,8 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(1);
-	var asap_1 = __webpack_require__(196);
-	var isNumeric_1 = __webpack_require__(127);
+	var asap_1 = __webpack_require__(197);
+	var isNumeric_1 = __webpack_require__(126);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -30997,7 +31130,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=SubscribeOnObservable.js.map
 
 /***/ },
-/* 569 */
+/* 577 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -31006,7 +31139,7 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var isNumeric_1 = __webpack_require__(127);
+	var isNumeric_1 = __webpack_require__(126);
 	var Observable_1 = __webpack_require__(1);
 	var async_1 = __webpack_require__(26);
 	var isScheduler_1 = __webpack_require__(48);
@@ -31109,7 +31242,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=TimerObservable.js.map
 
 /***/ },
-/* 570 */
+/* 578 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -31175,32 +31308,32 @@ webpackJsonp([1],[
 	//# sourceMappingURL=UsingObservable.js.map
 
 /***/ },
-/* 571 */
+/* 579 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var BoundCallbackObservable_1 = __webpack_require__(554);
+	var BoundCallbackObservable_1 = __webpack_require__(562);
 	exports.bindCallback = BoundCallbackObservable_1.BoundCallbackObservable.create;
 	//# sourceMappingURL=bindCallback.js.map
 
 /***/ },
-/* 572 */
+/* 580 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var BoundNodeCallbackObservable_1 = __webpack_require__(555);
+	var BoundNodeCallbackObservable_1 = __webpack_require__(563);
 	exports.bindNodeCallback = BoundNodeCallbackObservable_1.BoundNodeCallbackObservable.create;
 	//# sourceMappingURL=bindNodeCallback.js.map
 
 /***/ },
-/* 573 */
+/* 581 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var isScheduler_1 = __webpack_require__(48);
 	var isArray_1 = __webpack_require__(36);
 	var ArrayObservable_1 = __webpack_require__(41);
-	var combineLatest_1 = __webpack_require__(120);
+	var combineLatest_1 = __webpack_require__(119);
 	/* tslint:enable:max-line-length */
 	/**
 	 * Combines multiple Observables to create an Observable whose values are
@@ -31269,25 +31402,25 @@ webpackJsonp([1],[
 	//# sourceMappingURL=combineLatest.js.map
 
 /***/ },
-/* 574 */
+/* 582 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var concat_1 = __webpack_require__(121);
+	var concat_1 = __webpack_require__(120);
 	exports.concat = concat_1.concatStatic;
 	//# sourceMappingURL=concat.js.map
 
 /***/ },
-/* 575 */
+/* 583 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var DeferObservable_1 = __webpack_require__(556);
+	var DeferObservable_1 = __webpack_require__(564);
 	exports.defer = DeferObservable_1.DeferObservable.create;
 	//# sourceMappingURL=defer.js.map
 
 /***/ },
-/* 576 */
+/* 584 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -31296,15 +31429,15 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(13);
+	var Subject_1 = __webpack_require__(14);
 	var Subscriber_1 = __webpack_require__(3);
 	var Observable_1 = __webpack_require__(1);
-	var Subscription_1 = __webpack_require__(17);
+	var Subscription_1 = __webpack_require__(19);
 	var root_1 = __webpack_require__(23);
 	var ReplaySubject_1 = __webpack_require__(88);
-	var tryCatch_1 = __webpack_require__(20);
-	var errorObject_1 = __webpack_require__(18);
-	var assign_1 = __webpack_require__(686);
+	var tryCatch_1 = __webpack_require__(21);
+	var errorObject_1 = __webpack_require__(20);
+	var assign_1 = __webpack_require__(694);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -31497,25 +31630,25 @@ webpackJsonp([1],[
 	//# sourceMappingURL=WebSocketSubject.js.map
 
 /***/ },
-/* 577 */
+/* 585 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var AjaxObservable_1 = __webpack_require__(176);
+	var AjaxObservable_1 = __webpack_require__(177);
 	exports.ajax = AjaxObservable_1.AjaxObservable.create;
 	//# sourceMappingURL=ajax.js.map
 
 /***/ },
-/* 578 */
+/* 586 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var WebSocketSubject_1 = __webpack_require__(576);
+	var WebSocketSubject_1 = __webpack_require__(584);
 	exports.webSocket = WebSocketSubject_1.WebSocketSubject.create;
 	//# sourceMappingURL=webSocket.js.map
 
 /***/ },
-/* 579 */
+/* 587 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -31524,124 +31657,124 @@ webpackJsonp([1],[
 	//# sourceMappingURL=empty.js.map
 
 /***/ },
-/* 580 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var ForkJoinObservable_1 = __webpack_require__(558);
-	exports.forkJoin = ForkJoinObservable_1.ForkJoinObservable.create;
-	//# sourceMappingURL=forkJoin.js.map
-
-/***/ },
-/* 581 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var FromEventObservable_1 = __webpack_require__(559);
-	exports.fromEvent = FromEventObservable_1.FromEventObservable.create;
-	//# sourceMappingURL=fromEvent.js.map
-
-/***/ },
-/* 582 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var FromEventPatternObservable_1 = __webpack_require__(560);
-	exports.fromEventPattern = FromEventPatternObservable_1.FromEventPatternObservable.create;
-	//# sourceMappingURL=fromEventPattern.js.map
-
-/***/ },
-/* 583 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var IfObservable_1 = __webpack_require__(562);
-	exports._if = IfObservable_1.IfObservable.create;
-	//# sourceMappingURL=if.js.map
-
-/***/ },
-/* 584 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var IntervalObservable_1 = __webpack_require__(563);
-	exports.interval = IntervalObservable_1.IntervalObservable.create;
-	//# sourceMappingURL=interval.js.map
-
-/***/ },
-/* 585 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var merge_1 = __webpack_require__(188);
-	exports.merge = merge_1.mergeStatic;
-	//# sourceMappingURL=merge.js.map
-
-/***/ },
-/* 586 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var NeverObservable_1 = __webpack_require__(565);
-	exports.never = NeverObservable_1.NeverObservable.create;
-	//# sourceMappingURL=never.js.map
-
-/***/ },
-/* 587 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var PairsObservable_1 = __webpack_require__(566);
-	exports.pairs = PairsObservable_1.PairsObservable.create;
-	//# sourceMappingURL=pairs.js.map
-
-/***/ },
 /* 588 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var RangeObservable_1 = __webpack_require__(567);
-	exports.range = RangeObservable_1.RangeObservable.create;
-	//# sourceMappingURL=range.js.map
+	var ForkJoinObservable_1 = __webpack_require__(566);
+	exports.forkJoin = ForkJoinObservable_1.ForkJoinObservable.create;
+	//# sourceMappingURL=forkJoin.js.map
 
 /***/ },
 /* 589 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ErrorObservable_1 = __webpack_require__(557);
-	exports._throw = ErrorObservable_1.ErrorObservable.create;
-	//# sourceMappingURL=throw.js.map
+	var FromEventObservable_1 = __webpack_require__(567);
+	exports.fromEvent = FromEventObservable_1.FromEventObservable.create;
+	//# sourceMappingURL=fromEvent.js.map
 
 /***/ },
 /* 590 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TimerObservable_1 = __webpack_require__(569);
-	exports.timer = TimerObservable_1.TimerObservable.create;
-	//# sourceMappingURL=timer.js.map
+	var FromEventPatternObservable_1 = __webpack_require__(568);
+	exports.fromEventPattern = FromEventPatternObservable_1.FromEventPatternObservable.create;
+	//# sourceMappingURL=fromEventPattern.js.map
 
 /***/ },
 /* 591 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var UsingObservable_1 = __webpack_require__(570);
-	exports.using = UsingObservable_1.UsingObservable.create;
-	//# sourceMappingURL=using.js.map
+	var IfObservable_1 = __webpack_require__(570);
+	exports._if = IfObservable_1.IfObservable.create;
+	//# sourceMappingURL=if.js.map
 
 /***/ },
 /* 592 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var zip_1 = __webpack_require__(124);
+	var IntervalObservable_1 = __webpack_require__(571);
+	exports.interval = IntervalObservable_1.IntervalObservable.create;
+	//# sourceMappingURL=interval.js.map
+
+/***/ },
+/* 593 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var merge_1 = __webpack_require__(189);
+	exports.merge = merge_1.mergeStatic;
+	//# sourceMappingURL=merge.js.map
+
+/***/ },
+/* 594 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var NeverObservable_1 = __webpack_require__(573);
+	exports.never = NeverObservable_1.NeverObservable.create;
+	//# sourceMappingURL=never.js.map
+
+/***/ },
+/* 595 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var PairsObservable_1 = __webpack_require__(574);
+	exports.pairs = PairsObservable_1.PairsObservable.create;
+	//# sourceMappingURL=pairs.js.map
+
+/***/ },
+/* 596 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var RangeObservable_1 = __webpack_require__(575);
+	exports.range = RangeObservable_1.RangeObservable.create;
+	//# sourceMappingURL=range.js.map
+
+/***/ },
+/* 597 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var ErrorObservable_1 = __webpack_require__(565);
+	exports._throw = ErrorObservable_1.ErrorObservable.create;
+	//# sourceMappingURL=throw.js.map
+
+/***/ },
+/* 598 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var TimerObservable_1 = __webpack_require__(577);
+	exports.timer = TimerObservable_1.TimerObservable.create;
+	//# sourceMappingURL=timer.js.map
+
+/***/ },
+/* 599 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var UsingObservable_1 = __webpack_require__(578);
+	exports.using = UsingObservable_1.UsingObservable.create;
+	//# sourceMappingURL=using.js.map
+
+/***/ },
+/* 600 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var zip_1 = __webpack_require__(123);
 	exports.zip = zip_1.zipStatic;
 	//# sourceMappingURL=zip.js.map
 
 /***/ },
-/* 593 */
+/* 601 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -31650,8 +31783,8 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var tryCatch_1 = __webpack_require__(20);
-	var errorObject_1 = __webpack_require__(18);
+	var tryCatch_1 = __webpack_require__(21);
+	var errorObject_1 = __webpack_require__(20);
 	var OuterSubscriber_1 = __webpack_require__(5);
 	var subscribeToResult_1 = __webpack_require__(6);
 	/**
@@ -31756,7 +31889,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=audit.js.map
 
 /***/ },
-/* 594 */
+/* 602 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -31865,7 +31998,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=auditTime.js.map
 
 /***/ },
-/* 595 */
+/* 603 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -31946,7 +32079,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=buffer.js.map
 
 /***/ },
-/* 596 */
+/* 604 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32065,7 +32198,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=bufferCount.js.map
 
 /***/ },
-/* 597 */
+/* 605 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32268,7 +32401,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=bufferTime.js.map
 
 /***/ },
-/* 598 */
+/* 606 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32277,7 +32410,7 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscription_1 = __webpack_require__(17);
+	var Subscription_1 = __webpack_require__(19);
 	var subscribeToResult_1 = __webpack_require__(6);
 	var OuterSubscriber_1 = __webpack_require__(5);
 	/**
@@ -32425,7 +32558,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=bufferToggle.js.map
 
 /***/ },
-/* 599 */
+/* 607 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32434,9 +32567,9 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscription_1 = __webpack_require__(17);
-	var tryCatch_1 = __webpack_require__(20);
-	var errorObject_1 = __webpack_require__(18);
+	var Subscription_1 = __webpack_require__(19);
+	var tryCatch_1 = __webpack_require__(21);
+	var errorObject_1 = __webpack_require__(20);
 	var OuterSubscriber_1 = __webpack_require__(5);
 	var subscribeToResult_1 = __webpack_require__(6);
 	/**
@@ -32552,7 +32685,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=bufferWhen.js.map
 
 /***/ },
-/* 600 */
+/* 608 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32606,11 +32739,11 @@ webpackJsonp([1],[
 	//# sourceMappingURL=cache.js.map
 
 /***/ },
-/* 601 */
+/* 609 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var combineLatest_1 = __webpack_require__(120);
+	var combineLatest_1 = __webpack_require__(119);
 	/**
 	 * Converts a higher-order Observable into a first-order Observable by waiting
 	 * for the outer Observable to complete, then applying {@link combineLatest}.
@@ -32658,11 +32791,11 @@ webpackJsonp([1],[
 	//# sourceMappingURL=combineAll.js.map
 
 /***/ },
-/* 602 */
+/* 610 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeMap_1 = __webpack_require__(122);
+	var mergeMap_1 = __webpack_require__(121);
 	/**
 	 * Projects each source value to an Observable which is merged in the output
 	 * Observable, in a serialized fashion waiting for each one to complete before
@@ -32726,11 +32859,11 @@ webpackJsonp([1],[
 	//# sourceMappingURL=concatMap.js.map
 
 /***/ },
-/* 603 */
+/* 611 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeMapTo_1 = __webpack_require__(189);
+	var mergeMapTo_1 = __webpack_require__(190);
 	/**
 	 * Projects each source value to the same Observable which is merged multiple
 	 * times in a serialized fashion on the output Observable.
@@ -32788,7 +32921,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=concatMapTo.js.map
 
 /***/ },
-/* 604 */
+/* 612 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32901,7 +33034,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=count.js.map
 
 /***/ },
-/* 605 */
+/* 613 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33033,7 +33166,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=debounce.js.map
 
 /***/ },
-/* 606 */
+/* 614 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33154,7 +33287,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=debounceTime.js.map
 
 /***/ },
-/* 607 */
+/* 615 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33235,7 +33368,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=defaultIfEmpty.js.map
 
 /***/ },
-/* 608 */
+/* 616 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33247,7 +33380,7 @@ webpackJsonp([1],[
 	var async_1 = __webpack_require__(26);
 	var isDate_1 = __webpack_require__(94);
 	var Subscriber_1 = __webpack_require__(3);
-	var Notification_1 = __webpack_require__(70);
+	var Notification_1 = __webpack_require__(69);
 	/**
 	 * Delays the emission of items from the source Observable by a given timeout or
 	 * until a given Date.
@@ -33375,7 +33508,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=delay.js.map
 
 /***/ },
-/* 609 */
+/* 617 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33570,7 +33703,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=delayWhen.js.map
 
 /***/ },
-/* 610 */
+/* 618 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33645,11 +33778,11 @@ webpackJsonp([1],[
 	//# sourceMappingURL=dematerialize.js.map
 
 /***/ },
-/* 611 */
+/* 619 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var distinct_1 = __webpack_require__(181);
+	var distinct_1 = __webpack_require__(182);
 	/**
 	 * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items,
 	 * using a property accessed by using the key provided to check if the two items are distinct.
@@ -33676,11 +33809,11 @@ webpackJsonp([1],[
 	//# sourceMappingURL=distinctKey.js.map
 
 /***/ },
-/* 612 */
+/* 620 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var distinctUntilChanged_1 = __webpack_require__(182);
+	var distinctUntilChanged_1 = __webpack_require__(183);
 	/**
 	 * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,
 	 * using a property accessed by using the key provided to check if the two items are distinct.
@@ -33704,7 +33837,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=distinctUntilKeyChanged.js.map
 
 /***/ },
-/* 613 */
+/* 621 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33821,7 +33954,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=do.js.map
 
 /***/ },
-/* 614 */
+/* 622 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33921,7 +34054,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=elementAt.js.map
 
 /***/ },
-/* 615 */
+/* 623 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34016,7 +34149,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=exhaust.js.map
 
 /***/ },
-/* 616 */
+/* 624 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34158,7 +34291,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=exhaustMap.js.map
 
 /***/ },
-/* 617 */
+/* 625 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34167,8 +34300,8 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var tryCatch_1 = __webpack_require__(20);
-	var errorObject_1 = __webpack_require__(18);
+	var tryCatch_1 = __webpack_require__(21);
+	var errorObject_1 = __webpack_require__(20);
 	var OuterSubscriber_1 = __webpack_require__(5);
 	var subscribeToResult_1 = __webpack_require__(6);
 	/**
@@ -34313,7 +34446,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=expand.js.map
 
 /***/ },
-/* 618 */
+/* 626 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34323,7 +34456,7 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(3);
-	var Subscription_1 = __webpack_require__(17);
+	var Subscription_1 = __webpack_require__(19);
 	/**
 	 * Returns an Observable that mirrors the source Observable, but will call a specified function when
 	 * the source terminates on complete or error.
@@ -34361,11 +34494,11 @@ webpackJsonp([1],[
 	//# sourceMappingURL=finally.js.map
 
 /***/ },
-/* 619 */
+/* 627 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var find_1 = __webpack_require__(185);
+	var find_1 = __webpack_require__(186);
 	/**
 	 * Emits only the index of the first value emitted by the source Observable that
 	 * meets some condition.
@@ -34407,7 +34540,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=findIndex.js.map
 
 /***/ },
-/* 620 */
+/* 628 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34417,11 +34550,11 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(3);
-	var Subscription_1 = __webpack_require__(17);
+	var Subscription_1 = __webpack_require__(19);
 	var Observable_1 = __webpack_require__(1);
-	var Subject_1 = __webpack_require__(13);
-	var Map_1 = __webpack_require__(684);
-	var FastMap_1 = __webpack_require__(682);
+	var Subject_1 = __webpack_require__(14);
+	var Map_1 = __webpack_require__(692);
+	var FastMap_1 = __webpack_require__(690);
 	/**
 	 * Groups the items emitted by an Observable according to a specified criterion,
 	 * and emits these grouped items as `GroupedObservables`, one
@@ -34644,7 +34777,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=groupBy.js.map
 
 /***/ },
-/* 621 */
+/* 629 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34654,7 +34787,7 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(3);
-	var noop_1 = __webpack_require__(203);
+	var noop_1 = __webpack_require__(204);
 	/**
 	 * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.
 	 *
@@ -34696,7 +34829,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=ignoreElements.js.map
 
 /***/ },
-/* 622 */
+/* 630 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34753,7 +34886,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=isEmpty.js.map
 
 /***/ },
-/* 623 */
+/* 631 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34770,7 +34903,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=let.js.map
 
 /***/ },
-/* 624 */
+/* 632 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34838,7 +34971,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=mapTo.js.map
 
 /***/ },
-/* 625 */
+/* 633 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34848,7 +34981,7 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(3);
-	var Notification_1 = __webpack_require__(70);
+	var Notification_1 = __webpack_require__(69);
 	/**
 	 * Represents all of the notifications from the source Observable as `next`
 	 * emissions marked with their original types within {@link Notification}
@@ -34926,7 +35059,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=materialize.js.map
 
 /***/ },
-/* 626 */
+/* 634 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34953,7 +35086,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=max.js.map
 
 /***/ },
-/* 627 */
+/* 635 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34962,8 +35095,8 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var tryCatch_1 = __webpack_require__(20);
-	var errorObject_1 = __webpack_require__(18);
+	var tryCatch_1 = __webpack_require__(21);
+	var errorObject_1 = __webpack_require__(20);
 	var subscribeToResult_1 = __webpack_require__(6);
 	var OuterSubscriber_1 = __webpack_require__(5);
 	/**
@@ -35064,7 +35197,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=mergeScan.js.map
 
 /***/ },
-/* 628 */
+/* 636 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35090,7 +35223,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=min.js.map
 
 /***/ },
-/* 629 */
+/* 637 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35172,12 +35305,12 @@ webpackJsonp([1],[
 	//# sourceMappingURL=pairwise.js.map
 
 /***/ },
-/* 630 */
+/* 638 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var not_1 = __webpack_require__(688);
-	var filter_1 = __webpack_require__(184);
+	var not_1 = __webpack_require__(696);
+	var filter_1 = __webpack_require__(185);
 	/**
 	 * Splits the source Observable into two, one with values that satisfy a
 	 * predicate, and another with values that don't satisfy the predicate.
@@ -35229,7 +35362,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=partition.js.map
 
 /***/ },
-/* 631 */
+/* 639 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35292,12 +35425,12 @@ webpackJsonp([1],[
 	//# sourceMappingURL=pluck.js.map
 
 /***/ },
-/* 632 */
+/* 640 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Subject_1 = __webpack_require__(13);
-	var multicast_1 = __webpack_require__(61);
+	var Subject_1 = __webpack_require__(14);
+	var multicast_1 = __webpack_require__(60);
 	/**
 	 * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called
 	 * before it begins emitting items to those Observers that have subscribed to it.
@@ -35319,12 +35452,12 @@ webpackJsonp([1],[
 	//# sourceMappingURL=publish.js.map
 
 /***/ },
-/* 633 */
+/* 641 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var BehaviorSubject_1 = __webpack_require__(87);
-	var multicast_1 = __webpack_require__(61);
+	var multicast_1 = __webpack_require__(60);
 	/**
 	 * @param value
 	 * @return {ConnectableObservable<T>}
@@ -35338,12 +35471,12 @@ webpackJsonp([1],[
 	//# sourceMappingURL=publishBehavior.js.map
 
 /***/ },
-/* 634 */
+/* 642 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var AsyncSubject_1 = __webpack_require__(86);
-	var multicast_1 = __webpack_require__(61);
+	var multicast_1 = __webpack_require__(60);
 	/**
 	 * @return {ConnectableObservable<T>}
 	 * @method publishLast
@@ -35356,12 +35489,12 @@ webpackJsonp([1],[
 	//# sourceMappingURL=publishLast.js.map
 
 /***/ },
-/* 635 */
+/* 643 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var ReplaySubject_1 = __webpack_require__(88);
-	var multicast_1 = __webpack_require__(61);
+	var multicast_1 = __webpack_require__(60);
 	/**
 	 * @param bufferSize
 	 * @param windowTime
@@ -35379,7 +35512,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=publishReplay.js.map
 
 /***/ },
-/* 636 */
+/* 644 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35459,7 +35592,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=repeat.js.map
 
 /***/ },
-/* 637 */
+/* 645 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35468,9 +35601,9 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(13);
-	var tryCatch_1 = __webpack_require__(20);
-	var errorObject_1 = __webpack_require__(18);
+	var Subject_1 = __webpack_require__(14);
+	var tryCatch_1 = __webpack_require__(21);
+	var errorObject_1 = __webpack_require__(20);
 	var OuterSubscriber_1 = __webpack_require__(5);
 	var subscribeToResult_1 = __webpack_require__(6);
 	/**
@@ -35570,7 +35703,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=repeatWhen.js.map
 
 /***/ },
-/* 638 */
+/* 646 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35644,7 +35777,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=retry.js.map
 
 /***/ },
-/* 639 */
+/* 647 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35653,9 +35786,9 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(13);
-	var tryCatch_1 = __webpack_require__(20);
-	var errorObject_1 = __webpack_require__(18);
+	var Subject_1 = __webpack_require__(14);
+	var tryCatch_1 = __webpack_require__(21);
+	var errorObject_1 = __webpack_require__(20);
 	var OuterSubscriber_1 = __webpack_require__(5);
 	var subscribeToResult_1 = __webpack_require__(6);
 	/**
@@ -35755,7 +35888,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=retryWhen.js.map
 
 /***/ },
-/* 640 */
+/* 648 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35846,7 +35979,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=sample.js.map
 
 /***/ },
-/* 641 */
+/* 649 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35942,7 +36075,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=sampleTime.js.map
 
 /***/ },
-/* 642 */
+/* 650 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36055,7 +36188,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=scan.js.map
 
 /***/ },
-/* 643 */
+/* 651 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36065,8 +36198,8 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(3);
-	var tryCatch_1 = __webpack_require__(20);
-	var errorObject_1 = __webpack_require__(18);
+	var tryCatch_1 = __webpack_require__(21);
+	var errorObject_1 = __webpack_require__(20);
 	/**
 	 * Compares all values of two observables in sequence using an optional comparor function
 	 * and returns an observable of a single boolean value representing whether or not the two sequences
@@ -36224,12 +36357,12 @@ webpackJsonp([1],[
 	//# sourceMappingURL=sequenceEqual.js.map
 
 /***/ },
-/* 644 */
+/* 652 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var multicast_1 = __webpack_require__(61);
-	var Subject_1 = __webpack_require__(13);
+	var multicast_1 = __webpack_require__(60);
+	var Subject_1 = __webpack_require__(14);
 	function shareSubjectFactory() {
 	    return new Subject_1.Subject();
 	}
@@ -36253,7 +36386,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=share.js.map
 
 /***/ },
-/* 645 */
+/* 653 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36353,7 +36486,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=single.js.map
 
 /***/ },
-/* 646 */
+/* 654 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36409,7 +36542,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=skip.js.map
 
 /***/ },
-/* 647 */
+/* 655 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36485,7 +36618,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=skipUntil.js.map
 
 /***/ },
-/* 648 */
+/* 656 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36556,14 +36689,14 @@ webpackJsonp([1],[
 	//# sourceMappingURL=skipWhile.js.map
 
 /***/ },
-/* 649 */
+/* 657 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var ArrayObservable_1 = __webpack_require__(41);
-	var ScalarObservable_1 = __webpack_require__(118);
+	var ScalarObservable_1 = __webpack_require__(117);
 	var EmptyObservable_1 = __webpack_require__(47);
-	var concat_1 = __webpack_require__(121);
+	var concat_1 = __webpack_require__(120);
 	var isScheduler_1 = __webpack_require__(48);
 	/**
 	 * Returns an Observable that emits the items in a specified Iterable before it begins to emit items emitted by the
@@ -36604,11 +36737,11 @@ webpackJsonp([1],[
 	//# sourceMappingURL=startWith.js.map
 
 /***/ },
-/* 650 */
+/* 658 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var SubscribeOnObservable_1 = __webpack_require__(568);
+	var SubscribeOnObservable_1 = __webpack_require__(576);
 	/**
 	 * Asynchronously subscribes Observers to this Observable on the specified Scheduler.
 	 *
@@ -36628,7 +36761,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=subscribeOn.js.map
 
 /***/ },
-/* 651 */
+/* 659 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36741,7 +36874,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=switch.js.map
 
 /***/ },
-/* 652 */
+/* 660 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36885,7 +37018,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=switchMap.js.map
 
 /***/ },
-/* 653 */
+/* 661 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37016,7 +37149,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=switchMapTo.js.map
 
 /***/ },
-/* 654 */
+/* 662 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37109,7 +37242,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=take.js.map
 
 /***/ },
-/* 655 */
+/* 663 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37221,7 +37354,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=takeLast.js.map
 
 /***/ },
-/* 656 */
+/* 664 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37301,7 +37434,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=takeUntil.js.map
 
 /***/ },
-/* 657 */
+/* 665 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37398,7 +37531,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=takeWhile.js.map
 
 /***/ },
-/* 658 */
+/* 666 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37511,7 +37644,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=throttle.js.map
 
 /***/ },
-/* 659 */
+/* 667 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37611,7 +37744,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=throttleTime.js.map
 
 /***/ },
-/* 660 */
+/* 668 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37718,7 +37851,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=timeout.js.map
 
 /***/ },
-/* 661 */
+/* 669 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37833,7 +37966,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=timeoutWith.js.map
 
 /***/ },
-/* 662 */
+/* 670 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37883,7 +38016,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=toArray.js.map
 
 /***/ },
-/* 663 */
+/* 671 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37892,7 +38025,7 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(13);
+	var Subject_1 = __webpack_require__(14);
 	var OuterSubscriber_1 = __webpack_require__(5);
 	var subscribeToResult_1 = __webpack_require__(6);
 	/**
@@ -37998,7 +38131,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=window.js.map
 
 /***/ },
-/* 664 */
+/* 672 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38008,7 +38141,7 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(3);
-	var Subject_1 = __webpack_require__(13);
+	var Subject_1 = __webpack_require__(14);
 	/**
 	 * Branch out the source Observable values as a nested Observable with each
 	 * nested Observable emitting at most `windowSize` values.
@@ -38134,7 +38267,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=windowCount.js.map
 
 /***/ },
-/* 665 */
+/* 673 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38143,7 +38276,7 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(13);
+	var Subject_1 = __webpack_require__(14);
 	var async_1 = __webpack_require__(26);
 	var Subscriber_1 = __webpack_require__(3);
 	/**
@@ -38308,7 +38441,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=windowTime.js.map
 
 /***/ },
-/* 666 */
+/* 674 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38317,10 +38450,10 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(13);
-	var Subscription_1 = __webpack_require__(17);
-	var tryCatch_1 = __webpack_require__(20);
-	var errorObject_1 = __webpack_require__(18);
+	var Subject_1 = __webpack_require__(14);
+	var Subscription_1 = __webpack_require__(19);
+	var tryCatch_1 = __webpack_require__(21);
+	var errorObject_1 = __webpack_require__(20);
 	var OuterSubscriber_1 = __webpack_require__(5);
 	var subscribeToResult_1 = __webpack_require__(6);
 	/**
@@ -38493,7 +38626,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=windowToggle.js.map
 
 /***/ },
-/* 667 */
+/* 675 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38502,9 +38635,9 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(13);
-	var tryCatch_1 = __webpack_require__(20);
-	var errorObject_1 = __webpack_require__(18);
+	var Subject_1 = __webpack_require__(14);
+	var tryCatch_1 = __webpack_require__(21);
+	var errorObject_1 = __webpack_require__(20);
 	var OuterSubscriber_1 = __webpack_require__(5);
 	var subscribeToResult_1 = __webpack_require__(6);
 	/**
@@ -38625,7 +38758,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=windowWhen.js.map
 
 /***/ },
-/* 668 */
+/* 676 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38760,11 +38893,11 @@ webpackJsonp([1],[
 	//# sourceMappingURL=withLatestFrom.js.map
 
 /***/ },
-/* 669 */
+/* 677 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var zip_1 = __webpack_require__(124);
+	var zip_1 = __webpack_require__(123);
 	/**
 	 * @param project
 	 * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
@@ -38778,7 +38911,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=zipAll.js.map
 
 /***/ },
-/* 670 */
+/* 678 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38787,7 +38920,7 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscription_1 = __webpack_require__(17);
+	var Subscription_1 = __webpack_require__(19);
 	/**
 	 * A unit of work to be executed in a {@link Scheduler}. An action is typically
 	 * created from within a Scheduler and an RxJS user does not need to concern
@@ -38827,7 +38960,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=Action.js.map
 
 /***/ },
-/* 671 */
+/* 679 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38837,7 +38970,7 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var AsyncAction_1 = __webpack_require__(72);
-	var AnimationFrame_1 = __webpack_require__(681);
+	var AnimationFrame_1 = __webpack_require__(689);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @ignore
@@ -38885,7 +39018,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=AnimationFrameAction.js.map
 
 /***/ },
-/* 672 */
+/* 680 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38927,7 +39060,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=AnimationFrameScheduler.js.map
 
 /***/ },
-/* 673 */
+/* 681 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38936,7 +39069,7 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Immediate_1 = __webpack_require__(683);
+	var Immediate_1 = __webpack_require__(691);
 	var AsyncAction_1 = __webpack_require__(72);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
@@ -38985,7 +39118,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=AsapAction.js.map
 
 /***/ },
-/* 674 */
+/* 682 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -39027,7 +39160,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=AsapScheduler.js.map
 
 /***/ },
-/* 675 */
+/* 683 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -39079,7 +39212,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=QueueAction.js.map
 
 /***/ },
-/* 676 */
+/* 684 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -39100,17 +39233,17 @@ webpackJsonp([1],[
 	//# sourceMappingURL=QueueScheduler.js.map
 
 /***/ },
-/* 677 */
+/* 685 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var AnimationFrameAction_1 = __webpack_require__(671);
-	var AnimationFrameScheduler_1 = __webpack_require__(672);
+	var AnimationFrameAction_1 = __webpack_require__(679);
+	var AnimationFrameScheduler_1 = __webpack_require__(680);
 	exports.animationFrame = new AnimationFrameScheduler_1.AnimationFrameScheduler(AnimationFrameAction_1.AnimationFrameAction);
 	//# sourceMappingURL=animationFrame.js.map
 
 /***/ },
-/* 678 */
+/* 686 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -39120,9 +39253,9 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(1);
-	var Subscription_1 = __webpack_require__(17);
-	var SubscriptionLoggable_1 = __webpack_require__(199);
-	var applyMixins_1 = __webpack_require__(201);
+	var Subscription_1 = __webpack_require__(19);
+	var SubscriptionLoggable_1 = __webpack_require__(200);
+	var applyMixins_1 = __webpack_require__(202);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @ignore
@@ -39161,7 +39294,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=ColdObservable.js.map
 
 /***/ },
-/* 679 */
+/* 687 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -39170,10 +39303,10 @@ webpackJsonp([1],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(13);
-	var Subscription_1 = __webpack_require__(17);
-	var SubscriptionLoggable_1 = __webpack_require__(199);
-	var applyMixins_1 = __webpack_require__(201);
+	var Subject_1 = __webpack_require__(14);
+	var Subscription_1 = __webpack_require__(19);
+	var SubscriptionLoggable_1 = __webpack_require__(200);
+	var applyMixins_1 = __webpack_require__(202);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @ignore
@@ -39214,7 +39347,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=HotObservable.js.map
 
 /***/ },
-/* 680 */
+/* 688 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -39224,11 +39357,11 @@ webpackJsonp([1],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(1);
-	var Notification_1 = __webpack_require__(70);
-	var ColdObservable_1 = __webpack_require__(678);
-	var HotObservable_1 = __webpack_require__(679);
-	var SubscriptionLog_1 = __webpack_require__(198);
-	var VirtualTimeScheduler_1 = __webpack_require__(195);
+	var Notification_1 = __webpack_require__(69);
+	var ColdObservable_1 = __webpack_require__(686);
+	var HotObservable_1 = __webpack_require__(687);
+	var SubscriptionLog_1 = __webpack_require__(199);
+	var VirtualTimeScheduler_1 = __webpack_require__(196);
 	var defaultMaxFrame = 750;
 	var TestScheduler = (function (_super) {
 	    __extends(TestScheduler, _super);
@@ -39442,7 +39575,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=TestScheduler.js.map
 
 /***/ },
-/* 681 */
+/* 689 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -39481,7 +39614,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=AnimationFrame.js.map
 
 /***/ },
-/* 682 */
+/* 690 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -39517,7 +39650,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=FastMap.js.map
 
 /***/ },
-/* 683 */
+/* 691 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -39731,17 +39864,17 @@ webpackJsonp([1],[
 	//# sourceMappingURL=Immediate.js.map
 
 /***/ },
-/* 684 */
+/* 692 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var root_1 = __webpack_require__(23);
-	var MapPolyfill_1 = __webpack_require__(685);
+	var MapPolyfill_1 = __webpack_require__(693);
 	exports.Map = root_1.root.Map || (function () { return MapPolyfill_1.MapPolyfill; })();
 	//# sourceMappingURL=Map.js.map
 
 /***/ },
-/* 685 */
+/* 693 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -39793,7 +39926,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=MapPolyfill.js.map
 
 /***/ },
-/* 686 */
+/* 694 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -39829,8 +39962,8 @@ webpackJsonp([1],[
 	//# sourceMappingURL=assign.js.map
 
 /***/ },
-/* 687 */,
-/* 688 */
+/* 695 */,
+/* 696 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -39846,62 +39979,7 @@ webpackJsonp([1],[
 	//# sourceMappingURL=not.js.map
 
 /***/ },
-/* 689 */,
-/* 690 */
-/***/ function(module, exports) {
-
-	var si = typeof setImmediate === 'function', tick;
-	if (si) {
-	  tick = function (fn) { setImmediate(fn); };
-	} else {
-	  tick = function (fn) { setTimeout(fn, 0); };
-	}
-
-	module.exports = tick;
-
-/***/ },
-/* 691 */
-/***/ function(module, exports) {
-
-	module.exports = ""
-
-/***/ },
-/* 692 */
-/***/ function(module, exports) {
-
-	module.exports = ".sweet-alert {\n    -moz-box-sizing: content-box;\n    -webkit-box-sizing: content-box;\n    box-sizing: content-box;\n}"
-
-/***/ },
-/* 693 */
-/***/ function(module, exports) {
-
-	module.exports = ".no-bullet {\n  list-style: none;\n}\n\n.pointer:hover {\n  cursor: pointer;\n}\n\n.hide {\n  display: none;\n}"
-
-/***/ },
-/* 694 */
-/***/ function(module, exports) {
-
-	module.exports = ""
-
-/***/ },
-/* 695 */
-/***/ function(module, exports) {
-
-	module.exports = ""
-
-/***/ },
-/* 696 */
-/***/ function(module, exports) {
-
-	module.exports = ""
-
-/***/ },
-/* 697 */
-/***/ function(module, exports) {
-
-	module.exports = ""
-
-/***/ },
+/* 697 */,
 /* 698 */
 /***/ function(module, exports) {
 
@@ -39915,6 +39993,60 @@ webpackJsonp([1],[
 
 /***/ },
 /* 700 */
+/***/ function(module, exports) {
+
+	module.exports = ""
+
+/***/ },
+/* 701 */
+/***/ function(module, exports) {
+
+	module.exports = ".sweet-alert {\n    -moz-box-sizing: content-box;\n    -webkit-box-sizing: content-box;\n    box-sizing: content-box;\n}"
+
+/***/ },
+/* 702 */
+/***/ function(module, exports) {
+
+	module.exports = ".no-bullet {\n  list-style: none;\n}\n\n.pointer:hover {\n  cursor: pointer;\n}\n\n.hide {\n  display: none;\n}"
+
+/***/ },
+/* 703 */
+/***/ function(module, exports) {
+
+	module.exports = ""
+
+/***/ },
+/* 704 */
+/***/ function(module, exports) {
+
+	module.exports = ""
+
+/***/ },
+/* 705 */
+/***/ function(module, exports) {
+
+	module.exports = ""
+
+/***/ },
+/* 706 */
+/***/ function(module, exports) {
+
+	module.exports = ""
+
+/***/ },
+/* 707 */
+/***/ function(module, exports) {
+
+	module.exports = ""
+
+/***/ },
+/* 708 */
+/***/ function(module, exports) {
+
+	module.exports = ""
+
+/***/ },
+/* 709 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {

@@ -95,11 +95,32 @@ export class UserProfile implements OnInit {
     }
 
     purgeScopes() {
-        return this.scopeService.purgeScopes()
-            .then(res => {
-                this.updateScopes();
+        const self = this;
+        swal({
+                title: 'Purge All Scopes?',
+                text: "How sure are you really? You won't be able to revert this!",
+                type: 'info',
+                showCancelButton: true,
+                cancelButtonColor: '#d33',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete them all!'
+            }).then(function () {
+                return self.scopeService.purgeScopes()
+                    .then(res => {
+                        self.updateScopes();
+                    })
+                    .catch(err => console.log('this.scopeService.purgeScopes() error: ', err));
+            }, function (dismiss) {
+                // dismiss can be 'cancel', 'overlay',
+                // 'close', and 'timer'
+                if (dismiss === 'cancel') {
+                    swal(
+                        'Cancelled',
+                        'Phew, that was close. Your scopes remain',
+                        'error'
+                    );
+                }
             })
-            .catch(err => console.log('this.scopeService.purgeScopes() error: ', err));
     }
 
     updateScopes() {

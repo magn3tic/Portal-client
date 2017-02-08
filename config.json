@@ -6,7 +6,7 @@
       "clientsAPI": "/clients"
     },
     "magneticProxy": "https://express-proxy-togppeylca.now.sh/hubAPI",
-    "hubspot": {
+    "HUBSPOT": {
       "HUBAUTHAPI": "https://b2c78a56.ngrok.io/hubAuth",
       "HUBTOKENURL": "https://b2c78a56.ngrok.io/hubToken",
       "APIURL": "https://api.hubapi.com/",

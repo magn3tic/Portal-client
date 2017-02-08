@@ -4,9 +4,9 @@
         </div>
         <div class="content">
             <div class="author">
-                <h4 class="title">{{me.user}}<br>
-                    <img *ngIf="me.user" class="media-object" alt="Generic placeholder image" gravatar [email]="me.user" [size]="515">
-                    <a href="#"><small>{{me.user}}</small></a>
+                <h4 class="title">{{me.data.user}}<br>
+                    <img *ngIf="me.data.user" class="media-object" alt="Generic placeholder image" gravatar [email]="me.data.user" [size]="515">
+                    <a href="#"><small>{{me.data.user}}</small></a>
                 </h4>
             </div>
             <p class="description text-center">

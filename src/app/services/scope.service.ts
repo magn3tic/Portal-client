@@ -90,7 +90,7 @@ export class ScopeService {
         );
         console.log('data sent: ', body);
         // Async operation to save scope as property on company. Resolve if successful, Reject if unsuccessful.
-        this.apiService.post(this.hubFormUpdateEndpoint, body)
+        return this.apiService.post(this.hubFormUpdateEndpoint, body)
             .subscribe(res => {
                 console.log('res: ', decodeURI(res))
             })
@@ -124,7 +124,7 @@ export class ScopeService {
                 scopes: currentScopesArray
             })
 
-            this.apiService.post(this.hubFormUpdateEndpoint, body)
+            return this.apiService.post(this.hubFormUpdateEndpoint, body)
             .subscribe(res => {
                 console.log('res: ', decodeURI(res))
             })

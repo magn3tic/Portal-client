@@ -14,24 +14,25 @@ declare var CONFIG;
 })
 
 export class Main implements OnInit{
+    // Busy spinner docs: https://www.npmjs.com/package/angular2-busy
     busy: Subscription;
     isLoading: boolean = false;
     isLoader: boolean = false;
-    magHttpsProxy: string = CONFIG.magneticProxy;
-    hubspotAPIAllContacts = CONFIG.hubspot.endpoints.allContacts;
-    hubspotAPIAllDeals = CONFIG.hubspot.endpoints.allDeals;
-    // This endpoint is what validates and returns a user via JWT
-    token_endpoint: string = 'auth/token';
-    user_role: any;
-    user_email: string;
-    super: boolean;
-    admin: boolean;
-    constructor(private store: Store, private storeHelper: StoreHelper, private clientsService: ClientsService, private authService: AuthService, private scopeService: ScopeService, private router: Router) { 
-        this.store
-        .changes
-        .pluck('isLoading')
-        .subscribe((isLoading: boolean) => this.isLoader = isLoading)
-    }
+    HUBSPOTPROXY: string = `${CONFIG.HUBSPOTPROXY.APIURL}`;
+    constructor(
+        private store: Store, 
+        private storeHelper: StoreHelper, 
+        private clientsService: ClientsService, 
+        private authService: AuthService, 
+        private scopeService: ScopeService, 
+        private router: Router
+        ) 
+        { 
+            this.store
+            .changes
+            .pluck('isLoading')
+            .subscribe((isLoading: boolean) => this.isLoader = isLoading)
+        }
 
     ngOnInit() {
         if(this.authService.isAuthorized()) {

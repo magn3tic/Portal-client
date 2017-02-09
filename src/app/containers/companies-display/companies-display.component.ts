@@ -15,11 +15,13 @@ export class CompaniesDisplay implements OnInit{
 
   constructor(private clientsService: ClientsService, private apiService: ApiService, private storeHelper: StoreHelper, private authService: AuthService, private store: Store, private hubspotAPIService: HubSpotAPIService) {}
 
-  HUBAPI: string = CONFIG.hubspot.APIURL;
-  // HUBDEALS: string = CONFIG.hubspot.endpoints.allContacts;
-  HUBCOMPANIES: string = 'https://57341804.ngrok.io/hubCompanies';
+  HUBAPI: string = `${CONFIG.HUBSPOTPROXY.APIURL}`;
+  HUBCOMPANIES: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBCOMPANIES}`;
   companies: Array<Object> = [];
+
+  // Busy spinner docs: https://www.npmjs.com/package/angular2-busy
   busy: Subscription;
+
   ngOnInit() {
     // console.log('companies.length at ng init: ', this.store.getState().companies.length);
     // Check store for companies before making api call

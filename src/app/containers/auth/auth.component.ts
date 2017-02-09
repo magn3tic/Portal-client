@@ -15,13 +15,13 @@ declare var CONFIG: any;
 })
 
 export class Auth implements OnInit {
-  // This initiates a Oauth 2.0 connection via passport.js
-  // hubAuthAPI: string = CONFIG.hubspot.HUBAUTHAPI; // Hide this in config vars
-  hubAuthAPI: string = 'https://57341804.ngrok.io/hubAuth';
+  // Prod
+  HUBAUTH: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBAUTH}`;
 
-  constructor(private router: Router, private authService: AuthService) {
-    // console.log('hubauthapi: ', this.hubAuthAPI);
-  }
+  constructor(
+    private router: Router, 
+    private authService: AuthService
+    ) {}
 
   ngOnInit() {
     if (this.authService.isAuthorized()) {

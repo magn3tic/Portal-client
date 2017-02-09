@@ -15,19 +15,19 @@ export class HubSpotAPIService {
     Authorization: `Bearer ${window.localStorage.getItem('hubspot_token')}`
   });
 
-  companiesAPI: string = CONFIG.hubspot.endpoints.getCompanies;
-  magHttpsProxy: string = CONFIG.magneticProxy;
-  // hubspotAPI: string = CONFIG.hubspot.APIURL
-  hubspotAPI: string = 'https://api.hubapi.com/';
-  HUBSPOTPROXY: string = 'https://57341804.ngrok.io/hubAPI';
-  CONTACTSPROXY: string = 'https://57341804.ngrok.io/hubContacts';
-  HUBDEALS: string = 'https://57341804.ngrok.io/hubDeals';
-  HUBDEAL: string = 'https://57341804.ngrok.io/hubDeal';
-  HUBCOMPANIES: string = 'https://57341804.ngrok.io/hubCompanies';
-  hubspotAPIKey: string = CONFIG.hubspot.APIKEY;
-  // hubContacts: string = CONFIG.hubspot.allContacts;
-  hubContacts: string = 'contacts/v1/lists/all/contacts/all/';
-  constructor(private apiService: ApiService, private storeHelper: StoreHelper, private store: Store, private http: Http) { }
+  HUBAUTHAPI: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBAUTH}`;
+  HUBSPOTPROXY: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBAPI}`;
+  CONTACTSPROXY: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBCONTACTS}`;
+  HUBDEALS: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBDEALS}`;
+  HUBDEAL: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBDEAL}`;
+  HUBCOMPANIES: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBCOMPANIES}`;
+
+  constructor(
+    private apiService: ApiService, 
+    private storeHelper: StoreHelper, 
+    private store: Store, 
+    private http: Http
+  ) { }
 
   private getJson(response: Response) {
     return response.json();

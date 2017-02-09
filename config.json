@@ -6,7 +6,7 @@
       "clientsAPI": "/clients"
     },
     "HUBSPOTPROXY": {
-      "APIURL": "https://57341804.ngrok.io/",
+      "APIURL": "https://57341804.ngrok.io",
       "HUBAUTH": "/hubAuth",
       "HUBME": "/hubMe",
       "HUBTOKEN": "/hubToken",
@@ -14,6 +14,8 @@
       "HUBCONTACTS": "/hubContacts",
       "HUBLOGOUT": "/hubLogout",
       "HUBCOMPANIES": "/hubCompanies",
+      "HUBDEAL": "/hubDeal",
+      "HUBDEALS": "/hubDeals",
       "HUBDELETEPROPS": "/hubDeleteProps",
       "HUBFORMSPURGE": "/hubFormsPurge",
       "HUBFORMSUPDATE": "/hubFormsUpdate",
@@ -23,10 +25,22 @@
     }
   },
   "development": {
-    "HUBSPOT": {
-      "HUBAUTHAPI": "/hubAuth",
-      "HUBTOKENURL": "/hubToken",
-      "APIURL": "https://api.hubapi.com/",
+    "HUBSPOTPROXY": {
+      "APIURL": "https://57341804.ngrok.io",
+      "HUBAUTH": "/hubAuth",
+      "HUBME": "/hubMe",
+      "HUBTOKEN": "/hubToken",
+      "HUBCONTACT": "/contact",
+      "HUBCONTACTS": "/hubContacts",
+      "HUBLOGOUT": "/hubLogout",
+      "HUBCOMPANIES": "/hubCompanies",
+      "HUBDEAL": "/hubDeal",
+      "HUBDEALS": "/hubDeals",
+      "HUBDELETEPROPS": "/hubDeleteProps",
+      "HUBFORMSPURGE": "/hubFormsPurge",
+      "HUBFORMSUPDATE": "/hubFormsUpdate",
+      "HUBAPIREFRESH": "/hubAPI/refresh",
+      "HUBAPI": "/hubAPI",
       "JWTKEY": "hubspot_token"
     },
     "scope": [

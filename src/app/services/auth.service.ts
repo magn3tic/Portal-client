@@ -13,11 +13,9 @@ export class AuthService implements CanActivate {
     // JWTKEY: string = CONFIG.hubspot.JWTKEY;
     JWTKEY: string = 'hubspot_token';
     JWT: string = localStorage.getItem(this.JWTKEY);
-    // HUBAUTHAPI: string = CONFIG.hubspot.HUBAUTHAPI;
-    HUBAUTHAPI: string = 'https://57341804.ngrok.io/hubAuth';
-    HUBSPOTPROXY: string = 'https://57341804.ngrok.io/hubAPI';
-    HUBJWTPURGE: string = 'https://57341804.ngrok.io/hubLogout';
-    HUBME: string = 'https://57341804.ngrok.io/hubMe';
+    HUBAUTHAPI: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBAUTH}`;
+    HUBJWTPURGE: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBLOGOUT}`;
+    HUBME: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBME}`;
     HUBTOKEN: string = null;
     constructor(
         private router: Router,
@@ -121,6 +119,7 @@ export class AuthService implements CanActivate {
             if (window.localStorage.getItem(this.JWTKEY)) {
                 resolve(window.localStorage.getItem(this.JWTKEY))
             } else if (!window.localStorage.getItem(this.JWTKEY)) {
+                console.log('apiservice hubauthapi: ', this.HUBAUTHAPI);
                 this.apiService.get(this.HUBAUTHAPI)
                     .map((res) => {
                         console.log('AuthService.authenticate conditional no hubspot_token in localStorage. apiService.get(HUBAUTHAPI) res: ', res);

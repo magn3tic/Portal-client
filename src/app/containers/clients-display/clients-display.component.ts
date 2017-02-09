@@ -14,8 +14,8 @@ export class ClientsDisplay implements OnInit{
 
   constructor(private clientsService: ClientsService, private apiService: ApiService, private storeHelper: StoreHelper, private authService: AuthService, private store: Store, private hubspotAPIService: HubSpotAPIService) {}
 
-  HUBAPI: string = CONFIG.hubspot.APIURL;
-  HUBCONTACTS: string = CONFIG.hubspot.endpoints.allContacts;
+  HUBAPI: string = `${CONFIG.HUBSPOTPROXY.APIURL}`;
+  HUBCONTACTS: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBCONTACTS}`;
   clients: Array<Object> = [];
   stringFilter: Object = '';
   ngOnInit() {

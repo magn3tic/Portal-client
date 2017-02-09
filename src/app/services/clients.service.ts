@@ -12,12 +12,7 @@ declare var CONFIG;
 
 @Injectable()
 export class ClientsService /*implements CanActivate*/ {
-  hubspotGetCompanyURL: string = CONFIG.hubspot.endpoints.getCompany;
-  hubspotGetContacts: string = CONFIG.hubspot.allContacts;
-  clientsAPI: string = CONFIG.endpoints.clientsAPI;
-  magHttpsProxy: string = CONFIG.magneticProxy;
-  hubspotAPIEndpoint: string = CONFIG.hubspot.APIURL
-  hubspotAPIKey: string = CONFIG.hubspot.APIKEY;
+  HUBSPOTCONTACTS: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBCONTACTS}`;
   tempCompanyArr: Array<any> = [];
   constructor(private hubspotAPIService: HubSpotAPIService, private store: Store, private storeHelper: StoreHelper, private router: Router) { }
 
@@ -60,9 +55,8 @@ export class ClientsService /*implements CanActivate*/ {
     //     console.log('clients: ', clients)
     //     _.forEach(clients, client => self.tempCompanyArr.push(client))
     //   });
-    this.hubspotAPIService.hubSpotAPICall(this.hubspotGetContacts)
+    this.hubspotAPIService.hubSpotAPICall(this.HUBSPOTCONTACTS)
     .subscribe(res => console.log('this.hubspotAPIService.hubSpotAPICall(this.hubspotGetContacts) returned: ', res));
     return self.storeHelper.add('clients', self.tempCompanyArr);
   }
-
 }

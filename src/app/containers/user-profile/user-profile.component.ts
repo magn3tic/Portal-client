@@ -6,6 +6,7 @@ import { Store } from '../../store';
 import * as _ from 'lodash';
 
 declare var swal: any;
+declare var CONFIG: any; 
 
 @Component({
     selector: 'user-profile',
@@ -14,6 +15,8 @@ declare var swal: any;
 })
 
 export class UserProfile implements OnInit {
+    // Routes, endpoints
+    HUBDELETEPROPS: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBDELETEPROPS}`;
     me: any;
     scopes: any;
     deletePropertiesArray: Array<any>;
@@ -98,7 +101,7 @@ export class UserProfile implements OnInit {
         })
         console.log('scopeArray: ', this.deletePropertiesArray);
         if (this.deletePropertiesArray.length > 1) {
-            return this.apiService.post('https://57341804.ngrok.io/hubDeleteProps', this.deletePropertiesArray)
+            return this.apiService.post(this.HUBDELETEPROPS, this.deletePropertiesArray)
                 .subscribe(res => console.log('delete response: ', res));
         }
     }

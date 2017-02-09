@@ -16,21 +16,21 @@ declare var swal: any;
   styles: [require('./token-display.component.css')],
   template: require('./token-display.component.html')
 })
+
 export class TokenDisplay implements OnInit {
-
-
-  // JWTKEY: string = CONFIG.hubspot.JWTKEY;
   JWTKEY: string = 'hubspot_token';
   JWTREFRESH: string = 'refresh_token';
-  EXPRESSPROXYCONTACT: string = 'https://57341804.ngrok.io/contact';
-  // HUBTOKENURL: string = CONFIG.hubspot.HUBTOKENURL;
-  HUBTOKENURL: string = 'https://57341804.ngrok.io/hubToken';
+  EXPRESSPROXYCONTACT: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBCONTACT}`;
+  HUBTOKENURL: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBTOKEN}`;
   userEmail: string = '';
+
   headers: Headers = new Headers({
     'Content-Type': 'application/json',
     Accept: 'application/json',
     Authorization: 'Bearer ' + window.localStorage.getItem(this.JWTKEY)
   });
+
+  // Busy spinner docs: https://www.npmjs.com/package/angular2-busy
   busy: Subscription;
   constructor(
     private activatedRoute: ActivatedRoute,

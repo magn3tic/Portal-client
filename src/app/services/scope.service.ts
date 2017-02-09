@@ -17,11 +17,10 @@ export class ScopeService {
         'Content-Type': 'application/json',
         Accept: 'application/json'
     });
-    magAPI_URL: string = 'https://dev.magne.tc/scope-api/v1/';
-    newGHPagesAPI_URL: string = CONFIG.scopeAPI;
-    // Change to CONFIG
-    hubFormPurgeEndpoint: string = 'https://57341804.ngrok.io/hubFormsPurge';
-    hubFormUpdateEndpoint: string = 'https://57341804.ngrok.io/hubFormsUpdate';
+    
+    hubFormPurgeEndpoint: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBFORMSPURGE}`;
+    hubFormUpdateEndpoint: string = `${CONFIG.HUBSPOTPROXY.APIURL + CONFIG.HUBSPOTPROXY.HUBFORMSUPDATE}`;
+
 
     scope = CONFIG.scope;
 

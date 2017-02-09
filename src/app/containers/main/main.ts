@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService, StoreHelper, ClientsService, ScopeService } from '../../services';
+import {Store} from '../../store';
 import {Router} from '@angular/router';
+import {Subscription} from 'rxjs';
 
 var _ = require('lodash');
 declare var CONFIG;
@@ -12,6 +14,9 @@ declare var CONFIG;
 })
 
 export class Main implements OnInit{
+    busy: Subscription;
+    isLoading: boolean = false;
+    isLoader: boolean = false;
     magHttpsProxy: string = CONFIG.magneticProxy;
     hubspotAPIAllContacts = CONFIG.hubspot.endpoints.allContacts;
     hubspotAPIAllDeals = CONFIG.hubspot.endpoints.allDeals;
@@ -21,7 +26,12 @@ export class Main implements OnInit{
     user_email: string;
     super: boolean;
     admin: boolean;
-    constructor(private storeHelper: StoreHelper, private clientsService: ClientsService, private authService: AuthService, private scopeService: ScopeService, private router: Router) { }
+    constructor(private store: Store, private storeHelper: StoreHelper, private clientsService: ClientsService, private authService: AuthService, private scopeService: ScopeService, private router: Router) { 
+        this.store
+        .changes
+        .pluck('isLoading')
+        .subscribe((isLoading: boolean) => this.isLoader = isLoading)
+    }
 
     ngOnInit() {
         if(this.authService.isAuthorized()) {
@@ -35,5 +45,11 @@ export class Main implements OnInit{
 
     logout() {
         this.authService.signout();
+    }
+
+    showLoader(isLoading: boolean) {
+        const currentState = this.store.getState();
+        currentState.isLoading = isLoading;
+        this.store.setState(Object.assign({}, currentState, { isLoading }));
     }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
+import {Subscription} from 'rxjs';
 import { ApiService } from '../../services';
 import { AuthService } from '../../services';
 import { StoreHelper } from '../../services';
@@ -29,6 +30,7 @@ export class TokenDisplay implements OnInit {
     Accept: 'application/json',
     Authorization: 'Bearer ' + window.localStorage.getItem(this.JWTKEY)
   });
+  busy: Subscription;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -38,14 +40,14 @@ export class TokenDisplay implements OnInit {
     private storeHelper: StoreHelper,
     private store: Store
   ) {/** constructor body **/
-    this.getToken()
   }
 
   ngOnInit() {
+    this.busy = this.getToken()
   }
 
   getToken() {
-    this.apiService.get(this.HUBTOKENURL)
+    return this.apiService.get(this.HUBTOKENURL)
       .subscribe(res => {
         let resBody = JSON.parse(res._body);
         console.log('get token res: ', resBody);

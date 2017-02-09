@@ -43,6 +43,7 @@
     "@angular/platform-server": "2.0.0",
     "@angular/router": "3.0.0",
     "@types/lodash": "^4.14.50",
+    "angular2-busy": "^1.0.2",
     "core-js": "^2.4.0",
     "feathers": "^2.0.2",
     "feathers-authentication": "^0.7.10",

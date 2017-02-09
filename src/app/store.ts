@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import 'rxjs/Rx';
 
 export interface State {
+    isLoading: Boolean;
     user: Object;
     scope: Object;
     scopes: Array<Object>;
@@ -15,6 +16,7 @@ export interface State {
 }
 
 const defaultState: State = {
+    isLoading: false,
     user: {
         loggedIn: false,
         tokens: {},
@@ -35,12 +37,13 @@ const _store = new BehaviorSubject<State>(defaultState);
 @Injectable()
 export class Store {
     private _store = _store;
-    changes = this._store.asObservable().distinctUntilChanged()
-    .do(()=> console.log('changes'));
+    changes = this._store
+    .asObservable()
+    .distinctUntilChanged()
+    .do(changes => console.log('changes'));
 
     setState(state: State) {
         console.log('state set: ', state);
-        
         this._store.next(state);
     }
 

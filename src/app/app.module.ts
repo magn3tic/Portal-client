@@ -10,6 +10,7 @@ import {HttpModule} from "@angular/http";
 // Experimental Start
 import {Gravatar} from 'ng2-gravatar-directive';
 import {Ng2FilterPipeModule} from 'ng2-filter-pipe';
+import {BusyModule} from 'angular2-busy';
 // Experimental End
 
 import {providers} from './index';
@@ -45,7 +46,8 @@ import {LocationStrategy, HashLocationStrategy} from '@angular/common';
     HttpModule, 
     RouterModule.forRoot(rootRouterConfig), 
     ReactiveFormsModule, 
-    Ng2FilterPipeModule
+    Ng2FilterPipeModule,
+    BusyModule
     ],
   providers   : [
     ApiService, 

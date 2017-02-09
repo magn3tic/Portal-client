@@ -19,11 +19,11 @@ export class HubSpotAPIService {
   magHttpsProxy: string = CONFIG.magneticProxy;
   // hubspotAPI: string = CONFIG.hubspot.APIURL
   hubspotAPI: string = 'https://api.hubapi.com/';
-  HUBSPOTPROXY: string = 'https://60c3c11a.ngrok.io/hubAPI';
-  CONTACTSPROXY: string = 'https://60c3c11a.ngrok.io/hubContacts';
-  HUBDEALS: string = 'https://60c3c11a.ngrok.io/hubDeals';
-  HUBDEAL: string = 'https://60c3c11a.ngrok.io/hubDeal';
-  HUBCOMPANIES: string = 'https://60c3c11a.ngrok.io/hubCompanies';
+  HUBSPOTPROXY: string = 'https://57341804.ngrok.io/hubAPI';
+  CONTACTSPROXY: string = 'https://57341804.ngrok.io/hubContacts';
+  HUBDEALS: string = 'https://57341804.ngrok.io/hubDeals';
+  HUBDEAL: string = 'https://57341804.ngrok.io/hubDeal';
+  HUBCOMPANIES: string = 'https://57341804.ngrok.io/hubCompanies';
   hubspotAPIKey: string = CONFIG.hubspot.APIKEY;
   // hubContacts: string = CONFIG.hubspot.allContacts;
   hubContacts: string = 'contacts/v1/lists/all/contacts/all/';
@@ -83,11 +83,6 @@ export class HubSpotAPIService {
   hubspotDealCall(body: any, options?: Object) {
     return this.http.post(this.HUBDEAL + '/' + body, this.headers)
       .map(res => JSON.parse(res['_body']))
-    // .map((rawDealsObj) => {
-    //   console.log('rawDealsObj: ', rawDealsObj);
-    //   return rawDealsObj[0];
-    // })
-    // .map((dealsObj) => _.flatten(dealsObj.deals))
   }
 
   hubSpotCompaniesCall(body: any, options?: Object) {
@@ -105,8 +100,6 @@ export class HubSpotAPIService {
           tempCompaniesArr.push(val.companies)
         })
         tempCompaniesArr = flatten(tempCompaniesArr);
-        // console.log('tempCompaniesArr: ', tempCompaniesArr);
-        // this.storeHelper.update('companies', tempCompaniesArr);
         return companiesData;
       })
   }

@@ -17,7 +17,7 @@ declare var CONFIG: any;
 export class Auth implements OnInit {
   // This initiates a Oauth 2.0 connection via passport.js
   // hubAuthAPI: string = CONFIG.hubspot.HUBAUTHAPI; // Hide this in config vars
-  hubAuthAPI: string = 'https://60c3c11a.ngrok.io/hubAuth';
+  hubAuthAPI: string = 'https://57341804.ngrok.io/hubAuth';
 
   constructor(private router: Router, private authService: AuthService) {
     // console.log('hubauthapi: ', this.hubAuthAPI);
@@ -34,7 +34,7 @@ export class Auth implements OnInit {
     this.authService.authenticate()
       .then(token => {
         console.log('authservice.authenticate promise returned: ', token)
-        this.router.navigate(['home']);
+        this.router.navigate(['profile']);
       })
       .catch(err => console.log('auth promise rejection: ', err))
   }

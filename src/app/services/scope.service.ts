@@ -20,8 +20,8 @@ export class ScopeService {
     magAPI_URL: string = 'https://dev.magne.tc/scope-api/v1/';
     newGHPagesAPI_URL: string = CONFIG.scopeAPI;
     // Change to CONFIG
-    hubFormPurgeEndpoint: string = 'https://60c3c11a.ngrok.io/hubFormsPurge';
-    hubFormUpdateEndpoint: string = 'https://60c3c11a.ngrok.io/hubFormsUpdate';
+    hubFormPurgeEndpoint: string = 'https://57341804.ngrok.io/hubFormsPurge';
+    hubFormUpdateEndpoint: string = 'https://57341804.ngrok.io/hubFormsUpdate';
 
     scope = CONFIG.scope;
 

@@ -99,16 +99,8 @@ export class ScopeDisplay {
             }).then(function () {
                 self.scopeResult = [];
                 // scopeService.createScope returns a promise
+                self.router.navigate(['token']);
                 return self.scopeService.createScope(self.scope, self.company)
-                    // .then(res => {
-                    //     console.log('success res: ', res);
-                    //     swal(
-                    //         'Saved!',
-                    //         'Relax... Your Scope has been saved',
-                    //         'success'
-                    //     );
-                    // })
-                    // .catch(err => console.log('createScope failed err: ', err))
             }, function (dismiss) {
                 // dismiss can be 'cancel', 'overlay',
                 // 'close', and 'timer'

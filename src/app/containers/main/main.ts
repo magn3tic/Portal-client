@@ -36,7 +36,7 @@ export class Main implements OnInit{
     ngOnInit() {
         if(this.authService.isAuthorized()) {
             console.log('main.ts isAuthorized is true');
-            this.router.navigate(['home']);
+            this.router.navigate(['profile']);
         } else {
             console.log('main.ts oninit this.authService.isAuthorized() returned false');
             this.router.navigate(['auth']);

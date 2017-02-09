@@ -30,13 +30,29 @@ export class UserProfile implements OnInit {
         private scopeService: ScopeService
     ) {
         this.me = this.getMe();
+        console.log('this.me: ', this.me);
+        if (!this.me.contactInfo) {
+            console.log('no contact info');
+            swal({
+                title: 'No User Info',
+                text: 'Redirecting to fetch user info.',
+                timer: 2000
+            }).then(
+                () => { 
+                    this.router.navigate(['token']);
+                },
+                // handling the promise rejection
+                (dismiss) => {
+                    if (dismiss === 'timer') {
+                        console.log('I was closed by the timer')
+                        this.router.navigate(['token']);
+                    }
+                }
+                )
+        }
     }
 
     ngOnInit() {
-        console.log('this.me: ', this.me);
-        // if (this.me.contactInfo.properties.scopes.value.indexOf('o') === 0) {
-        //     console.log('malformed json');
-        // }
         let tempScopesArr = JSON.parse(decodeURI(this.me.contactInfo.properties.scopes.value));
         console.log('tempScopesArr: ', tempScopesArr);
         if (!tempScopesArr.length) {
@@ -46,10 +62,10 @@ export class UserProfile implements OnInit {
             this.storeHelper.update('scopes', tempScopesArr);
             console.log('error before setting tempScopesArr');
             this.scopes = _
-            .chain(tempScopesArr)
-            .uniqBy('company.properties.name.value')
-            .sortBy(['company', 'value'])
-            .value()
+                .chain(tempScopesArr)
+                .uniqBy('company.properties.name.value')
+                .sortBy(['company', 'value'])
+                .value()
             console.log('tempScopesArr: ', tempScopesArr);
             console.log('this.scopes: ', this.scopes);
         }
@@ -82,7 +98,7 @@ export class UserProfile implements OnInit {
         })
         console.log('scopeArray: ', this.deletePropertiesArray);
         if (this.deletePropertiesArray.length > 1) {
-            return this.apiService.post('https://60c3c11a.ngrok.io/hubDeleteProps', this.deletePropertiesArray)
+            return this.apiService.post('https://57341804.ngrok.io/hubDeleteProps', this.deletePropertiesArray)
                 .subscribe(res => console.log('delete response: ', res));
         }
     }
@@ -97,30 +113,30 @@ export class UserProfile implements OnInit {
     purgeScopes() {
         const self = this;
         swal({
-                title: 'Purge All Scopes?',
-                text: "How sure are you really? You won't be able to revert this!",
-                type: 'info',
-                showCancelButton: true,
-                cancelButtonColor: '#d33',
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, delete them all!'
-            }).then(function () {
-                return self.scopeService.purgeScopes()
-                    .then(res => {
-                        self.updateScopes();
-                    })
-                    .catch(err => console.log('this.scopeService.purgeScopes() error: ', err));
-            }, function (dismiss) {
-                // dismiss can be 'cancel', 'overlay',
-                // 'close', and 'timer'
-                if (dismiss === 'cancel') {
-                    swal(
-                        'Cancelled',
-                        'Phew, that was close. Your scopes remain',
-                        'error'
-                    );
-                }
-            })
+            title: 'Purge All Scopes?',
+            text: "How sure are you really? You won't be able to revert this!",
+            type: 'info',
+            showCancelButton: true,
+            cancelButtonColor: '#d33',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete them all!'
+        }).then(function () {
+            return self.scopeService.purgeScopes()
+                .then(res => {
+                    self.updateScopes();
+                })
+                .catch(err => console.log('this.scopeService.purgeScopes() error: ', err));
+        }, function (dismiss) {
+            // dismiss can be 'cancel', 'overlay',
+            // 'close', and 'timer'
+            if (dismiss === 'cancel') {
+                swal(
+                    'Cancelled',
+                    'Phew, that was close. Your scopes remain',
+                    'error'
+                );
+            }
+        })
     }
 
     updateScopes() {

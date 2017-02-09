@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import {Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ApiService } from '../../services';
 import { AuthService } from '../../services';
 import { StoreHelper } from '../../services';
@@ -9,6 +9,7 @@ import { Store } from '../../store';
 import * as _ from 'lodash';
 
 declare var CONFIG: any;
+declare var swal: any;
 
 @Component({
   selector: 'token-display',
@@ -21,9 +22,9 @@ export class TokenDisplay implements OnInit {
   // JWTKEY: string = CONFIG.hubspot.JWTKEY;
   JWTKEY: string = 'hubspot_token';
   JWTREFRESH: string = 'refresh_token';
-  EXPRESSPROXYCONTACT: string = 'https://60c3c11a.ngrok.io/contact';
+  EXPRESSPROXYCONTACT: string = 'https://57341804.ngrok.io/contact';
   // HUBTOKENURL: string = CONFIG.hubspot.HUBTOKENURL;
-  HUBTOKENURL: string = 'https://60c3c11a.ngrok.io/hubToken';
+  HUBTOKENURL: string = 'https://57341804.ngrok.io/hubToken';
   userEmail: string = '';
   headers: Headers = new Headers({
     'Content-Type': 'application/json',
@@ -43,7 +44,7 @@ export class TokenDisplay implements OnInit {
   }
 
   ngOnInit() {
-    this.busy = this.getToken()
+    this.getToken()
   }
 
   getToken() {
@@ -65,10 +66,28 @@ export class TokenDisplay implements OnInit {
   }
 
   getUserHubspotContact(hubspotUserObject) {
+    let self = this;
     console.log('hubspotUserObject: ', hubspotUserObject);
-    this.apiService.post(this.EXPRESSPROXYCONTACT, { email: hubspotUserObject['user'], authorization: 'Bearer ' + window.localStorage.getItem(this.JWTKEY) })
+    this.busy = this.apiService.post(this.EXPRESSPROXYCONTACT, { email: hubspotUserObject['user'], authorization: 'Bearer ' + window.localStorage.getItem(this.JWTKEY) })
       .subscribe(hubspotUserContactInfo => {
         console.log('apiService hubspotUserContactInfo: ', hubspotUserContactInfo)
+        if (hubspotUserContactInfo.status === 'error') {
+          swal({
+            title: 'Authentication Credentials Expired',
+            text: 'Please login again to refresh credentials',
+            timer: 2000
+          }).then(
+            ()=> {},
+            // handling the promise rejection
+            (dismiss) => {
+              if (dismiss === 'timer') {
+                // console.log('I was closed by the timer')
+                self.authService.signout();
+                self.router.navigate(['auth']);
+              }
+            }
+            )
+        }
         this.storeHelper.update('user', { data: hubspotUserObject, contactInfo: hubspotUserContactInfo, loggedIn: true })
         this.router.navigate(['profile']);
       });

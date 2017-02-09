@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { ApiService, StoreHelper, AuthService, ClientsService, HubSpotAPIService } from '../../services'
 import { Store } from '../../store';
+import {Subscription} from 'rxjs';
 import * as _ from 'lodash';
 declare var CONFIG: any;
 
@@ -16,8 +17,9 @@ export class CompaniesDisplay implements OnInit{
 
   HUBAPI: string = CONFIG.hubspot.APIURL;
   // HUBDEALS: string = CONFIG.hubspot.endpoints.allContacts;
-  HUBCOMPANIES: string = 'https://60c3c11a.ngrok.io/hubCompanies';
+  HUBCOMPANIES: string = 'https://57341804.ngrok.io/hubCompanies';
   companies: Array<Object> = [];
+  busy: Subscription;
   ngOnInit() {
     // console.log('companies.length at ng init: ', this.store.getState().companies.length);
     // Check store for companies before making api call
@@ -28,7 +30,7 @@ export class CompaniesDisplay implements OnInit{
   }
 
   getCompanies() {
-    this.hubspotAPIService.hubSpotCompaniesCall(this.HUBCOMPANIES)
+    this.busy = this.hubspotAPIService.hubSpotCompaniesCall(this.HUBCOMPANIES)
     .subscribe(res => {
       this.storeHelper.update('companies', res)
       this.companies = this.store.getState().companies;

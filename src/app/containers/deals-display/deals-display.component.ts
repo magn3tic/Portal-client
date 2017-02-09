@@ -16,7 +16,7 @@ export class DealsDisplay implements OnInit{
 
   HUBAPI: string = CONFIG.hubspot.APIURL;
   // HUBDEALS: string = CONFIG.hubspot.endpoints.allContacts;
-  HUBDEALS: string = 'https://b2c78a56.ngrok.io/hubDeals';
+  HUBDEALS: string = 'https://60c3c11a.ngrok.io/hubDeals';
   deals: Array<Object> = [];
   ngOnInit() {
     console.log('deals.length at ng init: ', this.store.getState().deals.length);

@@ -20,8 +20,8 @@ export class ScopeService {
     magAPI_URL: string = 'https://dev.magne.tc/scope-api/v1/';
     newGHPagesAPI_URL: string = CONFIG.scopeAPI;
     // Change to CONFIG
-    hubFormPurgeEndpoint: string = 'https://b2c78a56.ngrok.io/hubFormsPurge';
-    hubFormUpdateEndpoint: string = 'https://b2c78a56.ngrok.io/hubFormsUpdate';
+    hubFormPurgeEndpoint: string = 'https://60c3c11a.ngrok.io/hubFormsPurge';
+    hubFormUpdateEndpoint: string = 'https://60c3c11a.ngrok.io/hubFormsUpdate';
 
     scope = CONFIG.scope;
 
@@ -140,13 +140,15 @@ export class ScopeService {
     createMetaInfo(company) {
         const companyId = company.company.companyId;
         const companyName = company.company.properties.name.value;
+        const author = this.store.getState().user['data']['user'];
         const hashids = new Hashids('', 15);
-        const humanTimeStamp = new Date().toDateString();
+        const humanTimeStamp = new Date().toUTCString();
         const rawTimeStamp = Date.now();
         const newId = hashids.encode(companyId, rawTimeStamp);
         return {
             id: newId,
             companyName,
+            author,
             humanTimeStamp,
             rawTimeStamp
         };

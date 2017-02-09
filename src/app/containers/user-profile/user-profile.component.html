@@ -5,7 +5,7 @@
         <div class="content">
             <div class="author">
                 <h4 class="title">{{me.data.user}}<br>
-                    <img *ngIf="me.data.user" class="media-object" alt="Generic placeholder image" gravatar [email]="me.data.user" [size]="515">
+                    <img *ngIf="me.data.user" class="media-object" alt="Generic placeholder image" gravatar [email]="me.data.user" [size]="515" style="width: 40%;">
                     <a href="#"><small>{{me.data.user}}</small></a>
                 </h4>
             </div>
@@ -22,12 +22,17 @@
             <button class="btn btn-danger text-center" (click)="purgeScopes()">Clear All Scopes</button>
             <h4>Scopes</h4>
             <div *ngFor="let scope of scopes; let i = index;">
-                <section *ngIf="scope.company" class="company">
-                    <h1 *ngIf="scope.company.properties.name">{{scope.company.properties.name.value}}</h1>
-                    <a (click)="selectCompany(scope.company, scope.scope)" [routerLink]="['/company']">
-                        <h5>View More</h5>
-                    </a>
-                </section>
+                <div class="card">
+                    <div class="content">
+                        <section *ngIf="scope.company" class="company">
+                            <h1 *ngIf="scope.company.properties.name">{{scope.company.properties.name.value}}</h1>
+                            <a (click)="selectCompany(scope.company, scope.scope)" [routerLink]="['/company']">
+                                <i class="ti-zoom-in"></i>
+                                More
+                            </a>
+                        </section>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

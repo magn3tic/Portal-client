@@ -82,7 +82,7 @@ export class UserProfile implements OnInit {
         })
         console.log('scopeArray: ', this.deletePropertiesArray);
         if (this.deletePropertiesArray.length > 1) {
-            return this.apiService.post('https://b2c78a56.ngrok.io/hubDeleteProps', this.deletePropertiesArray)
+            return this.apiService.post('https://60c3c11a.ngrok.io/hubDeleteProps', this.deletePropertiesArray)
                 .subscribe(res => console.log('delete response: ', res));
         }
     }

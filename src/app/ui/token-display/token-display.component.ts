@@ -20,9 +20,9 @@ export class TokenDisplay implements OnInit {
   // JWTKEY: string = CONFIG.hubspot.JWTKEY;
   JWTKEY: string = 'hubspot_token';
   JWTREFRESH: string = 'refresh_token';
-  EXPRESSPROXYCONTACT: string = 'https://b2c78a56.ngrok.io/contact';
+  EXPRESSPROXYCONTACT: string = 'https://60c3c11a.ngrok.io/contact';
   // HUBTOKENURL: string = CONFIG.hubspot.HUBTOKENURL;
-  HUBTOKENURL: string = 'https://b2c78a56.ngrok.io/hubToken';
+  HUBTOKENURL: string = 'https://60c3c11a.ngrok.io/hubToken';
   userEmail: string = '';
   headers: Headers = new Headers({
     'Content-Type': 'application/json',

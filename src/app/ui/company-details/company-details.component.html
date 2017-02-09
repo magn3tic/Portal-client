@@ -1,14 +1,53 @@
-<div>
-  <button class="btn btn-primary" (click)="goBack()">Back</button>
-  <button class="btn btn-success" (click)="newScope()">New Scope</button>
+<div class="container">
+  <button class="btn btn-primary" (click)="goBack()">
+    <i class="ti-angle-left"></i>
+    Back
+  </button>
+  <button class="btn btn-success" (click)="newScope()">
+    <i class="ti-plus"></i>
+    New Scope
+  </button>
   <section *ngIf="isScopes" class="details-container">
     <h2>Scopes</h2>
     <div *ngFor="let scope of scopes" class="scopes-container">
-      <h3 *ngIf="scope.company.properties">{{scope.company.properties.name.value}}</h3>
-      <h4 *ngIf="scope.company.properties.website" class="media-heading">Website: <a href="{{scope.company.properties.website.value}}" target="_blank">{{scope.company.properties.website.value}}</a></h4>
-      <div class="button-container">
-        <a class="btn btn-warning" [routerLink]="['/scope']">View / Update Scope</a>
-        <a class="btn btn-danger" (click)="removeScope(scope.meta.id)">Remove Scope</a>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="card">
+              <div class="content">
+                <div class="row">
+                  <div class="col-xs-5">
+                    <div class="icon-big icon-success text-center">
+                      <i class="ti-list"></i>
+                    </div>
+                  </div>
+                  <div class="col-xs-7">
+                    <div class="numbers" *ngIf="scope.company.properties">
+                      <p>{{scope.meta.author}}</p>
+                      {{scope.company.properties.name.value}}
+                    </div>
+                  </div>
+                </div>
+                <div class="footer">
+                  <hr>
+                  <div class="stats text-center">
+                    <div class="col-md-6">
+                      <i class="ti-reload"></i> Updated: {{scope.meta.humanTimeStamp}}
+                    </div>
+                    <div class="col-md-6">
+                      <a class="btn btn-warning" [routerLink]="['/scope']">
+                        <i class="ti-reload"></i> Update
+                      </a>
+                      <a class="btn btn-danger" (click)="removeScope(scope.meta.id)">
+                        <i class="ti-trash"></i> Remove
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>

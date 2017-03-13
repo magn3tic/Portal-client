@@ -1,12 +1,9 @@
 {
   "production": {
     "hubspotAPIKey": "cd63a972-83d5-41d1-9476-7a31c2c53d92",
-    "API_URL": "https://magportal.herokuapp.com",
-    "endpoints": {
-      "clientsAPI": "/clients"
-    },
+    "API_URL": "https://5caeb65f.ngrok.io",
     "HUBSPOTPROXY": {
-      "APIURL": "https://57341804.ngrok.io",
+      "APIURL": "https://5caeb65f.ngrok.io",
       "HUBAUTH": "/hubAuth",
       "HUBME": "/hubMe",
       "HUBTOKEN": "/hubToken",
@@ -26,7 +23,7 @@
   },
   "development": {
     "HUBSPOTPROXY": {
-      "APIURL": "https://57341804.ngrok.io",
+      "APIURL": "https://5caeb65f.ngrok.io",
       "HUBAUTH": "/hubAuth",
       "HUBME": "/hubMe",
       "HUBTOKEN": "/hubToken",
